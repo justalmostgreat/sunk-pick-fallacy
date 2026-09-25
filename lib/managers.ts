@@ -12,3 +12,9 @@ export const firstNames: Partial<Record<number, string>> = {
   9: "Arjun", // squirmyearth163
   10: "Cody", // CodyJuanKenobi
 };
+
+// Other names the blurbs use, so a pasted blurb can be matched to the right game.
+export const nicknames: Partial<Record<number, string[]>> = {
+  1: ["Commish", "Commissioner", "Jagadesh"],
+  3: ["Aditya"],
+};

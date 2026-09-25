@@ -21,7 +21,9 @@ const report = [
   "",
   run("./scout.mjs"),
   "",
-  `The top three are on the site with receipts. Add your blurb to lib/weeks/${week}.json, or paste it to Claude.`,
+  "---",
+  "**Reply to this issue with your blurb, pasted as-is, and it goes on the site.** One paragraph per game, starting with the ALL-CAPS hook, like the group-chat version.",
+  "Optional lines: `meme: Jag - caption` puts the reaction photo on that game; `cover: meme` puts it on this week's cover.",
 ].join("\n");
 console.log(`\n${report}`);
 if (process.env.REPORT_FILE) writeFileSync(process.env.REPORT_FILE, `${week}\n${report}\n`);

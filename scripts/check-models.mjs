@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { gameClock, liveStandings, score } from "../lib/live.ts";
 import { dynastyRankings } from "../lib/dynasty.ts";
 import { noteCandidates, scoutNotes } from "../lib/insights.ts";
+import { parseBlurb, splitHook } from "../lib/blurb.ts";
 
 const scoring = { rec: 0.5, bonus_rec_te: 0.5, rec_yd: 0.1, pass_td: 4 };
 assert.equal(score({ rec: 4, bonus_rec_te: 4, rec_yd: 50, pts_ppr: 99 }, scoring), 9); // TE premium, unknown keys ignored
@@ -86,4 +87,15 @@ for (let s = 0; s < 60; s++) {
   assert.ok(kinds.every(k => kinds.filter(x => x === k).length <= 2)); // variety
 }
 assert.deepEqual(scoutNotes({ weeks, dynasty, first: {}, seed: 0.42 }), scoutNotes({ weeks, dynasty, first: {}, seed: 0.42 })); // same seed, same notes
+// Blurb parser: the real formats from the Week 1 and Week 2 blurbs.
+assert.deepEqual(splitHook("CODY’S BALL KNOWLEDGE ISN’T ENOUGH. 151.04 points, and more"), { hook: "CODY’S BALL KNOWLEDGE ISN’T ENOUGH.", body: "151.04 points, and more" });
+assert.deepEqual(splitHook("YALL REALLY LET THE COMMISH GET KENNETH WALKER 😼😭 I went into MNF"), { hook: "YALL REALLY LET THE COMMISH GET KENNETH WALKER 😼😭", body: "I went into MNF" });
+assert.deepEqual(splitHook("THE COMMISH HAS FALLEN ALREADY. 🙌🏽 Jit puts up"), { hook: "THE COMMISH HAS FALLEN ALREADY. 🙌🏽", body: "Jit puts up" });
+const blurbTeams = [{ id: 1, names: ["Jag", "Commish"] }, { id: 2, names: ["Andrew"] }, { id: 3, names: ["Adi", "Aditya"] }, { id: 4, names: ["Jit"] }];
+const blurbFinals = [{ matchup: 1, winner: 4, loser: 1 }, { matchup: 2, winner: 2, loser: 3 }];
+const parsed = parseBlurb("🚨 WEEK 2 RECAP 🚨\n\nANDREW ESCAPES 😭 Aditya stays winless.\n\nTHE COMMISH HAS FALLEN. 🙌🏽 Jit beat Jag.\nmeme: Jag - Oof\ncover: meme", blurbTeams, blurbFinals);
+assert.equal(parsed.headline, "🚨 WEEK 2 RECAP 🚨");
+assert.deepEqual(parsed.games.map(g => [g.matchup, g.hook, g.body]), [[2, "ANDREW ESCAPES 😭", "Aditya stays winless."], [1, "THE COMMISH HAS FALLEN. 🙌🏽", "Jit beat Jag."]]);
+assert.deepEqual([parsed.meme, parsed.cover, parsed.problems], [{ rosterId: 1, caption: "Oof" }, true, []]);
+assert.ok(parseBlurb("SOMETHING HAPPENED 💀 but no names.", blurbTeams, blurbFinals).problems.length); // nothing to place: refuse
 console.log("models ok");

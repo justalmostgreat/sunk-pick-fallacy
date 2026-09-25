@@ -1,0 +1,56 @@
+name: Blurb
+
+# Reply to a weekly "Week N is final" issue with the blurb, pasted as-is: this puts it on the site, commits it,
+# and closes the issue. Reply again to replace it. Or run it by hand from the Actions tab with the week and the blurb.
+on:
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      week:
+        description: "Week number"
+        required: true
+      blurb:
+        description: "The blurb, pasted as-is"
+        required: true
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency: site-data # never races the Tuesday job
+
+jobs:
+  blurb:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (github.event.issue.user.login == 'github-actions[bot]' &&
+       github.event.comment.user.login == github.repository_owner &&
+       startsWith(github.event.issue.title, 'Week '))
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
+      TITLE: ${{ github.event.issue.title }}
+      BLURB: ${{ github.event.comment.body || inputs.blurb }}
+      WEEK: ${{ inputs.week }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Put the blurb on the site
+        run: |
+          week="${WEEK:-$(echo "$TITLE" | sed -E 's/^Week ([0-9]+).*/\1/')}"
+          printf '%s\n' "$BLURB" > /tmp/blurb.txt
+          if ! node scripts/blurb.mjs "$week" /tmp/blurb.txt > /tmp/result.txt 2>&1; then
+            cat /tmp/result.txt
+            if [ -n "$ISSUE" ]; then gh issue comment "$ISSUE" --body-file /tmp/result.txt; fi
+            exit 1
+          fi
+          cat /tmp/result.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lib/weeks
+          git diff --cached --quiet || { git commit -m "Week $week blurb"; git push; }
+          if [ -n "$ISSUE" ]; then gh issue close "$ISSUE" --comment "$(printf 'Week %s is done ✅\n\n%s' "$week" "$(cat /tmp/result.txt)")"; fi
