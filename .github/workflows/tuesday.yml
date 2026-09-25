@@ -1,0 +1,42 @@
+name: Tuesday scout
+
+# Every Tuesday: freeze the week that just finished, rank its games, and post the scout's report as an issue
+# assigned to the owner, so it arrives as a GitHub notification (app push + email). No secrets needed.
+on:
+  schedule:
+    - cron: "0 14 * * 2" # Tuesdays 14:00 UTC: 9 AM Central (8 AM once clocks fall back)
+    - cron: "0 14 * * 3" # Wednesday retry, in case Sleeper finalizes the week late
+  workflow_dispatch:
+    inputs:
+      week:
+        description: "Redo a specific week (leave blank for the latest finished week)"
+        required: false
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  scout:
+    runs-on: ubuntu-latest
+    env:
+      REPORT_FILE: ${{ runner.temp }}/report.txt
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24 # runs the TypeScript in lib/ directly; no npm install needed
+      - name: Freeze the week and scout it
+        run: node scripts/tuesday.mjs ${{ inputs.week }}
+      - name: Save the week and post the report
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          [ -f "$REPORT_FILE" ] || exit 0 # nothing new this run
+          week=$(head -1 "$REPORT_FILE")
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lib/weeks
+          git diff --cached --quiet || { git commit -m "Week $week snapshot"; git push; }
+          tail -n +2 "$REPORT_FILE" > "$RUNNER_TEMP/body.md"
+          gh issue create --title "Week $week is final: the scout's top three" --body-file "$RUNNER_TEMP/body.md" --assignee "${{ github.repository_owner }}"

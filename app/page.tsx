@@ -1,20 +1,85 @@
-import league from '@/lib/league.json';
-import copy from '@/lib/recap-copy.json';
-import LeagueEdition from '@/components/league-edition';
+import { BackIssues, Cover, DynastyList, Finals, Footer, LiveStandings, Recap, StandingsTable } from "@/components/program";
+import { LiveRefresh } from "@/components/live-refresh";
+import { Price } from "@/components/price";
+import { scoutNotes } from "@/lib/insights";
+import { firstNames } from "@/lib/managers";
+import { dynastyRankings } from "@/lib/dynasty";
+import { gameClock, liveStandings } from "@/lib/live";
+import { feeds, teamName } from "@/lib/sleeper";
+import { weeks } from "@/lib/weeks";
 
-export default function Home() {
-  return <main className="edition mx-auto max-w-[1400px] px-5 md:px-12">
-    <a href="#matchups" className="skip-link">Skip to matchups</a>
-    <header className="masthead flex items-center justify-between gap-6 py-6 md:py-8">
-      <a className="wordmark" href="#">SPF<span>SUNK PICK<br/>FALLACY</span></a>
-      <nav className="flex items-center gap-5"><a href="#matchups">MATCHUPS</a><a href="#teams" className="hidden sm:inline">THE TEAMS</a><span className="hidden md:inline">VOL. 01 / 15 SEP 2026</span></nav>
-    </header>
-    <section className="cover grid items-center gap-4 md:grid-cols-[1.2fr_1fr]">
-      <div className="cover-copy py-9 md:py-14"><p className="eyebrow">THE COMMISSIONER’S WEEKLY / WEEK 01</p><h1>THE DRAFT<br/>IS OVER.<br/><em>THE BULLSHIT<br/>ISN’T.</em></h1><p className="intro">Ten managers. Five matchups. One very expensive lesson in being full of shit.</p><a className="read-link" href="#matchups">READ THE DAMAGE REPORT <span>↓</span></a></div>
-      <figure className="cover-art"><img src="/assets/football-engraving.png" alt="An antique ivory engraving of a football player in a leather helmet, holding a football" width="1122" height="1402" fetchPriority="high"/><figcaption>EST. 2026 / NO REFUNDS ON DRAFT TAKES</figcaption></figure>
-    </section>
-    <section className="numbers grid grid-cols-1 border-y md:grid-cols-3"><div><strong>10.38</strong><span>CLOSEST ESCAPE</span></div><div><strong>71.32</strong><span>BIGGEST ASS-KICKING</span></div><div><strong>0.66</strong><span>SEPARATED THE TOP TWO SCORES</span></div></section>
-    <LeagueEdition copy={copy} />
-    <footer className="flex flex-wrap justify-between gap-4 border-t py-8"><span>SUNK PICK FALLACY / THE WEEKLY</span><a href={league.source} target="_blank" rel="noreferrer">LEAGUE SCOREBOARD ↗</a></footer>
-  </main>
+export const dynamic = "force-dynamic";
+
+const rankOf = (ids: number[]) => new Map(ids.map((id, i) => [id, i + 1]));
+const stamp = (d: Date) =>
+  new Intl.DateTimeFormat("en-US", { weekday: "short", hour: "numeric", minute: "2-digit", timeZone: "America/New_York", timeZoneName: "short" }).format(d);
+
+async function loadLive() {
+  const state = await feeds.state();
+  const [league, rosters, users, matchups, projections] = await Promise.all([
+    feeds.league(), feeds.rosters(), feeds.users(), feeds.matchups(state.week), feeds.projections(state.season, state.week),
+  ]);
+  // The clock and the values are nice-to-haves: the page still works without them.
+  const [espn, values, traded] = await Promise.all([feeds.scoreboard().catch(() => null), feeds.values().catch(() => null), feeds.tradedPicks().catch(() => [])]);
+  const clock = espn?.week?.number === state.week ? gameClock(espn) : new Map<string, number>();
+  const top100 = new Set((values ?? []).filter(v => v.overallRank <= 100).flatMap(v => (v.player.sleeperId ? [v.player.sleeperId] : [])));
+  const owner = new Map(users.map(u => [u.user_id, u]));
+  return {
+    week: state.week,
+    names: Object.fromEntries(rosters.map(r => [r.roster_id, { name: teamName(owner.get(r.owner_id)) }])),
+    rows: liveStandings({ rosters, matchups, projections, scoring: league.scoring_settings, clock, countWeek: league.settings.last_scored_leg < state.week, top100 }),
+    dynasty: values && dynastyRankings({ rosters, values, traded, projections, season: league.season, rounds: league.settings.draft_rounds, played: league.settings.last_scored_leg, weeks: league.settings.playoff_week_start - 1 }),
+    gamesLive: espn?.events.filter(e => e.status.type.state === "in").length ?? 0,
+  };
+}
+
+export default async function Home() {
+  const last = weeks[weeks.length - 1];
+  const recap = [...weeks].reverse().find(w => w.recap?.featured.length);
+  const live = await loadLive().catch(() => null);
+  const names = live?.names ?? last.teams;
+  const dynasty = live?.dynasty ?? last.dynasty;
+  // eslint-disable-next-line react-hooks/purity -- a server render runs once per request; a fresh price and fresh notes per request is the point
+  const seed = Math.random();
+
+  // Team names jump to their featured story from last week, otherwise to their line in last week's finals.
+  const href = (id: number) => {
+    const f = last.finals.find(g => g.winner === id || g.loser === id);
+    if (!f) return undefined;
+    return recap === last && last.recap?.featured.some(x => x.matchup === f.matchup) ? `#game-${f.matchup}` : `#final-${f.matchup}`;
+  };
+
+  return <div className="program">
+    <LiveRefresh seconds={live?.gamesLive ? 120 : 1800} />
+    <Cover items={["Official program", `Week ${live?.week ?? last.week + 1}`, <Price key="price" seed={seed} />]} meme={recap?.recap?.cover === "meme"}>
+      <b>{live?.gamesLive ? "Games in progress" : "The league, as of now"}</b>
+      <span>{live ? `${live.gamesLive ? `${live.gamesLive} ${live.gamesLive > 1 ? "games" : "game"} live · ` : ""}Updated ${stamp(new Date())}` : `Sleeper isn’t answering — showing the Week ${last.week} final table`}</span>
+    </Cover>
+
+    <main>
+      <section aria-labelledby="standings">
+        <h2 className="shead" id="standings">Live standings</h2>
+        <p className="sub">{live ? `Record so far, plus Week ${live.week} as if it ended right now · moves are since last week` : `After Week ${last.week}`}</p>
+        {live
+          ? <LiveStandings rows={live.rows} names={names} before={rankOf(last.standings.map(s => s.rosterId))} href={href} />
+          : <StandingsTable snap={last} href={href} />}
+      </section>
+
+      {dynasty && <section aria-labelledby="dynasty">
+        <h2 className="shead" id="dynasty">Dynasty power rankings</h2>
+        <p className="sub">Half this season — record so far plus projected finish — and half long-term market value of players, picks and youth{live?.dynasty ? "" : ` · as of Week ${last.week}`}</p>
+        <DynastyList rows={dynasty} names={names} before={last.dynasty ? rankOf(last.dynasty.map(d => d.rosterId)) : undefined} href={href}
+          notes={scoutNotes({ weeks, dynasty, first: firstNames, live: live?.rows, seed })} />
+      </section>}
+
+      {recap && <Recap snap={recap} />}
+
+      <div className="around">
+        <Finals snap={last} />
+        <BackIssues weeks={weeks} />
+      </div>
+    </main>
+
+    <Footer>Live scores, projections and injuries from Sleeper · game clocks from ESPN · dynasty values from FantasyCalc (superflex, 10 teams, half-PPR) · half-PPR, TEs +0.5 per catch, 4-point passing TDs · odds are a projection, not a promise</Footer>
+  </div>;
 }

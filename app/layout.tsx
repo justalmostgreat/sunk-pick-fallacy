@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Sunk Pick Fallacy — The Weekly / Week 01",
-  description: "The draft is over. The bullshit isn’t. Week 1 matchups, draft receipts, and the commissioner’s weekly roast.",
+  title: "Sunk Pick Fallacy — Official Program",
+  description: "Live standings, dynasty power rankings and the commissioner’s weekly recap for the Sunk Pick Fallacy league.",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",

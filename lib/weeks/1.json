@@ -1,0 +1,275 @@
+{
+  "week": 1,
+  "season": "2026",
+  "capturedAt": "2026-09-25T20:43:13.586Z",
+  "teams": {
+    "1": {
+      "name": "justalmostgreat",
+      "handle": "justalmostgreat"
+    },
+    "2": {
+      "name": "Revenge of the Brady",
+      "handle": "ATaylor999"
+    },
+    "3": {
+      "name": "AdiYoga",
+      "handle": "AdiYoga"
+    },
+    "4": {
+      "name": "littyjitty",
+      "handle": "littyjitty"
+    },
+    "5": {
+      "name": "Pipsqueak",
+      "handle": "primalJay"
+    },
+    "6": {
+      "name": "shotgunb365",
+      "handle": "shotgunb365"
+    },
+    "7": {
+      "name": "J Herbo",
+      "handle": "elmateoruix"
+    },
+    "8": {
+      "name": "pranavmenon08",
+      "handle": "pranavmenon08"
+    },
+    "9": {
+      "name": "squirmyearth163",
+      "handle": "squirmyearth163"
+    },
+    "10": {
+      "name": "CodyJuanKenobi",
+      "handle": "CodyJuanKenobi"
+    }
+  },
+  "finals": [
+    {
+      "matchup": 1,
+      "winner": 8,
+      "loser": 5,
+      "winnerPoints": 178.06,
+      "loserPoints": 106.74
+    },
+    {
+      "matchup": 2,
+      "winner": 7,
+      "loser": 2,
+      "winnerPoints": 171.02,
+      "loserPoints": 133.6
+    },
+    {
+      "matchup": 3,
+      "winner": 9,
+      "loser": 6,
+      "winnerPoints": 171.42,
+      "loserPoints": 143.5
+    },
+    {
+      "matchup": 4,
+      "winner": 1,
+      "loser": 3,
+      "winnerPoints": 151.02,
+      "loserPoints": 140.64
+    },
+    {
+      "matchup": 5,
+      "winner": 10,
+      "loser": 4,
+      "winnerPoints": 178.72,
+      "loserPoints": 118.96
+    }
+  ],
+  "standings": [
+    {
+      "rosterId": 10,
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "pf": 178.72,
+      "pa": 118.96
+    },
+    {
+      "rosterId": 8,
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "pf": 178.06,
+      "pa": 106.74
+    },
+    {
+      "rosterId": 9,
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "pf": 171.42,
+      "pa": 143.5
+    },
+    {
+      "rosterId": 7,
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "pf": 171.02,
+      "pa": 133.6
+    },
+    {
+      "rosterId": 1,
+      "wins": 1,
+      "losses": 0,
+      "ties": 0,
+      "pf": 151.02,
+      "pa": 140.64
+    },
+    {
+      "rosterId": 6,
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "pf": 143.5,
+      "pa": 171.42
+    },
+    {
+      "rosterId": 3,
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "pf": 140.64,
+      "pa": 151.02
+    },
+    {
+      "rosterId": 2,
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "pf": 133.6,
+      "pa": 171.02
+    },
+    {
+      "rosterId": 4,
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "pf": 118.96,
+      "pa": 178.72
+    },
+    {
+      "rosterId": 5,
+      "wins": 0,
+      "losses": 1,
+      "ties": 0,
+      "pf": 106.74,
+      "pa": 178.06
+    }
+  ],
+  "dynasty": null,
+  "mvp": {
+    "1": {
+      "name": "Kenneth Walker",
+      "points": 32.6
+    },
+    "2": {
+      "name": "Zay Flowers",
+      "points": 23.5
+    },
+    "3": {
+      "name": "Ashton Jeanty",
+      "points": 29.7
+    },
+    "4": {
+      "name": "Lamar Jackson",
+      "points": 24.96
+    },
+    "5": {
+      "name": "DJ Moore",
+      "points": 18.5
+    },
+    "6": {
+      "name": "Bryce Young",
+      "points": 31.44
+    },
+    "7": {
+      "name": "Christian Watson",
+      "points": 29.7
+    },
+    "8": {
+      "name": "Caleb Williams",
+      "points": 37.26
+    },
+    "9": {
+      "name": "Josh Allen",
+      "points": 35.66
+    },
+    "10": {
+      "name": "Jalen Coker",
+      "points": 29.8
+    }
+  },
+  "recap": {
+    "headline": "Week 1 done 🫪",
+    "featured": [
+      {
+        "matchup": 1,
+        "hook": "PRANAV WHAT THE FUCK 😭🔥",
+        "body": "178 points and a 71-point win?! Caleb, Monty and Shough combined for 88 while Jorge 1st overall in the ENTIRE draft gave him 2.2 💀",
+        "receipts": [
+          {
+            "label": "Caleb Williams, pick 2.02",
+            "value": "37.26"
+          },
+          {
+            "label": "Montgomery 8.09 + Shough 12.09",
+            "value": "50.60"
+          },
+          {
+            "label": "Ja’Marr Chase, pick 1.01",
+            "value": "2.20"
+          }
+        ]
+      },
+      {
+        "matchup": 5,
+        "hook": "CODY WITH THE WORKPLACE HARASSMENT 🥸🔥",
+        "body": "Highest score of Week 1 with 178.72—and Jalen Coker at pick 129 dropped almost 30?! Even left Goedert’s 23.7 on the bench to let his coworker know Jit he the boss now 😂",
+        "receipts": [
+          {
+            "label": "Jalen Coker, pick 13.09",
+            "value": "29.80"
+          },
+          {
+            "label": "Dallas Goedert, benched",
+            "value": "23.70"
+          },
+          {
+            "label": "Brown + Higgins + Waddle",
+            "value": "12.20"
+          }
+        ]
+      },
+      {
+        "matchup": 4,
+        "hook": "YALL REALLY LET THE COMMISH GET KENNETH WALKER 😼😭",
+        "body": "I went into MNF down with a 14% chance and K9 dropped 33 to steal the win 🔥 We’re gonna force this tank on Adi whether he likes it or not. Anyway new season, same commissioner plot armor 😎",
+        "receipts": [
+          {
+            "label": "Deficit entering Monday",
+            "value": "7.88"
+          },
+          {
+            "label": "Kenneth Walker on MNF",
+            "value": "32.60"
+          },
+          {
+            "label": "Rice + Nix on Monday",
+            "value": "14.34"
+          }
+        ]
+      }
+    ],
+    "meme": {
+      "rosterId": 5,
+      "caption": "Reaction to the 1.01 coming back with 2.2 points."
+    }
+  }
+}
