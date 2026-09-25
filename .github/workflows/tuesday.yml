@@ -20,7 +20,7 @@ jobs:
   scout:
     runs-on: ubuntu-latest
     env:
-      REPORT_FILE: ${{ runner.temp }}/report.txt
+      REPORT_FILE: /tmp/spf-report.txt
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
