@@ -67,7 +67,7 @@ export default async function Home() {
 
       {dynasty && <section aria-labelledby="dynasty">
         <h2 className="shead" id="dynasty">Dynasty power rankings</h2>
-        <p className="sub">Half this season — record so far plus projected finish — and half long-term market value of players, picks and youth{live?.dynasty ? "" : ` · as of Week ${last.week}`}</p>
+        <p className="sub">Which teams are set up as a true dynasty{live?.dynasty ? "" : ` · as of Week ${last.week}`}</p>
         <DynastyList rows={dynasty} names={names} before={last.dynasty ? rankOf(last.dynasty.map(d => d.rosterId)) : undefined} href={href}
           notes={scoutNotes({ weeks, dynasty, first: firstNames, live: live?.rows, seed })} />
       </section>}
