@@ -48,7 +48,7 @@ export default async function WeekPage(props: Props) {
 
       {snap.dynasty && <section aria-labelledby="dynasty">
         <h2 className="shead" id="dynasty">Dynasty power rankings</h2>
-        <p className="sub">Half this season, half long-term market value · as of {day(snap.capturedAt)}</p>
+        <p className="sub">Which teams are set up as a true dynasty · as of {day(snap.capturedAt)}</p>
         <DynastyList rows={snap.dynasty} names={snap.teams} href={href}
           notes={scoutNotes({ weeks: weeks.filter(w => w.week <= snap.week), dynasty: snap.dynasty, first: firstNames, seed: (snap.week * 0.618) % 1 })} />
       </section>}

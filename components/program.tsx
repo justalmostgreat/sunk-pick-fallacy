@@ -91,7 +91,7 @@ export function DynastyList({ rows, names, before, href, notes }: { rows: Dynast
     <div>
       <div className="head"><span className="who"><Name id={d.rosterId} names={names} href={href} />{hurt && <Stamp title={`${hurt.name} is on IR`} />}</span><Move by={moved(before, d.rosterId, i + 1)} /></div>
       <p className="val"><b>{Math.round(d.score)}</b>power · {d.record} · on pace for {d.projectedWins.toFixed(1)} wins</p>
-      <p className="val">Value {thousands(d.total)} · picks {thousands(d.picks)}{d.age ? ` · age ${d.age.toFixed(1)}` : ""}</p>
+      <p className="val">Value {thousands(d.total)} · picks {thousands(d.picks)}{d.age ? ` · average age ${d.age.toFixed(1)}` : ""}</p>
       <p className="assets">{d.top.map(t => t.name).join(" · ")}</p>
       {notes?.get(d.rosterId) && <p className="scout">{notes.get(d.rosterId)!.text}</p>}
     </div>
