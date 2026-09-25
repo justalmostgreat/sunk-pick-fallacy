@@ -14,8 +14,15 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const managedLinux = readExecutionProfile() === "managed-linux";
 
 const localBindingConfig = {
+  name: "sunkpick",
   main: "vinext/server/fetch-handler",
   compatibility_flags: ["nodejs_compat"],
+  workers_dev: false,
+  preview_urls: false,
+  routes: [
+    { pattern: "sunkpick.com", custom_domain: true as const },
+    { pattern: "www.sunkpick.com", custom_domain: true as const },
+  ],
   d1_databases: d1
     ? [
         {

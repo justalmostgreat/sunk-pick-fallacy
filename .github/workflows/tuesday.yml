@@ -13,6 +13,7 @@ on:
         required: false
 
 permissions:
+  actions: write # to start Publish
   contents: write
   issues: write
 
@@ -25,11 +26,15 @@ jobs:
       REPORT_FILE: /tmp/spf-report.txt
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: 24 # runs the TypeScript in lib/ directly; no npm install needed
       - name: Freeze the week and scout it
-        run: node scripts/tuesday.mjs ${{ inputs.week }}
+        env:
+          WEEK_INPUT: ${{ inputs.week }}
+        run: node scripts/tuesday.mjs "$WEEK_INPUT"
       - name: Save the week and post the report
         env:
           GH_TOKEN: ${{ github.token }}
@@ -39,6 +44,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add lib/weeks
-          git diff --cached --quiet || { git commit -m "Week $week snapshot"; git push; }
+          if ! git diff --cached --quiet; then
+            git commit -m "Week $week snapshot"
+            git push
+          fi
+          gh workflow run publish.yml --ref main
           tail -n +2 "$REPORT_FILE" > "$RUNNER_TEMP/body.md"
           gh issue create --title "Week $week is final: the scout's top three" --body-file "$RUNNER_TEMP/body.md" --assignee "${{ github.repository_owner }}"

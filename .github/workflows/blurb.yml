@@ -15,6 +15,7 @@ on:
         required: true
 
 permissions:
+  actions: write # to start Publish
   contents: write
   issues: write
 
@@ -36,6 +37,8 @@ jobs:
       WEEK: ${{ inputs.week }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -52,5 +55,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add lib/weeks
-          git diff --cached --quiet || { git commit -m "Week $week blurb"; git push; }
+          if ! git diff --cached --quiet; then
+            git commit -m "Week $week blurb"
+            git push
+          fi
+          gh workflow run publish.yml --ref main
           if [ -n "$ISSUE" ]; then gh issue close "$ISSUE" --comment "$(printf 'Week %s is done ✅\n\n%s' "$week" "$(cat /tmp/result.txt)")"; fi
