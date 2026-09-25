@@ -1,5 +1,8 @@
 // Sleeper roster_id → first name. Handles and team names come from Sleeper untouched.
 // A missing id has no confirmed name yet; the page shows the team name alone.
+// Public phone numbers for these names live in lib/coaches.json. Roster 1 (Jag) is unlisted on purpose.
+import phones from "./coaches.json" with { type: "json" };
+
 export const firstNames: Partial<Record<number, string>> = {
   1: "Jag", // justalmostgreat (commissioner)
   2: "Andrew", // ATaylor999 / Revenge of the Brady
@@ -18,3 +21,16 @@ export const nicknames: Partial<Record<number, string[]>> = {
   1: ["Commish", "Commissioner", "Jagadesh"],
   3: ["Aditya"],
 };
+
+const byName: Record<string, string> = phones;
+const COMMISSIONER = 1;
+
+/** `tel:+1…` for a coach, or undefined for the commissioner and anyone without a public number. */
+export function coachTel(rosterId: number): string | undefined {
+  if (rosterId === COMMISSIONER) return undefined;
+  for (const name of [firstNames[rosterId], ...(nicknames[rosterId] ?? [])]) {
+    const phone = name ? byName[name] : undefined;
+    if (phone) return `tel:${phone}`;
+  }
+  return undefined;
+}
