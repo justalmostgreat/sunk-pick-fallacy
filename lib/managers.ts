@@ -24,11 +24,11 @@ export const nicknames: Partial<Record<number, string[]>> = {
 
 const byName: Record<string, string> = phones;
 
-/** `tel:+1…` for a coach, or undefined when that roster has no public number. */
-export function coachTel(rosterId: number): string | undefined {
+/** `sms:+1…` for a coach, or undefined when that roster has no public number. Opens Messages on iOS. */
+export function coachSms(rosterId: number): string | undefined {
   for (const name of [firstNames[rosterId], ...(nicknames[rosterId] ?? [])]) {
     const phone = name ? byName[name] : undefined;
-    if (phone) return `tel:${phone}`;
+    if (phone) return `sms:${phone}`;
   }
   return undefined;
 }

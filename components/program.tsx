@@ -5,7 +5,7 @@ import { Ink } from "@/components/ink";
 import type { DynastyRow } from "@/lib/dynasty";
 import type { Note } from "@/lib/insights";
 import type { LiveRow } from "@/lib/live";
-import { coachTel, firstNames } from "@/lib/managers";
+import { coachSms, firstNames } from "@/lib/managers";
 import { LEAGUE_ID } from "@/lib/sleeper";
 import type { Snapshot } from "@/lib/weeks";
 
@@ -33,12 +33,12 @@ export function Cover({ items, meme, children }: { items: ReactNode[]; meme?: bo
 export function Name({ id, names, href }: { id: number; names: Names; href?: Href }) {
   const first = firstNames[id];
   const to = href?.(id);
-  const tel = coachTel(id);
+  const sms = coachSms(id);
   const team = names[id]?.name ?? "Unclaimed";
   return <span className="name">
     {to ? <a href={to}><b>{team}</b></a> : <b>{team}</b>}
-    {first && <small>{tel
-      ? <a href={tel}>Coach {first}<span className="sr-only">, call or text</span></a>
+    {first && <small>{sms
+      ? <a href={sms} aria-label={`text Coach ${first}`}>Coach {first}</a>
       : <>Coach {first}</>}</small>}
   </span>;
 }
