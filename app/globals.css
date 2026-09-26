@@ -57,7 +57,9 @@ a { color: inherit; }
 .name { display: inline-flex; flex-direction: column; min-width: 0; }
 .name b { font: 800 24px/1.05 var(--f-display); letter-spacing: .05em; text-transform: uppercase; overflow-wrap: anywhere; }
 .name small { font: italic 400 15px/1.35 var(--f-text); color: var(--cream-2); }
-a.name:hover b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.name > a { min-width: 0; }
+.name > a:hover b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.name small a { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
 .n { font: 900 52px/.85 var(--f-inline); text-align: center; font-variant-numeric: tabular-nums; }
 .move { font: 700 13px/1 var(--f-display); letter-spacing: .08em; color: var(--cream-2); white-space: nowrap; }
 .move[data-dir="up"] { color: var(--cream); }
