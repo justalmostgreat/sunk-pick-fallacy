@@ -101,15 +101,16 @@ assert.deepEqual(parsed.games.map(g => [g.matchup, g.hook, g.body]), [[2, "ANDRE
 assert.deepEqual([parsed.meme, parsed.cover, parsed.problems], [{ rosterId: 1, caption: "Oof" }, true, []]);
 assert.ok(parseBlurb("SOMETHING HAPPENED 💀 but no names.", blurbTeams, blurbFinals).problems.length); // nothing to place: refuse
 
-// Coach phone links: nine public numbers, commissioner excluded, Aditya shares Adi's line.
+// Coach phone links: every named coach, including Jag. Aditya shares Adi's line.
 const expected = {
   Cody: "tel:+15127058862", Kartik: "tel:+15129447692", Mateo: "tel:+12817017994", Adi: "tel:+13172940319",
-  Pranav: "tel:+19494443827", Jit: "tel:+15128797920", Jorge: "tel:+14692332661", Andrew: "tel:+19792481448", Arjun: "tel:+15129640714",
+  Pranav: "tel:+19494443827", Jit: "tel:+15128797920", Jorge: "tel:+14692332661", Andrew: "tel:+19792481448",
+  Arjun: "tel:+15129640714", Jag: "tel:+15125876628",
 };
 assert.equal(phones.Aditya, phones.Adi);
-assert.equal(Object.keys(phones).filter(n => n !== "Aditya").length, 9);
+assert.equal(phones.Jag, "+15125876628");
+assert.equal(Object.keys(phones).filter(n => n !== "Aditya").length, 10);
 for (const [id, name] of Object.entries(firstNames)) {
-  assert.equal(coachTel(Number(id)), name === "Jag" ? undefined : expected[name], name);
+  assert.equal(coachTel(Number(id)), expected[name], name);
 }
-assert.equal(coachTel(1), undefined);
 console.log("models ok");
