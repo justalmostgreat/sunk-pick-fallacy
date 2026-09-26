@@ -5,7 +5,7 @@ import { dynastyRankings } from "../lib/dynasty.ts";
 import { noteCandidates, scoutNotes } from "../lib/insights.ts";
 import { parseBlurb, splitHook } from "../lib/blurb.ts";
 import phones from "../lib/coaches.json" with { type: "json" };
-import { coachTel, firstNames } from "../lib/managers.ts";
+import { coachSms, firstNames } from "../lib/managers.ts";
 
 const scoring = { rec: 0.5, bonus_rec_te: 0.5, rec_yd: 0.1, pass_td: 4 };
 assert.equal(score({ rec: 4, bonus_rec_te: 4, rec_yd: 50, pts_ppr: 99 }, scoring), 9); // TE premium, unknown keys ignored
@@ -103,14 +103,15 @@ assert.ok(parseBlurb("SOMETHING HAPPENED 💀 but no names.", blurbTeams, blurbF
 
 // Coach phone links: every named coach, including Jag. Aditya shares Adi's line.
 const expected = {
-  Cody: "tel:+15127058862", Kartik: "tel:+15129447692", Mateo: "tel:+12817017994", Adi: "tel:+13172940319",
-  Pranav: "tel:+19494443827", Jit: "tel:+15128797920", Jorge: "tel:+14692332661", Andrew: "tel:+19792481448",
-  Arjun: "tel:+15129640714", Jag: "tel:+15125876628",
+  Cody: "sms:+15127058862", Kartik: "sms:+15129447692", Mateo: "sms:+12817017994", Adi: "sms:+13172940319",
+  Pranav: "sms:+19494443827", Jit: "sms:+15128797920", Jorge: "sms:+14692332661", Andrew: "sms:+19792481448",
+  Arjun: "sms:+15129640714", Jag: "sms:+15125876628",
 };
 assert.equal(phones.Aditya, phones.Adi);
 assert.equal(phones.Jag, "+15125876628");
 assert.equal(Object.keys(phones).filter(n => n !== "Aditya").length, 10);
 for (const [id, name] of Object.entries(firstNames)) {
-  assert.equal(coachTel(Number(id)), expected[name], name);
+  assert.equal(coachSms(Number(id)), expected[name], name);
+  assert.ok(!coachSms(Number(id))?.startsWith("tel:"), name);
 }
 console.log("models ok");
