@@ -16,6 +16,7 @@ permissions:
   actions: write # to start Publish
   contents: write
   issues: write
+  pull-requests: write # weekly data follows the protected main branch's PR requirement
 
 concurrency: site-data # never races the Blurb job
 
@@ -41,13 +42,12 @@ jobs:
         run: |
           [ -f "$REPORT_FILE" ] || exit 0 # nothing new this run
           week=$(head -1 "$REPORT_FILE")
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add lib/weeks
-          if ! git diff --cached --quiet; then
-            git commit -m "Week $week snapshot"
-            git push
+          npm run check
+          node scripts/save-week.mjs "$week" snapshot
+          tail -n +2 "$REPORT_FILE" > "$RUNNER_TEMP/body.md"
+          title="Week $week is final: the scout's top three"
+          existing=$(gh issue list --state all --author 'github-actions[bot]' --limit 100 --json title --jq "map(select(.title == \"$title\")) | length")
+          if [ "$existing" -eq 0 ]; then
+            gh issue create --title "$title" --body-file "$RUNNER_TEMP/body.md" --assignee "${{ github.repository_owner }}"
           fi
           gh workflow run publish.yml --ref main
-          tail -n +2 "$REPORT_FILE" > "$RUNNER_TEMP/body.md"
-          gh issue create --title "Week $week is final: the scout's top three" --body-file "$RUNNER_TEMP/body.md" --assignee "${{ github.repository_owner }}"
