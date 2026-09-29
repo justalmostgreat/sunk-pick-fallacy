@@ -1,5 +1,5 @@
 // The Tuesday routine: freeze the latest finished week and scout it. GitHub runs this weekly (.github/workflows/tuesday.yml).
-//   npm run tuesday          latest finished week; does nothing if it's already done, so it's safe to schedule
+//   npm run tuesday          latest finished week; reuses an existing snapshot and prepares its report for retry
 //   npm run tuesday -- 3     that week, even if it was done before
 // With REPORT_FILE set, the scout's report is also written there (the workflow posts it as a GitHub issue).
 import { execFileSync } from "node:child_process";
@@ -9,13 +9,12 @@ import { feeds } from "../lib/sleeper.ts";
 
 const asked = process.argv[2];
 const week = Number(asked || (await feeds.league()).settings.last_scored_leg);
-if (!asked && existsSync(new URL(`../lib/weeks/${week}.json`, import.meta.url))) {
-  console.log(`Week ${week} is already done. Nothing new.`);
-  process.exit(0);
-}
+if (!Number.isInteger(week) || week < 1 || week > 18) throw new Error("Expected a week from 1 to 18.");
+const saved = existsSync(new URL(`../lib/weeks/${week}.json`, import.meta.url));
 
 const run = script => execFileSync(process.execPath, [fileURLToPath(new URL(script, import.meta.url)), String(week)], { encoding: "utf8" }).trim();
-console.log(run("./snapshot.mjs"));
+if (asked || !saved) console.log(run("./snapshot.mjs"));
+else console.log(`Week ${week} is already saved. Preparing its report in case notification needs a retry.`);
 const report = [
   `Week ${week} is final and saved. The scout's ranking of every game, most talked-about first:`,
   "",

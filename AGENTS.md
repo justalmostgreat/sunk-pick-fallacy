@@ -13,6 +13,9 @@ Standings, rankings and scout's notes pull from Sleeper and FantasyCalc on every
 3. `.github/workflows/publish.yml` checks, builds, and publishes `main` to the public Cloudflare Worker
    at `https://sunkpick.com` and `https://www.sunkpick.com`. The Tuesday and Blurb jobs explicitly start Publish
    after saving changes because commits made by GitHub Actions do not trigger push workflows.
+4. Both data jobs use `scripts/save-week.mjs` to create and merge a data-only pull request, respecting protected
+   `main`. Repository Actions settings must allow Actions to create pull requests. Retries reuse saved snapshots
+   and create a missing weekly issue without duplicating an existing one.
 
 ## Publishing
 
@@ -36,7 +39,8 @@ Standings, rankings and scout's notes pull from Sleeper and FantasyCalc on every
    Optional lines: `meme: <name> - <caption>` puts the reaction photo on that game; `cover: meme` puts it on the
    cover for that week only.
 3. If it can't place a paragraph, add the coach's first name to it and rerun. Rerunning replaces the recap.
-4. Run `npm run check`, commit `lib/weeks/`, and push.
+4. Run `npm run check`, commit `lib/weeks/` on a branch, and open a pull request. Main requires a pull request;
+   do not disable branch protection or push directly to it. After merge, verify the Publish run.
 
 ## Rules
 
