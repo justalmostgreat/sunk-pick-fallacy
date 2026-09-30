@@ -21,6 +21,16 @@ if (parsed.problems.length) {
 
 const kept = new Map((snap.recap?.featured ?? []).map(f => [f.matchup, f.receipts]));
 const scouted = parsed.games.every(g => kept.has(g.matchup)) ? null : await scout(week);
+if (parsed.meme?.src) {
+  const image = readFileSync(new URL(`../public${parsed.meme.src}`, import.meta.url));
+  if (image.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])) && image.length >= 24) {
+    parsed.meme.width = image.readUInt32BE(16);
+    parsed.meme.height = image.readUInt32BE(20);
+  }
+} else if (parsed.meme && parsed.meme.rosterId === snap.recap?.meme?.rosterId && snap.recap.meme.src) {
+  const { src, alt, width, height } = snap.recap.meme;
+  parsed.meme = { ...parsed.meme, src, alt, width, height };
+}
 snap.recap = {
   headline: parsed.headline ?? `Week ${week} recap`,
   featured: parsed.games.map(g => ({ ...g, receipts: kept.get(g.matchup) ?? scouted.ranked.find(r => r.matchup === g.matchup).receipts })),

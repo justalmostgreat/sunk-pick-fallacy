@@ -23,6 +23,20 @@ const report = [
   "---",
   "**Reply to this issue with your blurb, pasted as-is, and it goes on the site.** One paragraph per game, starting with the ALL-CAPS hook, like the group-chat version.",
   "Optional lines: `meme: Jag - caption` puts the reaction photo on that game; `cover: meme` puts it on this week's cover.",
+  "",
+  "**New picture? Send the picture and blurb together in Codex or Claude. GitHub drops pictures attached to email replies.** Text-only email replies can reuse a picture already saved for that week.",
+  "",
+  "Copy this format (replace the example text):",
+  "```text",
+  `WEEK ${week} RECAP`,
+  "",
+  "FIRST ALL-CAPS HOOK. Coach name, opponent name, and your story.",
+  "",
+  "SECOND ALL-CAPS HOOK. Coach name, opponent name, and your story.",
+  "",
+  "meme: Jag - Your caption",
+  "cover: meme",
+  "```",
 ].join("\n");
 console.log(`\n${report}`);
 if (process.env.REPORT_FILE) writeFileSync(process.env.REPORT_FILE, `${week}\n${report}\n`);

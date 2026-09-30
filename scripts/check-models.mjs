@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { gameClock, liveStandings, score } from "../lib/live.ts";
 import { dynastyRankings } from "../lib/dynasty.ts";
 import { noteCandidates, scoutNotes } from "../lib/insights.ts";
-import { parseBlurb, splitHook } from "../lib/blurb.ts";
+import { cleanReply, parseBlurb, splitHook } from "../lib/blurb.ts";
 import phones from "../lib/coaches.json" with { type: "json" };
 import { coachSms, firstNames } from "../lib/managers.ts";
 
@@ -100,6 +100,21 @@ assert.equal(parsed.headline, "🚨 WEEK 2 RECAP 🚨");
 assert.deepEqual(parsed.games.map(g => [g.matchup, g.hook, g.body]), [[2, "ANDREW ESCAPES 😭", "Aditya stays winless."], [1, "THE COMMISH HAS FALLEN. 🙌🏽", "Jit beat Jag."]]);
 assert.deepEqual([parsed.meme, parsed.cover, parsed.problems], [{ rosterId: 1, caption: "Oof" }, true, []]);
 assert.ok(parseBlurb("SOMETHING HAPPENED 💀 but no names.", blurbTeams, blurbFinals).problems.length); // nothing to place: refuse
+assert.deepEqual(splitHook("CODY WINS… BUT AT WHAT COST The story goes here."), { hook: "CODY WINS… BUT AT WHAT COST", body: "The story goes here." });
+const emailBody = "WEEK 3 RECAP\n\nTHE COMMISH WINS. Jag scored\nmore than Jit this week.\n\nmeme: Jag - I ain't write back\ncover: meme\nmeme-image: /assets/week-3-geno.png";
+const emailTail = "\n\nOn Tue, Sep 29, 2026 at 6:32 PM github-actions[bot] <\n***@***.***> wrote:\n\n> Assigned #7\n> Old story Adi beat Andrew.\nmeme: Adi - Quoted directive must never run\ncover: meme";
+const emailParsed = parseBlurb(emailBody + emailTail, blurbTeams, blurbFinals);
+assert.deepEqual(emailParsed.problems, []);
+assert.equal(emailParsed.games.length, 1);
+assert.equal(emailParsed.games[0].body, "Jag scored more than Jit this week.");
+assert.equal(emailParsed.meme.rosterId, 1);
+assert.equal(emailParsed.meme.src, "/assets/week-3-geno.png");
+assert.equal(cleanReply("On Sunday, Jag decided to win.\nThat is the whole story."), "On Sunday, Jag decided to win.\nThat is the whole story.");
+assert.ok(parseBlurb(emailBody + "\n[image: image.png]", blurbTeams, blurbFinals).problems.some(p => p.includes("email image attachments")));
+assert.ok(parseBlurb("THE COMMISH WINS. Jag beat Jit.\ncover: meme", blurbTeams, blurbFinals).problems.length);
+assert.ok(parseBlurb(emailBody.replace("/assets/week-3-geno.png", "https://github.com/user-attachments/assets/private"), blurbTeams, blurbFinals).problems.length);
+assert.ok(parseBlurb(emailBody.replace("/assets/week-3-geno.png", "/assets/../secret.png"), blurbTeams, blurbFinals).problems.length);
+assert.equal(parseBlurb("WEEK 3 RECAP\nTHE COMMISH WINS. Jag beat Jit.\nADI WINS. Adi beat Andrew.", blurbTeams, blurbFinals).games.length, 2);
 
 // Coach phone links: every named coach, including Jag. Aditya shares Adi's line.
 const expected = {

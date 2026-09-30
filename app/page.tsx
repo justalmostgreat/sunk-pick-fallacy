@@ -51,7 +51,7 @@ export default async function Home() {
 
   return <div className="program">
     <LiveRefresh seconds={live?.gamesLive ? 120 : 1800} />
-    <Cover items={["Official program", `Week ${live?.week ?? last.week + 1}`, <Price key="price" seed={seed} />]} meme={recap?.recap?.cover === "meme"}>
+    <Cover items={["Official program", `Week ${live?.week ?? last.week + 1}`, <Price key="price" seed={seed} />]} meme={recap?.recap?.cover === "meme" ? recap.recap.meme : null}>
       <b>{live?.gamesLive ? "Games in progress" : "The league, as of now"}</b>
       <span>{live ? `${live.gamesLive ? `${live.gamesLive} ${live.gamesLive > 1 ? "games" : "game"} live · ` : ""}Updated ${stamp(new Date())}` : `Sleeper isn’t answering — showing the Week ${last.week} final table`}</span>
     </Cover>
