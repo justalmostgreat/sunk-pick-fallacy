@@ -34,7 +34,7 @@ export default async function WeekPage(props: Props) {
   };
 
   return <div className="program">
-    <Cover items={["Official program", `Week ${snap.week} final`, <Price key="price" seed={(snap.week * 0.618) % 1} />]} meme={snap.recap?.cover === "meme"}>
+    <Cover items={["Official program", `Week ${snap.week} final`, <Price key="price" seed={(snap.week * 0.618) % 1} />]} meme={snap.recap?.cover === "meme" ? snap.recap.meme : null}>
       <b>Back issue</b>
       <span>As it stood {day(snap.capturedAt)} · <Link href="/">Back to live standings</Link></span>
     </Cover>

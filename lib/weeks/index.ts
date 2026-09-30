@@ -6,7 +6,7 @@ import w3 from "./3.json";
 export type Recap = {
   headline: string;
   featured: { matchup: number; hook: string; body: string; receipts: { label: string; value: string }[] }[];
-  meme: { rosterId: number; caption: string } | null; // the reaction photo, reused all season
+  meme: { rosterId: number; caption: string; src?: string; alt?: string; width?: number; height?: number } | null;
   cover?: "meme"; // this issue's cover swaps the engraving for the reaction photo; the next issue brings the engraving back
 };
 

@@ -18,10 +18,17 @@ const pts = (n: number) => n.toFixed(2);
 const thousands = (n: number) => `${(n / 1000).toFixed(1)}k`;
 const pct = (p: number) => `${Math.round(p * 100)}%`;
 
-export function Cover({ items, meme, children }: { items: ReactNode[]; meme?: boolean; children: ReactNode }) {
+type Meme = NonNullable<NonNullable<Snapshot["recap"]>["meme"]>;
+
+export function Cover({ items, meme, children }: { items: ReactNode[]; meme?: Meme | null; children: ReactNode }) {
   return <header className="cover">
     <p className="topline">{items.map((t, i) => <span key={i}>{i > 0 && <i aria-hidden="true">★</i>}{t}</span>)}</p>
-    {meme
+    {meme?.src
+      ? <div className="vignette custom-meme">
+          {/* eslint-disable-next-line @next/next/no-img-element -- local weekly image served by Cloudflare */}
+          <img src={meme.src} alt={meme.alt ?? meme.caption} width={meme.width} height={meme.height} />
+        </div>
+      : meme
       ? <div className="vignette meme" role="img" aria-label="Reaction photo: a man in a blazer doubled over, laughing and wincing"><span /></div>
       : <div className="vignette" role="img" aria-label="Engraved bust of a football player in a leather helmet, holding a ball"><span /></div>}
     <h1>Sunk Pick Fallacy</h1>
@@ -105,11 +112,11 @@ export function DynastyList({ rows, names, before, href, notes }: { rows: Dynast
   })}</ol>;
 }
 
-function Press({ caption }: { caption: string }) {
+function Press({ meme }: { meme: Meme }) {
   return <figure className="press">
     {/* eslint-disable-next-line @next/next/no-img-element -- 20KB static duotone; next/image adds nothing here */}
-    <img src="/assets/meme-reaction.webp" alt="A man in a blazer doubled over, laughing and wincing" width={440} height={322} loading="lazy" />
-    <figcaption>{caption}<span>Photo: the group chat</span></figcaption>
+    <img src={meme.src ?? "/assets/meme-reaction.webp"} alt={meme.alt ?? (meme.src ? meme.caption : "A man in a blazer doubled over, laughing and wincing")} width={meme.src ? meme.width : 440} height={meme.src ? meme.height : 322} loading="lazy" />
+    <figcaption>{meme.caption}<span>Photo: the group chat</span></figcaption>
   </figure>;
 }
 
@@ -132,10 +139,10 @@ export function Recap({ snap }: { snap: Snapshot }) {
         {f.hook && <h3><Ink text={f.hook} /></h3>}
         {f.body && <p className="body"><Ink text={f.body} /></p>}
         <ul className="receipts" aria-label="Receipts">{f.receipts.map(r => <li key={r.label}><span>{r.label}</span><i /><b>{r.value}</b></li>)}</ul>
-        {memeOn(f.matchup) && <Press caption={recap.meme!.caption} />}
+        {memeOn(f.matchup) && <Press meme={recap.meme!} />}
       </article>;
     })}
-    {recap.meme && !recap.featured.some(f => memeOn(f.matchup)) && <Press caption={recap.meme.caption} />}
+    {recap.meme && !recap.featured.some(f => memeOn(f.matchup)) && <Press meme={recap.meme} />}
   </section>;
 }
 

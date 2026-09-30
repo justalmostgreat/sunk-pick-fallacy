@@ -32,6 +32,13 @@ Standings, rankings and scout's notes pull from Sleeper and FantasyCalc on every
 
 ## Adding a blurb when asked
 
+Use `examples/weekly-blurb.txt` as the input template. Text-only replies can use email. GitHub discards email
+attachments, so for a new picture the commissioner should attach the blurb and image in Codex/Claude instead.
+Preserve the supplied story copy. Save the image in `public/assets/`, add `meme-image: /assets/<filename>` and
+`meme-alt: <description>` to the input, and include the image in the normal reviewed PR. Do not put private
+GitHub attachment URLs on the public site. A text replacement on the same meme game preserves its saved image;
+omitting `meme:` removes it. The parser strips quoted email history and reports discarded email images clearly.
+
 1. Save the blurb as given (tighten it only if asked) to a file and run `npm run blurb -- <week> <file>`,
    or pipe it: `pbpaste | npm run blurb -- <week>`.
 2. It understands the usual format: an optional first line becomes the headline; each game gets its own paragraph

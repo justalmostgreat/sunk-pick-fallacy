@@ -618,12 +618,12 @@
     }
   },
   "recap": {
-    "headline": "Week 3 recap",
+    "headline": "WEEK 3 RECAP",
     "featured": [
       {
         "matchup": 2,
-        "hook": "",
-        "body": "",
+        "hook": "BATTLE OF THE BOTTOM FEEDERS",
+        "body": "Adi takes it 124.62–116.94 because Andrew won’t even let this man tank in peace. Came into the season a championship favorite, now 0–3 and eyeing the first pick. Starting Stroud over Maye would’ve won it by 0.24… bro named his team Free Wins and has honored that commitment EVERY WEEK.",
         "receipts": [
           {
             "label": "Bo Nix, pick 4.10",
@@ -641,8 +641,8 @@
       },
       {
         "matchup": 5,
-        "hook": "",
-        "body": "",
+        "hook": "COMMISH FOR A REASON",
+        "body": "Throw me to the wolves. Put my franchise QB on IR. Write me off. Gibbs and Geno still helped me drop a SEASON-HIGH 191.56 on Kartik. Won by 52 with Tet and Likely combining for SIX points. Do I know who’s playing quarterback next week? Absolutely not. Did I need to know to whoop your ass this week? Geno said fck no. I AIN’T WRITE BACK.",
         "receipts": [
           {
             "label": "Jahmyr Gibbs, pick 1.04",
@@ -659,25 +659,33 @@
         ]
       },
       {
-        "matchup": 1,
-        "hook": "",
-        "body": "",
+        "matchup": 3,
+        "hook": "CODY WINS… BUT AT WHAT COST",
+        "body": "The league’s points leader takes down Pranav 168–153.92 behind Bijan’s 34.3, but apparently the fantasy gods wanted Achane’s ACL as payment. Sacrificing the best Aggie in fantasy to beat Pranav in SEPTEMBER is a crazy price to pay. Cody gets the W, and Bijan just found out he’s covering somebody else’s shifts for the rest of the season.",
         "receipts": [
           {
-            "label": "Matthew Stafford, pick 5.10",
-            "value": "20.90"
+            "label": "Bijan Robinson, pick 1.02",
+            "value": "34.30"
           },
           {
-            "label": "Hunter Henry, pick 20.03",
-            "value": "1.50"
+            "label": "David Montgomery, pick 8.09",
+            "value": "5.80"
           },
           {
-            "label": "Colston Loveland on the bench",
-            "value": "7.10"
+            "label": "Rachaad White on the bench",
+            "value": "10.60"
           }
         ]
       }
     ],
-    "meme": null
+    "meme": {
+      "rosterId": 1,
+      "caption": "I AIN’T WRITE BACK",
+      "src": "/assets/week-3-geno.png",
+      "alt": "Geno Smith in a postgame interview, captioned \"They wrote me off, I ain't write back though.\"",
+      "width": 415,
+      "height": 739
+    },
+    "cover": "meme"
   }
 }
