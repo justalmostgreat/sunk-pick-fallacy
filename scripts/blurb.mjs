@@ -1,7 +1,8 @@
 // Put a week's blurb on the site:  npm run blurb -- 3 blurb.txt   (or pipe it in:  pbpaste | npm run blurb -- 3)
 // Paste the blurb as-is. Receipts already on a game stay put; the scout fills in any game that has none.
 // Running it again with an edited blurb replaces the recap.
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { parseBlurb } from "../lib/blurb.ts";
 import { firstNames, nicknames } from "../lib/managers.ts";
 import { scout } from "./scout-lib.mjs";
@@ -22,11 +23,20 @@ if (parsed.problems.length) {
 const kept = new Map((snap.recap?.featured ?? []).map(f => [f.matchup, f.receipts]));
 const scouted = parsed.games.every(g => kept.has(g.matchup)) ? null : await scout(week);
 if (parsed.meme?.src) {
-  const image = readFileSync(new URL(`../public${parsed.meme.src}`, import.meta.url));
-  if (image.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10])) && image.length >= 24) {
-    parsed.meme.width = image.readUInt32BE(16);
-    parsed.meme.height = image.readUInt32BE(20);
+  // A new picture gets Week 2's treatment: printed in the program's two inks, forest shadows to cream highlights.
+  // Only the printed copy ships (week-N.webp); rerunning without the original reuses it.
+  const { default: sharp } = await import("sharp"); // not at the top: the email workflow runs without node_modules
+  const asset = src => fileURLToPath(new URL(`../public${src}`, import.meta.url));
+  const src = `/assets/week-${week}.webp`, from = asset(parsed.meme.src);
+  if (parsed.meme.src !== src && existsSync(from)) {
+    const { data, info } = await sharp(from).resize({ width: 920, withoutEnlargement: true }).flatten({ background: "#fff" }).greyscale().normalise().raw().toBuffer({ resolveWithObject: true });
+    const lo = [0x0a, 0x32, 0x25], hi = [0xe3, 0xdb, 0xb9], ink = Buffer.alloc(data.length * 3);
+    for (let i = 0; i < data.length; i++) for (let c = 0; c < 3; c++) ink[i * 3 + c] = Math.round(lo[c] + (hi[c] - lo[c]) * data[i] / 255);
+    await sharp(ink, { raw: { width: info.width, height: info.height, channels: 3 } }).webp({ quality: 84 }).toFile(asset(src));
+    rmSync(from);
   }
+  const { width, height } = await sharp(asset(src)).metadata();
+  parsed.meme = { ...parsed.meme, src, width, height };
 } else if (parsed.meme && parsed.meme.rosterId === snap.recap?.meme?.rosterId && snap.recap.meme.src) {
   const { src, alt, width, height } = snap.recap.meme;
   parsed.meme = { ...parsed.meme, src, alt, width, height };

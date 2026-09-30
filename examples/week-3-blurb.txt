@@ -8,5 +8,5 @@ CODY WINS… BUT AT WHAT COST The league’s points leader takes down Pranav 168
 
 meme: Jag - I AIN’T WRITE BACK
 cover: meme
-meme-image: /assets/week-3-geno.png
+meme-image: /assets/week-3.webp
 meme-alt: Geno Smith in a postgame interview, captioned "They wrote me off, I ain't write back though."
