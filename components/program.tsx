@@ -23,13 +23,8 @@ type Meme = NonNullable<NonNullable<Snapshot["recap"]>["meme"]>;
 export function Cover({ items, meme, children }: { items: ReactNode[]; meme?: Meme | null; children: ReactNode }) {
   return <header className="cover">
     <p className="topline">{items.map((t, i) => <span key={i}>{i > 0 && <i aria-hidden="true">★</i>}{t}</span>)}</p>
-    {meme?.src
-      ? <div className="vignette custom-meme">
-          {/* eslint-disable-next-line @next/next/no-img-element -- local weekly image served by Cloudflare */}
-          <img src={meme.src} alt={meme.alt ?? meme.caption} width={meme.width} height={meme.height} />
-        </div>
-      : meme
-      ? <div className="vignette meme" role="img" aria-label="Reaction photo: a man in a blazer doubled over, laughing and wincing"><span /></div>
+    {meme
+      ? <div className="vignette meme" role="img" aria-label={meme.alt ?? "Reaction photo: a man in a blazer doubled over, laughing and wincing"}><span style={meme.src ? { backgroundImage: `url(${meme.src})` } : undefined} /></div>
       : <div className="vignette" role="img" aria-label="Engraved bust of a football player in a leather helmet, holding a ball"><span /></div>}
     <h1>Sunk Pick Fallacy</h1>
     <div className="orn" aria-hidden="true" />
@@ -113,9 +108,10 @@ export function DynastyList({ rows, names, before, href, notes }: { rows: Dynast
 }
 
 function Press({ meme }: { meme: Meme }) {
-  return <figure className="press">
-    {/* eslint-disable-next-line @next/next/no-img-element -- 20KB static duotone; next/image adds nothing here */}
-    <img src={meme.src ?? "/assets/meme-reaction.webp"} alt={meme.alt ?? (meme.src ? meme.caption : "A man in a blazer doubled over, laughing and wincing")} width={meme.src ? meme.width : 440} height={meme.src ? meme.height : 322} loading="lazy" />
+  const width = meme.width ?? 440, height = meme.height ?? 322;
+  return <figure className="press" style={{ maxWidth: Math.min(460, Math.round(440 * width / height)) }}>
+    {/* eslint-disable-next-line @next/next/no-img-element -- small static duotone; next/image adds nothing here */}
+    <img src={meme.src ?? "/assets/meme-reaction.webp"} alt={meme.alt ?? (meme.src ? meme.caption : "A man in a blazer doubled over, laughing and wincing")} width={width} height={height} loading="lazy" />
     <figcaption>{meme.caption}<span>Photo: the group chat</span></figcaption>
   </figure>;
 }

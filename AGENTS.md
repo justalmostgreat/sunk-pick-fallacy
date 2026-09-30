@@ -35,7 +35,9 @@ Standings, rankings and scout's notes pull from Sleeper and FantasyCalc on every
 Use `examples/weekly-blurb.txt` as the input template. Text-only replies can use email. GitHub discards email
 attachments, so for a new picture the commissioner should attach the blurb and image in Codex/Claude instead.
 Preserve the supplied story copy. Save the image in `public/assets/`, add `meme-image: /assets/<filename>` and
-`meme-alt: <description>` to the input, and include the image in the normal reviewed PR. Do not put private
+`meme-alt: <description>` to the input, and include the image in the normal reviewed PR.
+`npm run blurb` prints it in the program's two inks (like Week 2's photo) as `/assets/week-<N>.webp` and removes the
+original. Crop tall phone screenshots to the photo first (4:5 or wider) unless the burned-in text is the joke. Do not put private
 GitHub attachment URLs on the public site. A text replacement on the same meme game preserves its saved image;
 omitting `meme:` removes it. The parser strips quoted email history and reports discarded email images clearly.
 

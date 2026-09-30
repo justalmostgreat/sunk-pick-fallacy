@@ -681,10 +681,10 @@
     "meme": {
       "rosterId": 1,
       "caption": "I AIN’T WRITE BACK",
-      "src": "/assets/week-3-geno.png",
-      "alt": "Geno Smith in a postgame interview, captioned \"They wrote me off, I ain't write back though.\"",
+      "src": "/assets/week-3.webp",
+      "alt": "Geno Smith grinning in a postgame interview, the one where he said \"They wrote me off, I ain't write back though.\"",
       "width": 415,
-      "height": 739
+      "height": 519
     },
     "cover": "meme"
   }
