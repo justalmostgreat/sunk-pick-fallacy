@@ -37,7 +37,7 @@ a { color: inherit; }
   -webkit-mask: url(/assets/engraving-bust.webp) 50% 38% / 118% auto no-repeat;
   mask: url(/assets/engraving-bust.webp) 50% 38% / 118% auto no-repeat;
 }
-.vignette.meme span { -webkit-mask: none; mask: none; background: url(/assets/meme-reaction.webp) 53% 30% / cover no-repeat; }
+.vignette.meme span { -webkit-mask: none; mask: none; background: url(/assets/meme-reaction.webp) 53% 0 / cover no-repeat; }
 .cover h1 { margin: 0; font: 900 clamp(40px, 10.4vw, 124px)/.9 var(--f-inline); letter-spacing: .02em; text-transform: uppercase; }
 .orn { position: relative; max-width: 560px; height: 9px; margin: 16px auto; border-top: 3px solid var(--cream); border-bottom: 1px solid var(--cream); }
 .orn::after { content: ""; position: absolute; left: 50%; top: 50%; width: 13px; height: 13px; background: var(--ground); border: 2px solid var(--cream); transform: translate(-50%, -50%) rotate(45deg); }
