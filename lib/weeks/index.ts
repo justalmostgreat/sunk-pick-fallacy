@@ -2,6 +2,7 @@ import type { DynastyRow } from "../dynasty";
 import w1 from "./1.json";
 import w2 from "./2.json";
 import w3 from "./3.json";
+import w4 from "./4.json";
 
 export type Recap = {
   headline: string;
@@ -23,4 +24,4 @@ export type Snapshot = {
 };
 
 // Oldest first. After `node scripts/snapshot.mjs <week>`, import the new file here.
-export const weeks = [w1, w2, w3] as Snapshot[];
+export const weeks = [w1, w2, w3, w4] as Snapshot[];
