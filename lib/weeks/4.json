@@ -618,12 +618,12 @@
     }
   },
   "recap": {
-    "headline": "Week 4 recap",
+    "headline": "THE MOST ACTIVE WEEK YET 🚨 Nobody’s undefeated and apparently nobody’s roster is safe either 😭🤝 Two HUGE trades took place",
     "featured": [
       {
         "matchup": 5,
-        "hook": "",
-        "body": "",
+        "hook": "UNDEFEATED UNTIL YOU CHECK THE BENCH 😭",
+        "body": "Kartik hands Mateo his first L, 145.58–139.22, while Kamara’s 20.3 watches Henderson’s 4.2 from the VIP section 💀 The win was in the building. Mateo just didn’t put it in the lineup. Kartik meanwhile sent JSN, Marvin Harrison and his 2027 second to Adi for London, Evans, Rice and Adi’s 2028 first… then started Rice’s ZERO and benched London and Evans 😂 Bought an entire receiver department and let Monangai’s 27.5 run the company 📦.",
         "receipts": [
           {
             "label": "Kyle Monangai, pick 10.06",
@@ -640,44 +640,52 @@
         ]
       },
       {
-        "matchup": 2,
-        "hook": "",
-        "body": "",
+        "matchup": 4,
+        "hook": "COMMISH BY DAY, GENERAL MANAGER BY NIGHT 😤📈",
+        "body": "Another week, another league-high score. Tet dropped 38.2, Walker added 30.4, and Pranav went down 172.94–147.84 🫡 Then at 12:40 AM, AFTER the games were over, I shipped Walker and some others to Mateo for Mahomes, Mason and Mateo’s 2027 first 🤝 Walker gave me 30.4 and I deactivated his badge before he got home 😭",
         "receipts": [
           {
-            "label": "Nico Collins, pick 4.02",
-            "value": "27.30"
+            "label": "Tetairoa McMillan, pick 3.07",
+            "value": "38.20"
           },
           {
-            "label": "D'Andre Swift, pick 9.08",
-            "value": "6.40"
+            "label": "David Montgomery, pick 8.09",
+            "value": "4.30"
           },
           {
-            "label": "Tyquan Thornton on the bench",
-            "value": "25.60"
+            "label": "T.J. Hockenson on the bench",
+            "value": "24.90"
           }
         ]
       },
       {
-        "matchup": 1,
-        "hook": "",
-        "body": "",
+        "matchup": 3,
+        "hook": "FREE WINS HAS CEASED OPERATIONS 🚫",
+        "body": "Andrew rebrands as Projection Champ and finally gets an ACTUAL win, 139.26–119.48 over Jit 😂 Javonte brought 28.8, Kincaid brought Jit 1.7, and somebody had to be the grand-opening special 😭 Andrew is 1–3. The comeback documentary has officially secured funding 🎬",
         "receipts": [
           {
-            "label": "Emanuel Wilson, pick 24.10",
-            "value": "25.50"
+            "label": "Javonte Williams, pick 7.06",
+            "value": "28.80"
           },
           {
-            "label": "DJ Moore, pick 9.01",
-            "value": "2.20"
+            "label": "Dalton Kincaid, pick 10.07",
+            "value": "1.70"
           },
           {
-            "label": "Rhamondre Stevenson on the bench",
-            "value": "16.90"
+            "label": "Tory Horton on the bench",
+            "value": "7.10"
           }
         ]
       }
     ],
-    "meme": null
+    "meme": {
+      "rosterId": 2,
+      "caption": "THE 1–3 DYNASTY STARTS NOW.",
+      "src": "/assets/week-4.webp",
+      "alt": "Illustration of The Undertaker sitting up out of an open coffin in a wrestling arena, gripping its rim with both hands, printed in cream and forest-green ink, captioned \"THE 1–3 DYNASTY STARTS NOW.\"",
+      "width": 920,
+      "height": 1150
+    },
+    "cover": "meme"
   }
 }
