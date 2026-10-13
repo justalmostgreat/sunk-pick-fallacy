@@ -1,0 +1,683 @@
+{
+  "week": 5,
+  "season": "2026",
+  "capturedAt": "2026-10-13T20:00:47.838Z",
+  "teams": {
+    "1": {
+      "name": "Love at first Dart",
+      "handle": "justalmostgreat"
+    },
+    "2": {
+      "name": "Projection Champ",
+      "handle": "ATaylor999"
+    },
+    "3": {
+      "name": "AdiYoga",
+      "handle": "AdiYoga"
+    },
+    "4": {
+      "name": "littyjitty",
+      "handle": "littyjitty"
+    },
+    "5": {
+      "name": "Pipsqueak",
+      "handle": "primalJay"
+    },
+    "6": {
+      "name": "shotgunb365",
+      "handle": "shotgunb365"
+    },
+    "7": {
+      "name": "J Herbo",
+      "handle": "elmateoruix"
+    },
+    "8": {
+      "name": "pranavmenon08",
+      "handle": "pranavmenon08"
+    },
+    "9": {
+      "name": "squirmyearth163",
+      "handle": "squirmyearth163"
+    },
+    "10": {
+      "name": "CodyJuanKenobi",
+      "handle": "CodyJuanKenobi"
+    }
+  },
+  "finals": [
+    {
+      "matchup": 1,
+      "winner": 5,
+      "loser": 10,
+      "winnerPoints": 176.46,
+      "loserPoints": 136.56
+    },
+    {
+      "matchup": 2,
+      "winner": 3,
+      "loser": 4,
+      "winnerPoints": 112.96,
+      "loserPoints": 103.74
+    },
+    {
+      "matchup": 3,
+      "winner": 9,
+      "loser": 1,
+      "winnerPoints": 156.8,
+      "loserPoints": 148.88
+    },
+    {
+      "matchup": 4,
+      "winner": 2,
+      "loser": 6,
+      "winnerPoints": 188.84,
+      "loserPoints": 149.9
+    },
+    {
+      "matchup": 5,
+      "winner": 7,
+      "loser": 8,
+      "winnerPoints": 132.6,
+      "loserPoints": 116.76
+    }
+  ],
+  "standings": [
+    {
+      "rosterId": 7,
+      "wins": 4,
+      "losses": 1,
+      "ties": 0,
+      "pf": 710.9,
+      "pa": 628.4
+    },
+    {
+      "rosterId": 10,
+      "wins": 3,
+      "losses": 2,
+      "ties": 0,
+      "pf": 797.66,
+      "pa": 740.32
+    },
+    {
+      "rosterId": 1,
+      "wins": 3,
+      "losses": 2,
+      "ties": 0,
+      "pf": 778.52,
+      "pa": 737.42
+    },
+    {
+      "rosterId": 5,
+      "wins": 3,
+      "losses": 2,
+      "ties": 0,
+      "pf": 702.48,
+      "pa": 697.04
+    },
+    {
+      "rosterId": 3,
+      "wins": 3,
+      "losses": 2,
+      "ties": 0,
+      "pf": 623.64,
+      "pa": 621.82
+    },
+    {
+      "rosterId": 6,
+      "wins": 2,
+      "losses": 3,
+      "ties": 0,
+      "pf": 751.52,
+      "pa": 842.08
+    },
+    {
+      "rosterId": 2,
+      "wins": 2,
+      "losses": 3,
+      "ties": 0,
+      "pf": 718.36,
+      "pa": 709.88
+    },
+    {
+      "rosterId": 8,
+      "wins": 2,
+      "losses": 3,
+      "ties": 0,
+      "pf": 717.98,
+      "pa": 699.24
+    },
+    {
+      "rosterId": 9,
+      "wins": 2,
+      "losses": 3,
+      "ties": 0,
+      "pf": 669.96,
+      "pa": 726.08
+    },
+    {
+      "rosterId": 4,
+      "wins": 1,
+      "losses": 4,
+      "ties": 0,
+      "pf": 619.72,
+      "pa": 688.46
+    }
+  ],
+  "dynasty": [
+    {
+      "rosterId": 7,
+      "total": 79129,
+      "players": 64912,
+      "picks": 14217,
+      "age": 26.23864308602416,
+      "top": [
+        {
+          "name": "Brock Bowers",
+          "value": 7928
+        },
+        {
+          "name": "Kenneth Walker",
+          "value": 7253
+        },
+        {
+          "name": "Justin Jefferson",
+          "value": 6029
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Breece Hall",
+          "status": "Out",
+          "rank": 44
+        },
+        {
+          "name": "Jordyn Tyson",
+          "status": "IR",
+          "rank": 71
+        },
+        {
+          "name": "TreVeyon Henderson",
+          "status": "Out",
+          "rank": 81
+        }
+      ],
+      "record": "4–1",
+      "projectedWins": 10.036902127031404,
+      "score": 94.20219421727667
+    },
+    {
+      "rosterId": 10,
+      "total": 82852,
+      "players": 65536,
+      "picks": 17316,
+      "age": 26.870115661621092,
+      "top": [
+        {
+          "name": "Bijan Robinson",
+          "value": 10263
+        },
+        {
+          "name": "Brock Purdy",
+          "value": 5920
+        },
+        {
+          "name": "Chris Olave",
+          "value": 5170
+        }
+      ],
+      "hurt": [
+        {
+          "name": "De'Von Achane",
+          "status": "IR",
+          "rank": 39
+        },
+        {
+          "name": "Baker Mayfield",
+          "status": "Out",
+          "rank": 87
+        },
+        {
+          "name": "Jalen Coker",
+          "status": "Out",
+          "rank": 88
+        }
+      ],
+      "record": "3–2",
+      "projectedWins": 9.134312226084901,
+      "score": 91.78553959920262
+    },
+    {
+      "rosterId": 5,
+      "total": 77251,
+      "players": 62110,
+      "picks": 15141,
+      "age": 27.240500724521016,
+      "top": [
+        {
+          "name": "Ja'Marr Chase",
+          "value": 8513
+        },
+        {
+          "name": "CeeDee Lamb",
+          "value": 7116
+        },
+        {
+          "name": "Jared Goff",
+          "value": 3750
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Saquon Barkley",
+          "status": "Out",
+          "rank": 72
+        },
+        {
+          "name": "DJ Moore",
+          "status": "Out",
+          "rank": 104
+        },
+        {
+          "name": "Zach Charbonnet",
+          "status": "PUP",
+          "rank": 108
+        }
+      ],
+      "record": "3–2",
+      "projectedWins": 8.327441754961203,
+      "score": 84.63724951272418
+    },
+    {
+      "rosterId": 1,
+      "total": 89508,
+      "players": 69093,
+      "picks": 20415,
+      "age": 25.491879976958728,
+      "top": [
+        {
+          "name": "Jahmyr Gibbs",
+          "value": 10385
+        },
+        {
+          "name": "Jeremiyah Love",
+          "value": 5885
+        },
+        {
+          "name": "Patrick Mahomes",
+          "value": 5783
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Jaxson Dart",
+          "status": "IR",
+          "rank": 36
+        },
+        {
+          "name": "DeVonta Smith",
+          "status": "Out",
+          "rank": 61
+        },
+        {
+          "name": "Jordan Addison",
+          "status": "Out",
+          "rank": 118
+        }
+      ],
+      "record": "3–2",
+      "projectedWins": 6.277766480640749,
+      "score": 81.2734268063323
+    },
+    {
+      "rosterId": 2,
+      "total": 80937,
+      "players": 63621,
+      "picks": 17316,
+      "age": 25.47523144873548,
+      "top": [
+        {
+          "name": "Drake Maye",
+          "value": 6216
+        },
+        {
+          "name": "Zay Flowers",
+          "value": 4756
+        },
+        {
+          "name": "Tyler Warren",
+          "value": 3935
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Omar Cooper",
+          "status": "IR",
+          "rank": 130
+        },
+        {
+          "name": "Jayden Higgins",
+          "status": "IR",
+          "rank": 142
+        },
+        {
+          "name": "Stefon Diggs",
+          "status": "Out",
+          "rank": 159
+        }
+      ],
+      "record": "2–3",
+      "projectedWins": 6.5840093598829,
+      "score": 78.01117127757975
+    },
+    {
+      "rosterId": 3,
+      "total": 81524,
+      "players": 62752,
+      "picks": 18772,
+      "age": 25.35355207802141,
+      "top": [
+        {
+          "name": "Jaxon Smith-Njigba",
+          "value": 9797
+        },
+        {
+          "name": "Amon-Ra St. Brown",
+          "value": 7185
+        },
+        {
+          "name": "Ashton Jeanty",
+          "value": 6172
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Marvin Harrison Jr",
+          "status": "Out",
+          "rank": 82
+        },
+        {
+          "name": "Jadarian Price",
+          "status": "IR",
+          "rank": 83
+        },
+        {
+          "name": "Ty Simpson",
+          "status": "Out",
+          "rank": 94
+        }
+      ],
+      "record": "3–2",
+      "projectedWins": 6.321999776239483,
+      "score": 77.03384359169313
+    },
+    {
+      "rosterId": 8,
+      "total": 75924,
+      "players": 58608,
+      "picks": 17316,
+      "age": 26.362416393666393,
+      "top": [
+        {
+          "name": "Puka Nacua",
+          "value": 7810
+        },
+        {
+          "name": "Caleb Williams",
+          "value": 6749
+        },
+        {
+          "name": "James Cook",
+          "value": 5485
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Caleb Williams",
+          "status": "Out",
+          "rank": 11
+        },
+        {
+          "name": "KC Concepcion",
+          "status": "Out",
+          "rank": 90
+        },
+        {
+          "name": "Alec Pierce",
+          "status": "IR",
+          "rank": 111
+        }
+      ],
+      "record": "2–3",
+      "projectedWins": 6.913200599296792,
+      "score": 76.85076752553526
+    },
+    {
+      "rosterId": 9,
+      "total": 76363,
+      "players": 59047,
+      "picks": 17316,
+      "age": 26.39292258709164,
+      "top": [
+        {
+          "name": "Josh Allen",
+          "value": 10619
+        },
+        {
+          "name": "Malik Nabers",
+          "value": 5691
+        },
+        {
+          "name": "Jayden Daniels",
+          "value": 5129
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Kenyon Sadiq",
+          "status": "Out",
+          "rank": 79
+        },
+        {
+          "name": "Terrance Ferguson",
+          "status": "IR",
+          "rank": 138
+        },
+        {
+          "name": "Quentin Johnston",
+          "status": "Out",
+          "rank": 180
+        }
+      ],
+      "record": "2–3",
+      "projectedWins": 5.900596955245692,
+      "score": 72.05159370310876
+    },
+    {
+      "rosterId": 6,
+      "total": 69093,
+      "players": 51058,
+      "picks": 18035,
+      "age": 27.423463512084297,
+      "top": [
+        {
+          "name": "Joe Burrow",
+          "value": 6276
+        },
+        {
+          "name": "Jonathan Taylor",
+          "value": 6130
+        },
+        {
+          "name": "Drake London",
+          "value": 5535
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Kyle Monangai",
+          "status": "Out",
+          "rank": 102
+        },
+        {
+          "name": "Jayden Reed",
+          "status": "IR",
+          "rank": 193
+        },
+        {
+          "name": "Michael Pittman",
+          "status": "IR",
+          "rank": 203
+        }
+      ],
+      "record": "2–3",
+      "projectedWins": 6.610305030181452,
+      "score": 71.52599784265237
+    },
+    {
+      "rosterId": 4,
+      "total": 69947,
+      "players": 52631,
+      "picks": 17316,
+      "age": 27.568605954665504,
+      "top": [
+        {
+          "name": "Trey McBride",
+          "value": 6676
+        },
+        {
+          "name": "Lamar Jackson",
+          "value": 6340
+        },
+        {
+          "name": "Dak Prescott",
+          "value": 4202
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Lamar Jackson",
+          "status": "Out",
+          "rank": 13
+        },
+        {
+          "name": "A.J. Brown",
+          "status": "IR",
+          "rank": 57
+        },
+        {
+          "name": "Josh Jacobs",
+          "status": "NA",
+          "rank": 105
+        }
+      ],
+      "record": "1–4",
+      "projectedWins": 3.879465949548451,
+      "score": 58.39905640063816
+    }
+  ],
+  "mvp": {
+    "1": {
+      "name": "Jahmyr Gibbs",
+      "points": 35.2
+    },
+    "2": {
+      "name": "Drake Maye",
+      "points": 39.46
+    },
+    "3": {
+      "name": "Trevor Lawrence",
+      "points": 21.74
+    },
+    "4": {
+      "name": "Trey McBride",
+      "points": 21.6
+    },
+    "5": {
+      "name": "Jaylen Warren",
+      "points": 33.8
+    },
+    "6": {
+      "name": "Joe Burrow",
+      "points": 24.6
+    },
+    "7": {
+      "name": "Christian Watson",
+      "points": 29.3
+    },
+    "8": {
+      "name": "Puka Nacua",
+      "points": 29.2
+    },
+    "9": {
+      "name": "Josh Allen",
+      "points": 30.5
+    },
+    "10": {
+      "name": "Garrett Wilson",
+      "points": 19.9
+    }
+  },
+  "recap": {
+    "headline": "Week 5 recap",
+    "featured": [
+      {
+        "matchup": 3,
+        "hook": "",
+        "body": "",
+        "receipts": [
+          {
+            "label": "Josh Allen, pick 1.03",
+            "value": "30.50"
+          },
+          {
+            "label": "Jeremiyah Love, pick 2.07",
+            "value": "2.20"
+          },
+          {
+            "label": "Kendrick Bourne on the bench",
+            "value": "9.50"
+          }
+        ]
+      },
+      {
+        "matchup": 4,
+        "hook": "",
+        "body": "",
+        "receipts": [
+          {
+            "label": "Drake Maye, pick 1.05",
+            "value": "39.46"
+          },
+          {
+            "label": "Jonathan Taylor, pick 2.05",
+            "value": "9.70"
+          },
+          {
+            "label": "Kyle Williams on the bench",
+            "value": "16.60"
+          }
+        ]
+      },
+      {
+        "matchup": 2,
+        "hook": "",
+        "body": "",
+        "receipts": [
+          {
+            "label": "Trevor Lawrence, pick 5.01",
+            "value": "21.74"
+          },
+          {
+            "label": "Tee Higgins, pick 6.07",
+            "value": "3.20"
+          },
+          {
+            "label": "Xavier Hutchinson on the bench",
+            "value": "8.50"
+          }
+        ]
+      }
+    ],
+    "meme": null
+  }
+}
