@@ -69,3 +69,29 @@ omitting `meme:` removes it. The parser strips quoted email history and reports 
 ## Checks
 
 `npm run check` (model and parser self-check), `npm run lint`, `npx tsc --noEmit`, `npm run build`.
+
+## Optional reader behavior analytics
+
+- PostHog project 665153 (US) provides the private reader dashboard. The Publish build reads the public
+  ingestion token from repository variable `POSTHOG_PROJECT_TOKEN` into `NEXT_PUBLIC_POSTHOG_KEY`.
+  Never put a personal/admin API key in that variable or the client bundle. An absent token disables tracking.
+- `components/site-analytics.tsx` loads the SDK only after a visitor allows analytics. The footer provides
+  Analytics choices and `/privacy`; Global Privacy Control and Do Not Track override consent. Declining
+  clears the analytics identifier. A later opt-in starts fresh. Session replay, person profiles, automatic
+  DOM/text capture, surveys and feature flags are disabled. Raw client IP discard is enabled in PostHog.
+- Track page views on pathname changes, not live-score refreshes. `lib/track-visit.ts` measures section/story
+  reach, scroll progress and active viewing time (visible, focused, less than 60 seconds idle). Story IDs
+  include week and matchup. `story_engagement.active_seconds` is a delta: sum it; don't sum the cumulative
+  `total_active_seconds`. Native PostHog session/page duration is elapsed time and can include idle time;
+  never label it active viewing time. `story_engaged` marks 10/30/60-second milestones. Scroll/reach are exposure proxies,
+  never claims that a person read something. Visitors are distinct browsers, not verified people.
+- Named safe link events cover stories/finals, back issues, home, Sleeper and coach-text clicks. Never
+  collect SMS destinations, coach names, input values or arbitrary page text. `lib/analytics.ts` sanitizes
+  every outbound event, URL, attribution and heatmap bucket; keep its allowlist and regression checks in sync.
+  `/privacy` and its buffered heatmap/previous-page data are excluded. Campaign labels may contain only
+  letters, digits, underscores and hyphens (up to 64 chars); use e.g. `utm_source=league-chat&utm_campaign=week-6`.
+- The existing public Tuesday report remains aggregate Cloudflare counts. Do not put visitor histories,
+  IDs or private PostHog dashboard links into public issues. Filter named setup campaigns when interpreting
+  initial traffic. The free PostHog plan is capped, with no payment card required and one-year event retention.
+- For local QA only, set `NEXT_PUBLIC_ANALYTICS_TEST_MODE=true`, a fake `phc_` token and a loopback capture host.
+  Production builds must not set test mode. Run `npm run check` for sanitization, consent and engagement tests.

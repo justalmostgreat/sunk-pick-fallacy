@@ -1,0 +1,17 @@
+import Link from "next/link";
+import { AnalyticsSettingsButton } from "@/components/site-analytics";
+
+export const metadata = { title: "Privacy & analytics — Sunk Pick Fallacy" };
+
+export default function PrivacyPage() {
+  return <div className="program privacy-page">
+    <header><Link href="/">← Back to the program</Link><h1>Privacy &amp; analytics</h1><p>Updated October 14, 2026</p></header>
+    <main>
+      <section><h2>Reading the site</h2><p>You can read the whole program without an account or agreeing to optional analytics. Cloudflare hosts the site and processes requests for delivery and security. Our weekly report uses aggregate US page-view counts; these are visits to pages, not a list of named readers.</p></section>
+      <section><h2>Optional visit analytics</h2><p>If you choose “Allow analytics,” we use PostHog to understand which parts of the program people use. It receives an unnamed browser identifier, pages visited, selected link clicks, scroll and click positions, load-speed measurements, basic error counts, and time that content is visible in an active tab. Browser and device details and approximate location help us understand how the site works for readers.</p><p>We measure when stories come into view and how far people scroll. These are signs of engagement, not proof that someone read a story. We stop counting active time when the tab is hidden or unfocused, or after a minute without interaction.</p><p>We do not link analytics to your name, email or Sleeper account. We do not send coach phone numbers, message contents, form inputs, or page text. Session replay and screen recording are off. Named campaign labels on links can tell us where a visit came from; other URL parameters are removed from analytics.</p></section>
+      <section><h2>Session time and active time</h2><p>PostHog’s standard session-duration figures measure elapsed time and can include an idle tab. Our separate active-viewing measurements count only visible, focused, recently active time. Neither measure proves that someone read the content.</p></section>
+      <section><h2>Your choice</h2><p>Detailed analytics loads only after you allow it. You can change your mind using the button below or “Analytics choices” in the footer. Turning it off stops future collection and clears the analytics identifier from this browser; it does not delete events already collected. We honor Global Privacy Control and Do Not Track browser signals.</p><p>Your choice is remembered for six months. If allowed, PostHog uses browser storage and a cookie to recognize repeat visits. A different device, cleared storage, or blocked tracking may appear as a different visitor.</p><AnalyticsSettingsButton /></section>
+      <section><h2>Access and retention</h2><p>Detailed analytics is available only in the site owner’s private PostHog project. Public weekly reports contain aggregate counts, not individual browsing histories. We use PostHog’s US service and its free-plan event retention, currently one year. Cloudflare’s aggregate reporting is separate from this optional tracking.</p><p>For the services’ own privacy information, see <a href="https://posthog.com/privacy" target="_blank" rel="noreferrer">PostHog</a> and <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noreferrer">Cloudflare</a>.</p></section>
+    </main>
+  </div>;
+}

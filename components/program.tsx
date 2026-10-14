@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Ink } from "@/components/ink";
+import { AnalyticsSettingsButton } from "@/components/site-analytics";
 import type { DynastyRow } from "@/lib/dynasty";
 import type { Note } from "@/lib/insights";
 import type { LiveRow } from "@/lib/live";
@@ -41,9 +42,9 @@ export function Name({ id, names, href }: { id: number; names: Names; href?: Hre
   const sms = coachSms(id);
   const team = names[id]?.name ?? "Unclaimed";
   return <span className="name">
-    {to ? <a href={to}><b>{team}</b></a> : <b>{team}</b>}
+    {to ? <a href={to} data-track-link={to.startsWith("#game-") ? "story" : "final"} data-track-id={id}><b>{team}</b></a> : <b>{team}</b>}
     {first && <small>{sms
-      ? <a href={sms} aria-label={`text Coach ${first}`}>Coach {first}</a>
+      ? <a href={sms} aria-label={`text Coach ${first}`} data-track-link="coach_text" data-track-id={id} className="ph-no-capture">Coach {first}</a>
       : <>Coach {first}</>}</small>}
   </span>;
 }
@@ -124,12 +125,12 @@ export function Recap({ snap }: { snap: Snapshot }) {
   if (!recap) return null;
   const game = (m: number) => snap.finals.find(f => f.matchup === m)!;
   const memeOn = (m: number) => !!recap.meme && [game(m).winner, game(m).loser].includes(recap.meme.rosterId);
-  return <section className="notes" aria-labelledby={`recap-${snap.week}`}>
+  return <section className="notes" aria-labelledby={`recap-${snap.week}`} data-track-section="recap" data-track-week={snap.week}>
     <h2 className="shead" id={`recap-${snap.week}`}>Week {snap.week} recap</h2>
     <p className="sub"><Ink text={recap.headline} /></p>
     {recap.featured.map(f => {
       const g = game(f.matchup);
-      return <article key={f.matchup} id={`game-${f.matchup}`} className="card">
+      return <article key={f.matchup} id={`game-${f.matchup}`} className="card" data-track-story={`game-${f.matchup}`} data-track-week={snap.week} data-track-matchup={f.matchup}>
         <div className="box">
           <div><Name id={g.winner} names={snap.teams} /><strong>{pts(g.winnerPoints)}</strong></div>
           <span>Final</span>
@@ -146,7 +147,7 @@ export function Recap({ snap }: { snap: Snapshot }) {
 }
 
 export function Finals({ snap }: { snap: Snapshot }) {
-  return <section aria-labelledby={`finals-${snap.week}`}>
+  return <section aria-labelledby={`finals-${snap.week}`} data-track-section="final_scores" data-track-week={snap.week}>
     <h2 className="shead small" id={`finals-${snap.week}`}>Week {snap.week} final scores</h2>
     <ol className="finals">{snap.finals.map(f => <li key={f.matchup} id={`final-${f.matchup}`}>
       <span>{snap.teams[f.winner].name} <b>{pts(f.winnerPoints)}</b></span>
@@ -156,10 +157,10 @@ export function Finals({ snap }: { snap: Snapshot }) {
 }
 
 export function BackIssues({ weeks, current }: { weeks: Snapshot[]; current?: number }) {
-  return <nav className="issues" aria-labelledby="issues">
+  return <nav className="issues" aria-labelledby="issues" data-track-section="back_issues">
     <h2 className="shead small" id="issues">Back issues</h2>
     <ol>{[...weeks].reverse().map(w => <li key={w.week}>
-      <Link href={`/week/${w.week}`} aria-current={w.week === current ? "page" : undefined}>
+      <Link href={`/week/${w.week}`} aria-current={w.week === current ? "page" : undefined} data-track-link="back_issue" data-track-week={w.week}>
         <b>Week {w.week}</b><span>{w.recap ? <Ink text={w.recap.headline} /> : "Final scores and standings"}</span>
       </Link>
     </li>)}</ol>
@@ -170,6 +171,7 @@ export function Footer({ children }: { children: ReactNode }) {
   return <footer className="foot">
     <div className="orn" aria-hidden="true" />
     <p>{children}</p>
-    <p><a href={`https://sleeper.com/leagues/${LEAGUE_ID}`} target="_blank" rel="noreferrer">League on Sleeper <ArrowUpRight size={14} aria-hidden="true" /></a></p>
+    <p><a href={`https://sleeper.com/leagues/${LEAGUE_ID}`} target="_blank" rel="noreferrer" data-track-link="sleeper">League on Sleeper <ArrowUpRight size={14} aria-hidden="true" /></a></p>
+    <p><Link href="/privacy">Privacy</Link> · <AnalyticsSettingsButton /></p>
   </footer>;
 }
