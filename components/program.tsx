@@ -24,7 +24,11 @@ export function Cover({ items, meme, children }: { items: ReactNode[]; meme?: Me
   return <header className="cover">
     <p className="topline">{items.map((t, i) => <span key={i}>{i > 0 && <i aria-hidden="true">★</i>}{t}</span>)}</p>
     {meme
-      ? <div className="vignette meme" role="img" aria-label={meme.alt ?? "Reaction photo: a man in a blazer doubled over, laughing and wincing"}><span style={meme.src ? { backgroundImage: `url(${meme.src})` } : undefined} /></div>
+      ? <div className="vignette meme" role="img" aria-label={meme.alt ?? "Reaction photo: a man in a blazer doubled over, laughing and wincing"}><span style={meme.src ? {
+        backgroundImage: `url(${meme.src})`,
+        // Keep Week 5's full caption and two-finger gesture inside the oval.
+        ...(meme.src === "/assets/week-5.webp" ? { backgroundSize: "82% auto", backgroundPosition: "center" } : {}),
+      } : undefined} /></div>
       : <div className="vignette" role="img" aria-label="Engraved bust of a football player in a leather helmet, holding a ball"><span /></div>}
     <h1>Sunk Pick Fallacy</h1>
     <div className="orn" aria-hidden="true" />
