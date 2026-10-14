@@ -7,7 +7,8 @@ Standings, rankings and scout's notes pull from Sleeper and FantasyCalc on every
 ## The weekly routine (automatic except the blurb)
 
 1. Tuesday 9 AM Central, `.github/workflows/tuesday.yml` freezes the finished week into `lib/weeks/<N>.json`
-   and opens a "Week N is final" GitHub issue with the scout's ranking of every game.
+   and opens a "Week N is final" GitHub issue with the scout's ranking of every game and last week's reader
+   numbers from Cloudflare (`scripts/readers.mjs`; the Readers workflow shows them on demand).
 2. The commissioner writes the group-chat blurb, then either replies to that issue with it (`.github/workflows/blurb.yml`
    puts it on the site, commits, and closes the issue) or asks an assistant to add it.
 3. `.github/workflows/publish.yml` checks, builds, and publishes `main` to the public Cloudflare Worker
@@ -22,7 +23,8 @@ Standings, rankings and scout's notes pull from Sleeper and FantasyCalc on every
 - The commissioner approved public Cloudflare hosting on sunkpick.com. Production configuration is in `vite.config.ts`;
   `.openai/` is retained starter metadata, not the production host. Keep the site public without a sign-in wall.
 - GitHub Actions needs the repository secret `CLOUDFLARE_API_TOKEN` scoped to the Cloudflare account and the
-  sunkpick.com zone. Set repository variable `CLOUDFLARE_ACCOUNT_ID` to that account's ID.
+  sunkpick.com zone, with Zone · Analytics · Read for the reader numbers. Set repository variable
+  `CLOUDFLARE_ACCOUNT_ID` to that account's ID.
 - Pushes to `main` publish automatically. To retry a failed upload without changing content, run the Publish
   workflow from GitHub Actions (`gh workflow run publish.yml --ref main`). A saved recap and a successful
   deployment are separate results; check the Publish run before claiming the change is live.

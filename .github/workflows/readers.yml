@@ -1,0 +1,24 @@
+name: Readers
+
+# Last week's reader numbers for sunkpick.com, from Cloudflare. The Tuesday scout puts the same lines in its weekly
+# issue; run this from the Actions tab to see them any time. Uses the CLOUDFLARE_API_TOKEN secret (Zone · Analytics · Read).
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readers:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Count last week's readers
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: node scripts/readers.mjs | tee -a "$GITHUB_STEP_SUMMARY"
