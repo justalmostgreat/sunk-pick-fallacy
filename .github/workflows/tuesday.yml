@@ -3,7 +3,8 @@ name: Tuesday scout
 # Every Tuesday: freeze the week that just finished, rank its games, and post the scout's report as an issue
 # assigned to the owner, so it arrives as a GitHub notification (app push + email). The report also carries last
 # week's reader numbers from Cloudflare (the CLOUDFLARE_API_TOKEN secret, with Zone · Analytics · Read); without
-# that permission the issue just says the numbers are unavailable.
+# that permission the issue just says the numbers are unavailable. PostHog engagement uses a separate
+# project-limited POSTHOG_QUERY_API_KEY with query:read; failure of either source does not block the issue.
 on:
   schedule:
     - cron: "0 14 * * 2" # Tuesdays 14:00 UTC: 9 AM Central (8 AM once clocks fall back)
@@ -38,9 +39,10 @@ jobs:
         env:
           WEEK_INPUT: ${{ inputs.week }}
         run: node scripts/tuesday.mjs "$WEEK_INPUT"
-      - name: Add last week's readers
+      - name: Add last week's readers and engagement
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          POSTHOG_QUERY_API_KEY: ${{ secrets.POSTHOG_QUERY_API_KEY }}
         run: '[ -f "$REPORT_FILE" ] && node scripts/readers.mjs "$REPORT_FILE" || true' # never holds up the report
       - name: Save the week and post the report
         env:

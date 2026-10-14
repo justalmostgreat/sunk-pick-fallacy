@@ -1,10 +1,11 @@
-// Last week's readers, from Cloudflare's analytics for sunkpick.com. The Tuesday scout adds them to its weekly issue.
+// Last week's Cloudflare traffic and private PostHog aggregates for sunkpick.com, shared in the Tuesday issue.
 //   node scripts/readers.mjs              print the numbers
 //   node scripts/readers.mjs report.txt   put them in the scout's report, above its "---" line
-// Needs CLOUDFLARE_API_TOKEN with Zone · Analytics · Read. Never fails the Tuesday job: if Cloudflare can't be read,
-// the section says so in one line instead.
+// Needs CLOUDFLARE_API_TOKEN with Zone · Analytics · Read and POSTHOG_QUERY_API_KEY with query:read.
+// Each source fails independently with a safe one-line notice; the scout can still post.
 import { readFileSync, writeFileSync } from "node:fs";
 import { pathToFileURL } from "node:url";
+import { engagementReport } from "./engagement.mjs";
 
 const ZONE = "51485ff2589c350c201cd0dc3735abb6"; // sunkpick.com
 const DAY = 86400000;
@@ -34,40 +35,48 @@ export function summarize(rows, today) {
   const pages = by(now, r => page(r.dimensions.clientRequestPath)).slice(0, 4).map(([p, n]) => `${p} ${n}`).join(" · ");
   const [busiest] = by(now.filter(phone), r => r.dimensions.date);
   return [
-    `**Readers, ${span}** (US page views)`,
+    `**Readers, ${span}** (US page views; UTC days)`,
     `Phones ${phones}${change} · computers ${computers}`,
     `Most read: ${pages}${busiest ? ` · busiest day ${day(busiest[0], { weekday: "short", month: "short", day: "numeric" })}` : ""}`,
   ];
 }
 
-async function readers() {
-  const today = new Date(new Date().toISOString().slice(0, 10) + "T00:00:00Z");
-  const token = process.env.CLOUDFLARE_API_TOKEN;
+export async function cloudflareReaders({ now = new Date(), token = process.env.CLOUDFLARE_API_TOKEN, fetcher = fetch } = {}) {
+  const today = new Date(now.toISOString().slice(0, 10) + "T00:00:00Z");
   try {
-    const res = await fetch("https://api.cloudflare.com/client/v4/graphql", {
+    const res = await fetcher("https://api.cloudflare.com/client/v4/graphql", {
       method: "POST",
       headers: { "content-type": "application/json", ...(token && { authorization: `Bearer ${token}` }) },
       body: JSON.stringify({ query: QUERY, variables: { zone: ZONE, from: new Date(today - 14 * DAY).toISOString(), to: today.toISOString() } }),
-      signal: AbortSignal.timeout(30000),
+      signal: AbortSignal.timeout(30000), redirect: "error",
     });
     const json = await res.json().catch(() => ({}));
     const rows = json.data?.viewer?.zones?.[0]?.httpRequestsAdaptiveGroups;
     if (!rows) throw new Error(json.errors?.[0]?.message ?? `Cloudflare answered ${res.status}`);
     return summarize(rows, today).join("  \n");
-  } catch (error) {
-    const hint = /auth|permission|token/i.test(error.message) ? " Give the CLOUDFLARE_API_TOKEN secret Zone · Analytics · Read in Cloudflare." : "";
-    return `_Reader numbers unavailable this week: ${error.message}.${hint}_`;
+  } catch {
+    return "_Reader numbers unavailable this week: Cloudflare could not return counts. Check its reporting token and Zone · Analytics · Read permission._";
   }
 }
 
+export async function readersReport({ now = new Date(), cloudflare = cloudflareReaders, posthog = engagementReport } = {}) {
+  const results = await Promise.allSettled([cloudflare({ now }), posthog({ now })]);
+  const fallbacks = ["_Cloudflare reader numbers unavailable this week._", "_PostHog engagement stats unavailable this week._"];
+  return results.map((result, i) => result.status === "fulfilled" && typeof result.value === "string" ? result.value : fallbacks[i]).join("\n\n");
+}
+
+export function insertReaderSection(report, section) {
+  const lines = report.split("\n");
+  const at = lines.indexOf("---");
+  lines.splice(at < 0 ? lines.length : at, 0, section, "");
+  return lines.join("\n");
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const section = await readers();
+  const section = await readersReport();
   const file = process.argv[2];
   if (!file) console.log(section);
   else {
-    const report = readFileSync(file, "utf8").split("\n");
-    const at = report.indexOf("---");
-    report.splice(at < 0 ? report.length : at, 0, section, "");
-    writeFileSync(file, report.join("\n"));
+    writeFileSync(file, insertReaderSection(readFileSync(file, "utf8"), section));
   }
 }
