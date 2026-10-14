@@ -8,7 +8,7 @@ Standings, rankings and scout's notes pull from Sleeper and FantasyCalc on every
 
 1. Tuesday 9 AM Central, `.github/workflows/tuesday.yml` freezes the finished week into `lib/weeks/<N>.json`
    and opens a "Week N is final" GitHub issue with the scout's ranking of every game and last week's reader
-   numbers from Cloudflare (`scripts/readers.mjs`; the Readers workflow shows them on demand).
+   numbers from Cloudflare plus aggregate PostHog engagement (`scripts/readers.mjs`; the Readers workflow shows both on demand).
 2. The commissioner writes the group-chat blurb, then either replies to that issue with it (`.github/workflows/blurb.yml`
    puts it on the site, commits, and closes the issue) or asks an assistant to add it.
 3. `.github/workflows/publish.yml` checks, builds, and publishes `main` to the public Cloudflare Worker
@@ -93,8 +93,21 @@ omitting `meme:` removes it. The parser strips quoted email history and reports 
   every outbound event, URL, attribution and heatmap bucket; keep its allowlist and regression checks in sync.
   `/privacy` and its buffered heatmap/previous-page data are excluded. Campaign labels may contain only
   letters, digits, underscores and hyphens (up to 64 chars); use e.g. `utm_source=league-chat&utm_campaign=week-6`.
-- The existing public Tuesday report remains aggregate Cloudflare counts. Do not put visitor histories,
-  IDs or private PostHog dashboard links into public issues. Filter named setup campaigns when interpreting
-  initial traffic. The free PostHog plan is capped, with no payment card required and one-year event retention.
+- The public Tuesday report includes aggregate Cloudflare traffic and PostHog engagement. Never put visitor
+  histories, IDs, raw provider errors, or private PostHog dashboard links into public issues. The free PostHog
+  plan is capped, with no payment card required and one-year event retention.
+- `scripts/engagement.mjs` queries project665153 using GitHub secret `POSTHOG_QUERY_API_KEY`: a private API key
+  restricted to this project and `query:read` only. This is separate from the public ingestion token and must
+  never be bundled into the site, printed, or stored as a repository variable. Queries return aggregate rows
+  only; raw browser IDs stay in PostHog. Known setup-check/analytics-launch browsers are excluded server-side.
+- Engagement covers the seven complete Eastern calendar days before the run, with daylight-saving-aware
+  boundaries. Cloudflare retains its existing UTC-day window and US request population; the headings label
+  the different populations and timezones. Never add Cloudflare pageviews to PostHog browser/visit counts.
+  Browsers/visits are distinct browser IDs and browser-session pairs with reportable activity in the window.
+- Weekly retention is returning browsers divided by prior-week browsers. Suppress it until both windows
+  have complete tracking coverage (launch2026-10-14), and label the partial launch week. Active time uses only
+  page_engagement.active_seconds deltas, not cumulative totals or story time summed on top. Story reach is
+  exposure, not verified reading. Each provider fails independently with a short safe unavailable notice;
+  neither can prevent the scout issue. `npm run check` includes windows/DST, format, failure, and insertion tests.
 - For local QA only, set `NEXT_PUBLIC_ANALYTICS_TEST_MODE=true`, a fake `phc_` token and a loopback capture host.
   Production builds must not set test mode. Run `npm run check` for sanitization, consent and engagement tests.
