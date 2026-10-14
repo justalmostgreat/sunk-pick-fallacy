@@ -57,7 +57,7 @@ export default async function Home() {
     </Cover>
 
     <main>
-      <section aria-labelledby="standings">
+      <section aria-labelledby="standings" data-track-section="standings">
         <h2 className="shead" id="standings">Live standings</h2>
         <p className="sub">{live ? `Record so far, plus Week ${live.week} as if it ended right now · moves are since last week` : `After Week ${last.week}`}</p>
         {live
@@ -65,7 +65,7 @@ export default async function Home() {
           : <StandingsTable snap={last} href={href} />}
       </section>
 
-      {dynasty && <section aria-labelledby="dynasty">
+      {dynasty && <section aria-labelledby="dynasty" data-track-section="dynasty_rankings">
         <h2 className="shead" id="dynasty">Dynasty power rankings</h2>
         <p className="sub">Which teams are set up as a true dynasty{live?.dynasty ? "" : ` · as of Week ${last.week}`}</p>
         <DynastyList rows={dynasty} names={names} before={last.dynasty ? rankOf(last.dynasty.map(d => d.rosterId)) : undefined} href={href}

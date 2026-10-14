@@ -36,17 +36,17 @@ export default async function WeekPage(props: Props) {
   return <div className="program">
     <Cover items={["Official program", `Week ${snap.week} final`, <Price key="price" seed={(snap.week * 0.618) % 1} />]} meme={snap.recap?.cover === "meme" ? snap.recap.meme : null}>
       <b>Back issue</b>
-      <span>As it stood {day(snap.capturedAt)} · <Link href="/">Back to live standings</Link></span>
+      <span>As it stood {day(snap.capturedAt)} · <Link href="/" data-track-link="home">Back to live standings</Link></span>
     </Cover>
 
     <main>
-      <section aria-labelledby="standings">
+      <section aria-labelledby="standings" data-track-section="standings" data-track-week={snap.week}>
         <h2 className="shead" id="standings">Standings after Week {snap.week}</h2>
         <p className="sub">Wins, then points · top 6 make the playoffs</p>
         <StandingsTable snap={snap} href={href} />
       </section>
 
-      {snap.dynasty && <section aria-labelledby="dynasty">
+      {snap.dynasty && <section aria-labelledby="dynasty" data-track-section="dynasty_rankings" data-track-week={snap.week}>
         <h2 className="shead" id="dynasty">Dynasty power rankings</h2>
         <p className="sub">Which teams are set up as a true dynasty · as of {day(snap.capturedAt)}</p>
         <DynastyList rows={snap.dynasty} names={snap.teams} href={href}

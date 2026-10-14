@@ -135,6 +135,27 @@ a { color: inherit; }
 .foot a { color: var(--cream); text-decoration: underline; text-underline-offset: 3px; }
 .foot a svg { display: inline-block; vertical-align: -2px; }
 
+/* The visitor's analytics choice uses the same paper-and-ink language as the program. */
+.analytics-settings { padding: 0; border: 0; background: none; color: var(--cream); font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.analytics-choice { position: fixed; z-index: 50; inset: auto 20px 20px; max-width: 980px; margin: auto; display: flex; align-items: center; gap: 28px; padding: 20px 24px; background: var(--deep); border: 1px solid var(--cream); box-shadow: 0 10px 40px rgb(0 0 0 / .35); }
+.analytics-choice h2 { margin: 0 0 6px; font: 800 24px/1.1 var(--f-display); text-transform: uppercase; letter-spacing: .08em; }
+.analytics-choice p { margin: 0; font: 400 13px/1.6 var(--f-text); }
+.analytics-choice a { text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+.analytics-actions { display: flex; gap: 10px; flex-wrap: wrap; flex-shrink: 0; max-width: 290px; }
+.analytics-actions button { min-height: 44px; padding: 10px 14px; border: 1px solid var(--cream); background: var(--deep); color: var(--cream); cursor: pointer; font: 700 14px/1.2 var(--f-display); letter-spacing: .06em; }
+.analytics-actions button:hover { background: var(--cream); color: var(--deep); }
+.privacy-page { max-width: 800px; padding-top: 60px; }
+.privacy-page h1 { font: 900 clamp(38px, 8vw, 64px)/1.1 var(--f-display); text-transform: uppercase; letter-spacing: .05em; margin: 30px 0 12px; }
+.privacy-page h2 { font: 800 28px/1.2 var(--f-display); letter-spacing: .04em; text-transform: uppercase; }
+.privacy-page p { line-height: 1.8; }
+.privacy-page a { text-decoration: underline; text-underline-offset: 3px; }
+.privacy-page main > * { margin-top: 40px; }
+@media (max-width: 700px) {
+  .analytics-choice { inset: auto 12px 12px; padding: 16px; display: block; max-height: 65vh; overflow: auto; }
+  .analytics-actions { margin-top: 14px; max-width: none; }
+  .analytics-actions button { flex: 1; }
+}
+
 @media (min-width: 880px) {
   .dynasty { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, auto); grid-auto-flow: column; }
   .around { grid-template-columns: 1fr 1fr; gap: 56px; }
