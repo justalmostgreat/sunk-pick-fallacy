@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- Native document links avoid Vinext production router failures. */
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BackIssues, Cover, DynastyList, Finals, Footer, Recap, StandingsTable } from "@/components/program";
 import { Price } from "@/components/price";
@@ -36,7 +36,7 @@ export default async function WeekPage(props: Props) {
   return <div className="program">
     <Cover items={["Official program", `Week ${snap.week} final`, <Price key="price" seed={(snap.week * 0.618) % 1} />]} meme={snap.recap?.cover === "meme" ? snap.recap.meme : null}>
       <b>Back issue</b>
-      <span>As it stood {day(snap.capturedAt)} · <Link href="/" data-track-link="home">Back to live standings</Link></span>
+      <span>As it stood {day(snap.capturedAt)} · <a href="/" data-track-link="home">Back to live standings</a></span>
     </Cover>
 
     <main>

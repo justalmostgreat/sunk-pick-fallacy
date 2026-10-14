@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import type { PostHog } from "posthog-js";
 import { safeAttribution, safePagePath, sanitizeEvent } from "@/lib/analytics";
@@ -79,7 +77,6 @@ export function AnalyticsSettingsButton() {
 }
 
 export function SiteAnalytics() {
-  const pathname = usePathname();
   const consent = useSyncExternalStore(subscribeAnalyticsConsent, readAnalyticsConsent, serverAnalyticsConsent);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
@@ -100,24 +97,33 @@ export function SiteAnalytics() {
       }
       return;
     }
-    const path = safePagePath(pathname ?? "");
+    const path = safePagePath(location.pathname);
     if (!path || path === "/privacy") return;
     let cancelled = false;
+    let visitRun = 0;
     let stop: (() => void) | undefined;
-    void loadAnalytics().then(posthog => {
-      if (cancelled || !posthog || readAnalyticsConsent() !== "allowed") return;
-      const attribution = safeAttribution(location.href, document.referrer);
-      posthog.capture("$pageview", {
-        $current_url: `https://sunkpick.com${path}`, page_path: path, ...attribution,
-        $referrer: attribution.referrer_origin ?? "$direct",
-        $referring_domain: attribution.referrer_origin ? new URL(attribution.referrer_origin).hostname : "$direct",
+    const startVisit = () => {
+      const run = ++visitRun;
+      void loadAnalytics().then(posthog => {
+        if (cancelled || run !== visitRun || !posthog || readAnalyticsConsent() !== "allowed") return;
+        stop?.();
+        const attribution = safeAttribution(location.href, document.referrer);
+        posthog.capture("$pageview", {
+          $current_url: `https://sunkpick.com${path}`, page_path: path, ...attribution,
+          $referrer: attribution.referrer_origin ?? "$direct",
+          $referring_domain: attribution.referrer_origin ? new URL(attribution.referrer_origin).hostname : "$direct",
+        });
+        stop = trackVisit(path, (name, properties) => {
+          if (readAnalyticsConsent() === "allowed") posthog.capture(name, { ...properties, $current_url: `https://sunkpick.com${path}` });
+        });
       });
-      stop = trackVisit(path, (name, properties) => {
-        if (readAnalyticsConsent() === "allowed") posthog.capture(name, { ...properties, $current_url: `https://sunkpick.com${path}` });
-      });
-    });
-    return () => { cancelled = true; stop?.(); };
-  }, [consent, pathname]);
+    };
+    // Every route uses normal document links. A browser-cache restoration is a new visit too.
+    const restore = (event: PageTransitionEvent) => { if (event.persisted) startVisit(); };
+    window.addEventListener("pageshow", restore);
+    startVisit();
+    return () => { cancelled = true; stop?.(); window.removeEventListener("pageshow", restore); };
+  }, [consent]);
 
   const visible = settingsOpen || (configured && consent === "unset");
   if (!visible || consent === "loading") return null;
@@ -129,7 +135,7 @@ export function SiteAnalytics() {
         ? "Your browser’s privacy signal has turned visit analytics off."
         : !configured
           ? "Detailed visit analytics is not enabled yet."
-          : "Allow visit analytics to show which stories get attention and what could work better? We use an unnamed browser ID, clicks and scrolls. No session recordings."} <Link href="/privacy">Privacy details</Link></p>
+          : "Allow visit analytics to show which stories get attention and what could work better? We use an unnamed browser ID, clicks and scrolls. No session recordings."} <a href="/privacy">Privacy details</a></p>
     </div>
     <div className="analytics-actions">
       {configured && consent !== "blocked" && <>

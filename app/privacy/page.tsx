@@ -1,11 +1,11 @@
-import Link from "next/link";
+/* eslint-disable @next/next/no-html-link-for-pages -- Native document links avoid Vinext production router failures. */
 import { AnalyticsSettingsButton } from "@/components/site-analytics";
 
 export const metadata = { title: "Privacy & analytics — Sunk Pick Fallacy" };
 
 export default function PrivacyPage() {
   return <div className="program privacy-page">
-    <header><Link href="/">← Back to the program</Link><h1>Privacy &amp; analytics</h1><p>Updated October 14, 2026</p></header>
+    <header><a href="/">← Back to the program</a><h1>Privacy &amp; analytics</h1><p>Updated October 14, 2026</p></header>
     <main>
       <section><h2>Reading the site</h2><p>You can read the whole program without an account or agreeing to optional analytics. Cloudflare hosts the site and processes requests for delivery and security. Our weekly report uses aggregate US page-view counts; these are visits to pages, not a list of named readers.</p></section>
       <section><h2>Optional visit analytics</h2><p>If you choose “Allow analytics,” we use PostHog to understand which parts of the program people use. It receives an unnamed browser identifier, pages visited, selected link clicks, scroll and click positions, load-speed measurements, basic error counts, and time that content is visible in an active tab. Browser and device details and approximate location help us understand how the site works for readers.</p><p>We measure when stories come into view and how far people scroll. These are signs of engagement, not proof that someone read a story. We stop counting active time when the tab is hidden or unfocused, or after a minute without interaction.</p><p>We do not link analytics to your name, email or Sleeper account. We do not send coach phone numbers, message contents, form inputs, or page text. Session replay and screen recording are off. Named campaign labels on links can tell us where a visit came from; other URL parameters are removed from analytics.</p></section>

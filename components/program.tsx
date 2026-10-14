@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Ink } from "@/components/ink";
 import { AnalyticsSettingsButton } from "@/components/site-analytics";
@@ -160,9 +159,9 @@ export function BackIssues({ weeks, current }: { weeks: Snapshot[]; current?: nu
   return <nav className="issues" aria-labelledby="issues" data-track-section="back_issues">
     <h2 className="shead small" id="issues">Back issues</h2>
     <ol>{[...weeks].reverse().map(w => <li key={w.week}>
-      <Link href={`/week/${w.week}`} aria-current={w.week === current ? "page" : undefined} data-track-link="back_issue" data-track-week={w.week}>
+      <a href={`/week/${w.week}`} aria-current={w.week === current ? "page" : undefined} data-track-link="back_issue" data-track-week={w.week}>
         <b>Week {w.week}</b><span>{w.recap ? <Ink text={w.recap.headline} /> : "Final scores and standings"}</span>
-      </Link>
+      </a>
     </li>)}</ol>
   </nav>;
 }
@@ -172,6 +171,6 @@ export function Footer({ children }: { children: ReactNode }) {
     <div className="orn" aria-hidden="true" />
     <p>{children}</p>
     <p><a href={`https://sleeper.com/leagues/${LEAGUE_ID}`} target="_blank" rel="noreferrer" data-track-link="sleeper">League on Sleeper <ArrowUpRight size={14} aria-hidden="true" /></a></p>
-    <p><Link href="/privacy">Privacy</Link> · <AnalyticsSettingsButton /></p>
+    <p><a href="/privacy">Privacy</a> · <AnalyticsSettingsButton /></p>
   </footer>;
 }

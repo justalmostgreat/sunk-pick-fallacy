@@ -34,10 +34,12 @@ export function subscribeAnalyticsConsent(callback: () => void) {
   window.addEventListener(CHANGED, callback);
   window.addEventListener("storage", callback);
   window.addEventListener("focus", callback);
+  window.addEventListener("pageshow", callback);
   return () => {
     window.removeEventListener(CHANGED, callback);
     window.removeEventListener("storage", callback);
     window.removeEventListener("focus", callback);
+    window.removeEventListener("pageshow", callback);
   };
 }
 

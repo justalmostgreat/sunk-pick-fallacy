@@ -79,7 +79,10 @@ omitting `meme:` removes it. The parser strips quoted email history and reports 
   Analytics choices and `/privacy`; Global Privacy Control and Do Not Track override consent. Declining
   clears the analytics identifier. A later opt-in starts fresh. Session replay, person profiles, automatic
   DOM/text capture, surveys and feature flags are disabled. Raw client IP discard is enabled in PostHog.
-- Track page views on pathname changes, not live-score refreshes. `lib/track-visit.ts` measures section/story
+- Internal page links deliberately use ordinary document navigation: Vinext's production `next/link`
+  bundle fails in its dynamic router helpers. Test actual clicks in the built Worker, not only the dev server.
+  Browser-cache restorations start a fresh tracked visit and re-read the consent choice.
+- Track page views on document navigation/cache restoration, not live-score refreshes. `lib/track-visit.ts` measures section/story
   reach, scroll progress and active viewing time (visible, focused, less than 60 seconds idle). Story IDs
   include week and matchup. `story_engagement.active_seconds` is a delta: sum it; don't sum the cumulative
   `total_active_seconds`. Native PostHog session/page duration is elapsed time and can include idle time;
