@@ -26,8 +26,9 @@ export function Cover({ items, meme, children }: { items: ReactNode[]; meme?: Me
     {meme
       ? <div className="vignette meme" role="img" aria-label={meme.alt ?? "Reaction photo: a man in a blazer doubled over, laughing and wincing"}><span style={meme.src ? {
         backgroundImage: `url(${meme.src})`,
-        // Keep Week 5's full caption and two-finger gesture inside the oval.
-        ...(meme.src === "/assets/week-5.webp" ? { backgroundSize: "82% auto", backgroundPosition: "center" } : {}),
+        // Keep Week 5's full caption and two-finger gesture inside the oval. The picture's edge green fills the rest,
+        // so the shrunk picture doesn't show as a box.
+        ...(meme.src === "/assets/week-5.webp" ? { backgroundSize: "82% auto", backgroundPosition: "center", backgroundColor: "#1B4031" } : {}),
       } : undefined} /></div>
       : <div className="vignette" role="img" aria-label="Engraved bust of a football player in a leather helmet, holding a ball"><span /></div>}
     <h1>Sunk Pick Fallacy</h1>
