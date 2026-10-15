@@ -135,7 +135,7 @@ export function SiteAnalytics() {
         ? "Your browser’s privacy signal has turned visit analytics off."
         : !configured
           ? "Detailed visit analytics is not enabled yet."
-          : "Allow visit, click and scroll stats? No recordings."} <a href="/privacy">Privacy details</a></p>
+          : "Allow visit, click and scroll stats?"}</p>
     </div>
     <div className="analytics-actions">
       {configured && consent !== "blocked" && <>
