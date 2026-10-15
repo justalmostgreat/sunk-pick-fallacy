@@ -130,17 +130,17 @@ export function SiteAnalytics() {
   const choose = (value: "allowed" | "declined") => { saveAnalyticsConsent(value); setSettingsOpen(false); };
   return <aside className="analytics-choice" aria-labelledby="analytics-title">
     <div>
-      <h2 id="analytics-title">Help improve the program</h2>
+      <h2 id="analytics-title">Help improve the site</h2>
       <p>{consent === "blocked"
         ? "Your browser’s privacy signal has turned visit analytics off."
         : !configured
           ? "Detailed visit analytics is not enabled yet."
-          : "Allow visit analytics to show which stories get attention and what could work better? We use an unnamed browser ID, clicks and scrolls. No session recordings."} <a href="/privacy">Privacy details</a></p>
+          : "Allow visit, click and scroll stats? No recordings."} <a href="/privacy">Privacy details</a></p>
     </div>
     <div className="analytics-actions">
       {configured && consent !== "blocked" && <>
         <button type="button" onClick={() => choose("declined")}>{consent === "allowed" ? "Turn analytics off" : "No thanks"}</button>
-        <button type="button" onClick={() => choose("allowed")}>{consent === "allowed" ? "Keep analytics on" : "Allow analytics"}</button>
+        <button type="button" onClick={() => choose("allowed")}>{consent === "allowed" ? "Keep analytics on" : "Allow"}</button>
       </>}
       {settingsOpen && <button type="button" onClick={() => setSettingsOpen(false)}>Close</button>}
     </div>
