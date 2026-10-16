@@ -13,7 +13,7 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
     "tuesday": "node scripts/tuesday.mjs",
-    "check": "node scripts/check-models.mjs && node scripts/check-save-week.mjs && node scripts/check-analytics.mjs && node scripts/check-tracking.mjs && node scripts/check-engagement-summary.mjs && node scripts/check-engagement.mjs && node scripts/check-readers-report.mjs",
+    "check": "node scripts/check-models.mjs && node scripts/check-save-week.mjs && node scripts/check-analytics.mjs && node scripts/check-tracking.mjs && node scripts/check-replay.mjs && node scripts/check-engagement-summary.mjs && node scripts/check-engagement.mjs && node scripts/check-readers-report.mjs",
     "blurb": "node scripts/blurb.mjs"
   },
   "dependencies": {

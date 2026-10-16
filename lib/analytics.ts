@@ -37,11 +37,18 @@ export type SafeAttribution = Partial<Record<AttributionKey, string>> & {
 type UnknownRecord = Record<string, unknown>;
 
 const ALLOWED_EVENTS = new Set([
+  "$snapshot",
+  "$autocapture",
+  "$rageclick",
+  "$dead_click",
+  "$dead_swipe",
   "$pageview",
   "$pageleave",
   "$$heatmap",
   "$web_vitals",
   "section_viewed",
+  "section_engagement",
+  "content_copied",
   "story_viewed",
   "story_engaged",
   "story_engagement",
@@ -51,6 +58,20 @@ const ALLOWED_EVENTS = new Set([
   "scroll_depth",
   "site_error",
 ]);
+
+const INTERACTION_EVENTS = new Set(["$autocapture", "$rageclick", "$dead_click", "$dead_swipe"]);
+
+function structuralElementChain(value: unknown): string | null {
+  if (typeof value !== "string" || value.length > 20_000) return null;
+  const parts = value.split(";").slice(0, 24).map(part => {
+    const tag = /^([a-z][a-z0-9-]{0,30})(?=[:.]|$)/i.exec(part)?.[1]?.toLowerCase();
+    const child = /\bnth-child="(\d{1,5})"/.exec(part)?.[1];
+    const type = /\bnth-of-type="(\d{1,5})"/.exec(part)?.[1];
+    if (!tag || !child || !type) return null;
+    return `${tag}:nth-child="${Number(child)}"nth-of-type="${Number(type)}"`;
+  });
+  return parts.length && parts.every(Boolean) ? parts.join(";") : null;
+}
 
 const ANONYMOUS_ID_KEYS = new Set([
   "distinct_id",
@@ -290,9 +311,9 @@ function sanitizeWebVitalProperty(key: string, value: unknown): number | null {
  */
 export function sanitizeProperties(properties: unknown, eventName?: string): Properties {
   const result: UnknownRecord = {
-    // Keep person processing disabled even if an SDK/plugin adds a conflicting
-    // value before this hook runs.
-    $process_person_profile: false,
+    // Browser profiles support return/cohort analysis without names or logins.
+    // No identify event or arbitrary person properties pass this boundary.
+    $process_person_profile: eventName !== "$snapshot",
     $is_identified: false,
   };
   if (!isRecord(properties)) return result as Properties;
@@ -300,6 +321,19 @@ export function sanitizeProperties(properties: unknown, eventName?: string): Pro
   const previousPrivacy = previousPath === "/privacy" || previousPath.startsWith("/privacy?") || previousPath.startsWith("/privacy#");
 
   for (const [key, raw] of Object.entries(properties)) {
+    if (eventName && INTERACTION_EVENTS.has(eventName)) {
+      if (key === "$elements_chain") {
+        const chain = structuralElementChain(raw);
+        if (chain) result[key] = chain;
+        continue;
+      }
+      if (key === "$event_type" && (raw === "click" || raw === "touchend")) { result[key] = raw; continue; }
+      if (key === "$ce_version" || /^\$(?:dead_click|dead_swipe|rageclick)_[a-z_]+$/.test(key)) {
+        const number = safeNonNegativeNumber(raw, 1_000_000);
+        if (number !== null) result[key] = number;
+        continue;
+      }
+    }
     if (key === "$elements" || key === "$elements_chain" || key === "$raw_user_agent" || key === "$user_id" || key === "$groups") continue;
     if (key === "$process_person_profile" || key === "$is_identified") continue;
     if (previousPrivacy && key.startsWith("$prev_pageview_")) continue;
@@ -474,7 +508,7 @@ export function sanitizeProperties(properties: unknown, eventName?: string): Pro
  * Conservative PostHog `before_send` hook.  Unknown event names are dropped;
  * known events retain only the safe property contract above.  Top-level
  * `$set`/`$set_once` are deliberately dropped so an identify/plugin path
- * cannot re-enable person-property processing.
+ * cannot inject identity or arbitrary person-property updates.
  */
 export function sanitizeEvent(event: unknown): CaptureResult | null {
   if (!isRecord(event) || typeof event.event !== "string" || !ALLOWED_EVENTS.has(event.event)) return null;
@@ -482,6 +516,16 @@ export function sanitizeEvent(event: unknown): CaptureResult | null {
     event: event.event,
     properties: sanitizeProperties(event.properties, event.event),
   };
+  // rrweb data must remain intact for playback. It is already filtered by the
+  // recorder hooks in analytics-replay.ts; only its envelope is sanitized here.
+  if (event.event === "$snapshot") {
+    const source = isRecord(event.properties) ? event.properties : {};
+    if (!Array.isArray(source.$snapshot_data) || typeof source.$snapshot_bytes !== "number" || !Number.isFinite(source.$snapshot_bytes) || source.$snapshot_bytes < 1 || source.$snapshot_bytes > 1_000_000) return null;
+    const properties = result.properties as UnknownRecord;
+    properties.$snapshot_data = source.$snapshot_data;
+    properties.$snapshot_bytes = source.$snapshot_bytes;
+    if (source.$snapshot_host === "sunkpick.com" || source.$snapshot_host === "www.sunkpick.com") properties.$snapshot_host = "sunkpick.com";
+  }
   if (typeof event.uuid === "string" && SAFE_IDENTIFIER.test(event.uuid)) result.uuid = event.uuid;
   if (event.timestamp instanceof Date && Number.isFinite(event.timestamp.getTime())) result.timestamp = new Date(event.timestamp.getTime());
   return result as unknown as CaptureResult;

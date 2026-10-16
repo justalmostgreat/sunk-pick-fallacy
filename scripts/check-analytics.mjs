@@ -120,7 +120,7 @@ assert.equal(sanitized.properties.$device_id, "device-id");
 assert.equal(sanitized.properties.$session_id, "session-id");
 assert.equal(sanitized.properties.$window_id, "window-id");
 assert.equal(sanitized.properties.$pageview_id, "pageview-id");
-assert.equal(sanitized.properties.$process_person_profile, false);
+assert.equal(sanitized.properties.$process_person_profile, true);
 assert.equal(sanitized.properties.$is_identified, false);
 assert.equal(sanitized.properties.$browser_version, 145);
 assert.equal(sanitized.properties.$timezone_offset, -300);
@@ -279,15 +279,42 @@ assert.equal(vitals.properties.$web_vitals_LCP_event, undefined);
 assert.equal(vitals.properties.$web_vitals_INP_value, undefined);
 
 assert.deepEqual(sanitizeProperties({ email: "jag@example.com", phone: "5127058862", safe: "drop" }), {
-  $process_person_profile: false,
+  $process_person_profile: true,
   $is_identified: false,
 });
 assert.deepEqual(sanitizeProperties(null), {
-  $process_person_profile: false,
+  $process_person_profile: true,
   $is_identified: false,
 });
 assert.equal(sanitizeEvent({ event: "$identify", properties: { distinct_id: "user" } }), null);
 assert.equal(sanitizeEvent({ event: "arbitrary_event", properties: { page_path: "/" } }), null);
 
-console.log("analytics checks passed");
 
+
+for (const event of ["section_engagement", "content_copied"]) {
+  const result = sanitizeEvent({ event, properties: { section: "recap", week: 5, active_seconds: 12, clipboard: "private text", selection: "private text" } });
+  assert.equal(result.event, event);
+  assert.equal(result.properties.section, "recap");
+  assert.equal(result.properties.clipboard, undefined);
+  assert.equal(result.properties.selection, undefined);
+}
+
+const auto = sanitizeEvent({ event: '$autocapture', properties: { $event_type: 'click',
+  $elements_chain: 'a.private:nth-child="2"nth-of-type="1"href="sms:+15555555555"text="Private";div:nth-child="1"nth-of-type="1"',
+  $elements: [{ attr__href: 'sms:+15555555555' }], $el_text: 'Private', $external_click_url: 'https://example.com/?secret=123' } });
+assert.equal(auto.properties.$elements_chain, 'a:nth-child="2"nth-of-type="1";div:nth-child="1"nth-of-type="1"');
+assert.equal(auto.properties.$el_text, undefined);
+assert.equal(auto.properties.$elements, undefined);
+assert.equal(auto.properties.$external_click_url, undefined);
+const snapshotData = [{ type: 4, data: { href: 'https://sunkpick.com/week/5' } }];
+const replay = sanitizeEvent({ event: '$snapshot', $set: { email: 'private@example.com' }, properties: {
+  $snapshot_data: snapshotData, $snapshot_bytes: 128, $snapshot_host: 'sunkpick.com',
+  $current_url: 'https://sunkpick.com/week/5?secret=123', $session_id: 'test-session', token: 'test-token' } });
+assert.equal(replay.properties.$snapshot_data, snapshotData, 'preserve recorder-filtered rrweb payload for playback');
+assert.equal(replay.properties.$current_url, 'https://sunkpick.com/week/5');
+assert.equal(replay.properties.$process_person_profile, false);
+assert.equal(replay.$set, undefined);
+assert.equal(sanitizeEvent({ event: '$snapshot', properties: { $snapshot_data: 'invalid', $snapshot_bytes: 1 } }), null);
+assert.equal(sanitizeEvent({ event: '$snapshot', properties: { $snapshot_data: [], $snapshot_bytes: Infinity } }), null);
+
+console.log("analytics checks passed");
