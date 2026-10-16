@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}<SiteAnalytics /></body>
+      <body className="antialiased"><SiteAnalytics />{children}</body>
     </html>
   );
 }

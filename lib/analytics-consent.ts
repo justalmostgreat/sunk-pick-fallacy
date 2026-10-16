@@ -1,8 +1,12 @@
-export type AnalyticsConsent = "loading" | "unset" | "allowed" | "declined" | "blocked";
+export type AnalyticsConsent = "loading" | "automatic" | "allowed" | "declined" | "blocked";
 
 const PREFERENCE = "spf_analytics_v1";
 const CHANGED = "spf:analytics-choice";
 export const OPEN_ANALYTICS_SETTINGS = "spf:analytics-settings";
+
+export function analyticsEnabled(choice: AnalyticsConsent) {
+  return choice === "automatic" || choice === "allowed";
+}
 
 export function analyticsBlocked() {
   if (typeof navigator === "undefined") return false;
@@ -16,9 +20,11 @@ export function readAnalyticsConsent(): AnalyticsConsent {
   try {
     const cookie = document.cookie.split("; ").find(value => value.startsWith(`${PREFERENCE}=`))?.split("=")[1];
     const value = cookie ?? localStorage.getItem(PREFERENCE);
-    return value === "allowed" || value === "declined" ? value : "unset";
+    // This personal U.S. league site uses notice + opt-out. Keep previous
+    // explicit declines, including choices saved before visit replays existed.
+    return value === "allowed" || value === "declined" ? value : "automatic";
   } catch {
-    return "unset";
+    return "automatic";
   }
 }
 

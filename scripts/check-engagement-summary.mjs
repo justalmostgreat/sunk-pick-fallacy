@@ -38,7 +38,7 @@ const baseData = {
 };
 
 const report = formatEngagementSummary(baseData, context);
-assert.match(report, /^\*\*Engagement, Oct 13–19\*\* \(Eastern time; visitors who allowed analytics\)  $/m);
+assert.match(report, /^\*\*Engagement, Oct 13–19\*\* \(Eastern time; excludes opt-outs\)  $/m);
 assert.match(report, /Browsers: 10 · Visits: 25 · Avg active time per visit: 13s/);
 assert.match(report, /Weekly retention: 3 of 8 prior-week browsers returned \(37\.5%\)/);
 assert.match(report, /Recap reach: 8 browsers · Engaged \(10s\+\): 5 browsers/);
@@ -47,7 +47,7 @@ assert.match(report, /Useful clicks: older recaps 4 · Sleeper 2 · coach-text 1
 assert.doesNotMatch(report, /story/);
 assert.doesNotMatch(report, /read/);
 assert.equal(report.split("\n").length, 5);
-assert.match(report, /analytics\)  \nBrowsers:/);
+assert.match(report, /opt-outs\)  \nBrowsers:/);
 
 const errorReport = formatEngagementSummary({ ...baseData, current: { ...baseData.current, errors: 2 } }, context);
 assert.match(errorReport, /Errors: 2 error reports/);
@@ -84,7 +84,7 @@ const zero = formatEngagementSummary({
   clicks: [{ kind: "unknown", count: 4 }],
 }, context);
 assert.match(zero, /Avg active time per visit: unavailable/);
-assert.match(zero, /No opted-in visits recorded/);
+assert.match(zero, /No tracked visits recorded/);
 assert.match(zero, /Weekly retention: unavailable \(no prior-week browsers recorded\)/);
 assert.match(zero, /Useful clicks: none recorded/);
 assert.doesNotMatch(zero, /Errors:/);

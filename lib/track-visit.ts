@@ -76,6 +76,10 @@ export function trackVisit(path: string, capture: Capture) {
         emit("story_engagement", { ...item.properties, active_seconds: seconds, total_active_seconds: Math.floor(item.seconds) });
         item.sent += seconds;
       }
+      if (!item.story && seconds >= 1) {
+        emit("section_engagement", { ...item.properties, active_seconds: seconds, total_active_seconds: Math.floor(item.seconds) });
+        item.sent += seconds;
+      }
     }
   };
   const activity = () => { update(); lastActivity = performance.now(); };
@@ -93,6 +97,33 @@ export function trackVisit(path: string, capture: Capture) {
     // Never read href, text content, names, SMS destinations, or input values.
     emit("link_clicked", properties);
   };
+  const copy = (event: Event) => {
+    const source = event.target instanceof Element ? event.target : null;
+    if (!source || source.closest<HTMLElement>("[data-track-link='coach_text']")) return;
+    const target = source.closest<HTMLElement>("[data-track-story], [data-track-section]");
+    if (!target) return;
+    const story = !!target.dataset.trackStory;
+    const id = story ? target.dataset.trackStory : target.dataset.trackSection;
+    if (!id) return;
+    const week = Number(target.dataset.trackWeek) || 0;
+    const key = `${story ? "story" : "section"}:${week}:${id}`;
+    const item = items.get(key);
+    if (item) {
+      emit("content_copied", item.properties);
+      return;
+    }
+    // Copy telemetry never reads the selection, clipboard, URL, or rendered text.
+    if (story) {
+      const matchup = Number(target.dataset.trackMatchup);
+      emit("content_copied", {
+        story_id: `week-${week}-${id}`,
+        ...(Number.isSafeInteger(matchup) && matchup > 0 ? { matchup } : {}),
+        week,
+      });
+    } else {
+      emit("content_copied", { section: id, ...(week ? { week } : {}) });
+    }
+  };
   const error = (event: Event) => {
     const kind = event.type === "unhandledrejection" ? "unhandled_rejection" : event.target instanceof HTMLImageElement ? "image" : "script";
     if (!errors.has(kind)) { errors.add(kind); emit("site_error", { error_kind: kind }); }
@@ -103,6 +134,7 @@ export function trackVisit(path: string, capture: Capture) {
   const timer = window.setInterval(update, 1000);
   for (const name of ["pointerdown", "keydown", "scroll", "touchstart"]) window.addEventListener(name, activity, { passive: true });
   document.addEventListener("click", click);
+  document.addEventListener("copy", copy);
   document.addEventListener("visibilitychange", visibility);
   window.addEventListener("blur", pause);
   window.addEventListener("focus", focus);
@@ -114,6 +146,7 @@ export function trackVisit(path: string, capture: Capture) {
     clearInterval(timer); observer.disconnect();
     for (const name of ["pointerdown", "keydown", "scroll", "touchstart"]) window.removeEventListener(name, activity);
     document.removeEventListener("click", click);
+    document.removeEventListener("copy", copy);
     document.removeEventListener("visibilitychange", visibility);
     window.removeEventListener("blur", pause);
     window.removeEventListener("focus", focus);

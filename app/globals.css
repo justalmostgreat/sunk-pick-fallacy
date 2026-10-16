@@ -138,6 +138,8 @@ a { color: inherit; }
 /* The visitor's analytics choice uses the same paper-and-ink language as the program. */
 .analytics-settings { padding: 0; border: 0; background: none; color: var(--cream); font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .analytics-choice { position: fixed; z-index: 50; inset: auto 20px 20px; max-width: 980px; margin: auto; display: flex; align-items: center; gap: 28px; padding: 20px 24px; background: var(--deep); border: 1px solid var(--cream); box-shadow: 0 10px 40px rgb(0 0 0 / .35); }
+.analytics-notice { position: relative; z-index: 1; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px 14px; padding: 8px 20px; border-bottom: 1px solid rgb(232 225 198 / .25); font: 400 12px/1.4 var(--f-text); }
+.analytics-notice button { min-height: 32px; padding: 5px 8px; border: 0; background: none; color: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; font: inherit; }
 .analytics-choice h2 { margin: 0 0 6px; font: 800 24px/1.1 var(--f-display); text-transform: uppercase; letter-spacing: .08em; }
 .analytics-choice p { margin: 0; font: 400 13px/1.6 var(--f-text); }
 .analytics-choice a { text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }

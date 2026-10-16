@@ -70,15 +70,25 @@ omitting `meme:` removes it. The parser strips quoted email history and reports 
 
 `npm run check` (model and parser self-check), `npm run lint`, `npx tsc --noEmit`, `npm run build`.
 
-## Optional reader behavior analytics
+## Reader behavior analytics and replays
 
 - PostHog project 665153 (US) provides the private reader dashboard. The Publish build reads the public
   ingestion token from repository variable `POSTHOG_PROJECT_TOKEN` into `NEXT_PUBLIC_POSTHOG_KEY`.
   Never put a personal/admin API key in that variable or the client bundle. An absent token disables tracking.
-- `components/site-analytics.tsx` loads the SDK only after a visitor allows analytics. The footer provides
-  Analytics choices and `/privacy`; Global Privacy Control and Do Not Track override consent. Declining
-  clears the analytics identifier. A later opt-in starts fresh. Session replay, person profiles, automatic
-  DOM/text capture, surveys and feature flags are disabled. Raw client IP discard is enabled in PostHog.
+- The owner confirmed a U.S.-only league audience and authorized notice-and-opt-out analytics and visit replays.
+  `components/site-analytics.tsx` starts automatically on site pages with an inline notice and Turn off control;
+  no login or Allow popup. The existing spf_analytics_v1 declined choices, Global Privacy Control and DNT still
+  block loading. Turning off stops replay before SDK reset; re-enabling starts a fresh browser identifier.
+  Reassess this audience assumption if the service or audience changes; this is not a universal legal exemption.
+- PostHog has unnamed browser profiles (`person_profiles: always`) for history/cohorts, but never calls identify
+  or attaches names/contact details to browser profiles. Session replay records all eligible visits on the capped free plan (5k/month,
+  30-day retention). Project recording is enabled, console capture off, network timing on, headers/bodies off.
+  Inputs/contact links/iframes/private-marked elements are blocked; public recap text stays readable.
+- `lib/analytics-replay.ts` separately sanitizes replay attributes and network timings, including all URL
+  query/hash data. The before_send hook gates and sanitizes the replay envelope; recorder hooks protect its opaque rrweb payload.
+  Keep maskAttributeFn active; do not enable session_recording.maskAllElementAttributes, which overrides it.
+  Remote config must load (`advanced_disable_flags: false`); disable only feature flags on initial load.
+  Surveys, experiments, canvas recording, console logs and request/response bodies stay off.
 - Internal page links deliberately use ordinary document navigation: Vinext's production `next/link`
   bundle fails in its dynamic router helpers. Test actual clicks in the built Worker, not only the dev server.
   Browser-cache restorations start a fresh tracked visit and re-read the consent choice.
@@ -89,7 +99,7 @@ omitting `meme:` removes it. The parser strips quoted email history and reports 
   never label it active viewing time. `story_engaged` marks 10/30/60-second milestones. Scroll/reach are exposure proxies,
   never claims that a person read something. Visitors are distinct browsers, not verified people.
 - Named safe link events cover stories/finals, back issues, home, Sleeper and coach-text clicks. Never
-  collect SMS destinations, coach names, input values or arbitrary page text. `lib/analytics.ts` sanitizes
+  collect SMS destinations, coach names or input values in event properties. Replays can show public site text. `lib/analytics.ts` sanitizes
   every outbound event, URL, attribution and heatmap bucket; keep its allowlist and regression checks in sync.
   `/privacy` and its buffered heatmap/previous-page data are excluded. Campaign labels may contain only
   letters, digits, underscores and hyphens (up to 64 chars); use e.g. `utm_source=league-chat&utm_campaign=week-6`.
@@ -110,4 +120,4 @@ omitting `meme:` removes it. The parser strips quoted email history and reports 
   exposure, not verified reading. Each provider fails independently with a short safe unavailable notice;
   neither can prevent the scout issue. `npm run check` includes windows/DST, format, failure, and insertion tests.
 - For local QA only, set `NEXT_PUBLIC_ANALYTICS_TEST_MODE=true`, a fake `phc_` token and a loopback capture host.
-  Production builds must not set test mode. Run `npm run check` for sanitization, consent and engagement tests.
+  Production builds must not set test mode. Run `npm run check` for sanitization, opt-out, replay sanitization and engagement tests. Section timing emits section_engagement deltas; content_copied records only section/story IDs, never copied text.

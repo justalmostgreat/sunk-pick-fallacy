@@ -3,8 +3,9 @@
 import { useEffect, useState, useSyncExternalStore } from "react";
 import type { PostHog } from "posthog-js";
 import { safeAttribution, safePagePath, sanitizeEvent } from "@/lib/analytics";
-import { OPEN_ANALYTICS_SETTINGS, readAnalyticsConsent, saveAnalyticsConsent, serverAnalyticsConsent, subscribeAnalyticsConsent } from "@/lib/analytics-consent";
+import { analyticsEnabled, OPEN_ANALYTICS_SETTINGS, readAnalyticsConsent, saveAnalyticsConsent, serverAnalyticsConsent, subscribeAnalyticsConsent } from "@/lib/analytics-consent";
 import { trackVisit } from "@/lib/track-visit";
+import { replayOptions } from "@/lib/analytics-replay";
 
 // Project tokens are public ingestion identifiers, never personal/admin API keys.
 const projectToken = process.env.NEXT_PUBLIC_POSTHOG_KEY ?? "";
@@ -15,16 +16,30 @@ let sdk: PostHog | undefined;
 let loading: Promise<PostHog | null> | undefined;
 let trackingActive = false;
 
+function stopAnalytics() {
+  if (!sdk || !trackingActive) return;
+  sdk.stopSessionRecording();
+  sdk.opt_out_capturing();
+  sdk.reset(true);
+  sdk.opt_out_capturing();
+  trackingActive = false;
+}
+
 function permittedHost() {
   return /^(www\.)?sunkpick\.com$/.test(location.hostname)
     || (testMode && ["localhost", "127.0.0.1"].includes(location.hostname));
 }
 
 function loadAnalytics(): Promise<PostHog | null> {
-  if (!configured || !permittedHost() || readAnalyticsConsent() !== "allowed") return Promise.resolve(null);
-  if (sdk) { sdk.opt_in_capturing({ captureEventName: false }); trackingActive = true; return Promise.resolve(sdk); }
+  if (!configured || !permittedHost() || !analyticsEnabled(readAnalyticsConsent())) return Promise.resolve(null);
+  if (sdk) {
+    sdk.opt_in_capturing({ captureEventName: false });
+    sdk.startSessionRecording();
+    trackingActive = true;
+    return Promise.resolve(sdk);
+  }
   loading ??= import("posthog-js").then(({ default: posthog }) => {
-    if (readAnalyticsConsent() !== "allowed") return null;
+    if (!analyticsEnabled(readAnalyticsConsent())) return null;
     posthog.init(projectToken, {
       api_host: apiHost,
       ui_host: apiHost.includes("eu.i.posthog.com") ? "https://eu.posthog.com" : "https://us.posthog.com",
@@ -33,34 +48,43 @@ function loadAnalytics(): Promise<PostHog | null> {
       cross_subdomain_cookie: true,
       cookie_expiration: 180,
       secure_cookie: location.protocol === "https:",
-      person_profiles: "never",
-      autocapture: false,
+      person_profiles: "always",
+      autocapture: {
+        dom_event_allowlist: ["click"],
+        element_allowlist: ["a", "button"],
+        css_selector_ignorelist: [".ph-no-capture", ".ph-no-autocapture", "[data-ph-no-autocapture]", "a[href^='sms:' i]", "a[href^='tel:' i]", "a[href^='mailto:' i]", "input", "textarea", "select", "[contenteditable]", "[data-analytics-private]", ".analytics-choice"],
+      },
       capture_pageview: false,
       // Native session duration is elapsed time; custom engagement events measure active time.
       capture_pageleave: true,
       capture_heatmaps: true,
-      capture_dead_clicks: false,
-      capture_performance: testMode ? false : { web_vitals: true, web_vitals_attribution: false },
+      capture_dead_clicks: {
+        capture_dead_swipes: false,
+        css_selector_ignorelist: [".ph-no-deadclick", ".ph-no-capture", "a[href^='sms:' i]", "a[href^='tel:' i]", "a[href^='mailto:' i]", "input", "textarea", "select", "[contenteditable]", "[data-analytics-private]", ".analytics-choice"],
+      },
+      capture_performance: { web_vitals: true, web_vitals_attribution: false, network_timing: true },
       capture_exceptions: false,
-      disable_session_recording: true,
+      disable_session_recording: false,
+      session_recording: replayOptions,
       enable_recording_console_log: false,
       disable_surveys: true,
       disable_product_tours: true,
       disable_conversations: true,
       disable_web_experiments: true,
       disable_compression: testMode,
-      advanced_disable_flags: true,
+      advanced_disable_flags: false,
+      advanced_disable_feature_flags_on_first_load: true,
       disable_capture_url_hashes: true,
       mask_all_text: true,
       mask_all_element_attributes: true,
       save_campaign_params: false,
       save_referrer: false,
       respect_dnt: true,
-      opt_out_capturing_by_default: true,
-      opt_out_persistence_by_default: true,
+      opt_out_capturing_by_default: false,
+      opt_out_persistence_by_default: false,
       before_send: event => {
         const path = safePagePath(location.pathname);
-        if (readAnalyticsConsent() !== "allowed" || !path || path === "/privacy") return null;
+        if (!analyticsEnabled(readAnalyticsConsent()) || !path || path === "/privacy") return null;
         return sanitizeEvent(event);
       },
     });
@@ -87,14 +111,8 @@ export function SiteAnalytics() {
   }, []);
 
   useEffect(() => {
-    if (consent !== "allowed") {
-      if (sdk && trackingActive) {
-        sdk.opt_out_capturing();
-        // Reset while opted out: erase persisted IDs and start fresh if they later opt in.
-        sdk.reset(true);
-        sdk.opt_out_capturing();
-        trackingActive = false;
-      }
+    if (!analyticsEnabled(consent)) {
+      stopAnalytics();
       return;
     }
     const path = safePagePath(location.pathname);
@@ -105,7 +123,7 @@ export function SiteAnalytics() {
     const startVisit = () => {
       const run = ++visitRun;
       void loadAnalytics().then(posthog => {
-        if (cancelled || run !== visitRun || !posthog || readAnalyticsConsent() !== "allowed") return;
+        if (cancelled || run !== visitRun || !posthog || !analyticsEnabled(readAnalyticsConsent())) return;
         stop?.();
         const attribution = safeAttribution(location.href, document.referrer);
         posthog.capture("$pageview", {
@@ -114,7 +132,7 @@ export function SiteAnalytics() {
           $referring_domain: attribution.referrer_origin ? new URL(attribution.referrer_origin).hostname : "$direct",
         });
         stop = trackVisit(path, (name, properties) => {
-          if (readAnalyticsConsent() === "allowed") posthog.capture(name, { ...properties, $current_url: `https://sunkpick.com${path}` });
+          if (analyticsEnabled(readAnalyticsConsent())) posthog.capture(name, { ...properties, $current_url: `https://sunkpick.com${path}` });
         });
       });
     };
@@ -125,9 +143,20 @@ export function SiteAnalytics() {
     return () => { cancelled = true; stop?.(); window.removeEventListener("pageshow", restore); };
   }, [consent]);
 
-  const visible = settingsOpen || (configured && consent === "unset");
-  if (!visible || consent === "loading") return null;
-  const choose = (value: "allowed" | "declined") => { saveAnalyticsConsent(value); setSettingsOpen(false); };
+  if (consent === "loading") return null;
+  const enabled = analyticsEnabled(consent);
+  const choose = (value: "allowed" | "declined") => {
+    // Stop synchronously before reset can flush the recorder's buffer.
+    if (value === "declined") stopAnalytics();
+    saveAnalyticsConsent(value);
+    setSettingsOpen(false);
+  };
+  // A visible notice, with no sign-in or accept step. Existing opt-outs and
+  // browser privacy signals take precedence over this site's default setting.
+  if (!settingsOpen) return configured && enabled ? <aside className="analytics-notice" data-analytics-private="true">
+    <span>Visit stats and replays are on.</span>
+    <button type="button" onClick={() => choose("declined")}>Turn off</button>
+  </aside> : null;
   return <aside className="analytics-choice" aria-labelledby="analytics-title">
     <div>
       <h2 id="analytics-title">Help improve the site</h2>
@@ -135,12 +164,12 @@ export function SiteAnalytics() {
         ? "Your browser’s privacy signal has turned visit analytics off."
         : !configured
           ? "Detailed visit analytics is not enabled yet."
-          : "Allow visit, click and scroll stats?"}</p>
+          : `Visit stats and replays are ${enabled ? "on" : "off"}.`}</p>
     </div>
     <div className="analytics-actions">
       {configured && consent !== "blocked" && <>
-        <button type="button" onClick={() => choose("declined")}>{consent === "allowed" ? "Turn analytics off" : "No thanks"}</button>
-        <button type="button" onClick={() => choose("allowed")}>{consent === "allowed" ? "Keep analytics on" : "Allow"}</button>
+        <button type="button" onClick={() => choose("declined")}>{enabled ? "Turn off" : "Keep off"}</button>
+        <button type="button" onClick={() => choose("allowed")}>{enabled ? "Keep on" : "Turn on"}</button>
       </>}
       {settingsOpen && <button type="button" onClick={() => setSettingsOpen(false)}>Close</button>}
     </div>

@@ -265,7 +265,7 @@ export function formatEngagementSummary(data, context) {
     `Visits: ${formatInteger(current.visits)}`,
     `Avg active time per visit: ${average === null ? "unavailable" : `${formatDecimal(average)}s`}`,
   ];
-  if (current.visits === 0) traffic.push("No opted-in visits recorded");
+  if (current.visits === 0) traffic.push("No tracked visits recorded");
 
   const topStories = [...stories]
     .sort((left, right) => right.browsers - left.browsers || compareStoryIds(left.storyId, right.storyId))
@@ -275,7 +275,7 @@ export function formatEngagementSummary(data, context) {
     : "none recorded";
 
   const lines = [
-    `**Engagement, ${range}** (Eastern time; visitors who allowed analytics)`,
+    `**Engagement, ${range}** (Eastern time; excludes opt-outs)`,
     traffic.join(" · "),
     retentionLine({ previous, returnedBrowsers }, normalizedContext),
     `Recap reach: ${formatInteger(current.recapBrowsers)} browsers · Engaged (10s+): ${formatInteger(current.engagedBrowsers)} browsers · Most reached: ${mostReached}`,
