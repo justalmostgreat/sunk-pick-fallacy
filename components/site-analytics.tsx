@@ -45,6 +45,7 @@ function loadAnalytics(): Promise<PostHog | null> {
       ui_host: apiHost.includes("eu.i.posthog.com") ? "https://eu.posthog.com" : "https://us.posthog.com",
       defaults: "2026-05-30",
       persistence: "localStorage+cookie",
+      persistence_save_debounce_ms: 0,
       cross_subdomain_cookie: true,
       cookie_expiration: 180,
       secure_cookie: location.protocol === "https:",
@@ -81,7 +82,8 @@ function loadAnalytics(): Promise<PostHog | null> {
       save_referrer: false,
       respect_dnt: true,
       opt_out_capturing_by_default: false,
-      opt_out_persistence_by_default: false,
+      // Automatic collection is enabled above; an actual opt-out still clears storage.
+      opt_out_persistence_by_default: true,
       before_send: event => {
         const path = safePagePath(location.pathname);
         if (!analyticsEnabled(readAnalyticsConsent()) || !path || path === "/privacy") return null;
