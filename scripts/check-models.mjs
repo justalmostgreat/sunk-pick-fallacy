@@ -115,6 +115,10 @@ assert.ok(parseBlurb("THE COMMISH WINS. Jag beat Jit.\ncover: meme", blurbTeams,
 assert.ok(parseBlurb(emailBody.replace("/assets/week-3-geno.png", "https://github.com/user-attachments/assets/private"), blurbTeams, blurbFinals).problems.length);
 assert.ok(parseBlurb(emailBody.replace("/assets/week-3-geno.png", "/assets/../secret.png"), blurbTeams, blurbFinals).problems.length);
 assert.equal(parseBlurb("WEEK 3 RECAP\nTHE COMMISH WINS. Jag beat Jit.\nADI WINS. Adi beat Andrew.", blurbTeams, blurbFinals).games.length, 2);
+// A headline that names coaches stays the headline instead of claiming one of their games.
+const named = parseBlurb("WEEK 6 RECAP 🚨 Jit takes the throne and Adi’s prayers have hands\n\nTHE COMMISH FALLS. Jit beat Jag.\n\nPRAYERS WORK. Andrew lost to Adi.", blurbTeams, blurbFinals);
+assert.equal(named.headline, "WEEK 6 RECAP 🚨 Jit takes the throne and Adi’s prayers have hands");
+assert.deepEqual([named.games.map(g => g.matchup), named.problems], [[1, 2], []]);
 
 // Coach phone links: every named coach, including Jag. Aditya shares Adi's line.
 const expected = {

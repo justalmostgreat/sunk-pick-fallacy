@@ -91,6 +91,8 @@ export function parseBlurb(text: string, teams: Team[], finals: Final[]): Parsed
   const games: Parsed["games"] = [];
   const used = new Set<number>();
   paragraphs.forEach((p, i) => {
+    // A "WEEK 6 RECAP 🚨 Cody takes the throne…" opener is the headline even when it names coaches.
+    if (i === 0 && paragraphs.length > 1 && /^\P{L}*WEEK\s+\d+\s+RECAP\b/iu.test(p)) { headline = p; return; }
     const best = finals
       .filter(f => !used.has(f.matchup))
       .map(f => ({ f, n: teams.filter(t => t.id === f.winner || t.id === f.loser).reduce((n, t) => n + mentions(p, t.names), 0) }))
