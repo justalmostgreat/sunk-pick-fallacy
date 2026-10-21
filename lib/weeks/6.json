@@ -618,66 +618,74 @@
     }
   },
   "recap": {
-    "headline": "Week 6 recap",
+    "headline": "WEEK 6 RECAP 🚨 Cody takes the throne, Adi’s prayers have hands, and Projection Champ needs to project somebody into his lineup 😭🙏🪑",
     "featured": [
       {
-        "matchup": 3,
-        "hook": "",
-        "body": "",
+        "matchup": 2,
+        "hook": "CODY BOUGHT A QUARTERBACK AND I PAID FOR IT 😭",
+        "body": "Cody beats me 132.52–123.06 and takes first on points among the three 4–2 teams 👑 This week he sent McLaurin to Adi for Jalon Daniels, then started Daniels for 10.66 against me. My Jameis brought 6.48. Man wants to eat a W; apparently I ordered the L combo 💀 Likely’s 23.9 couldn’t save me from Fannin’s 1.9, and I’ve turned 3–1 into 3–3. Arjun last week, Cody this week. At this point my weekly recap is just a victim impact statement 📝😭",
         "receipts": [
           {
-            "label": "Trevor Lawrence, pick 5.01",
+            "label": "Matthew Golden, Cody’s flex",
+            "value": "19.40"
+          },
+          {
+            "label": "Harold Fannin, Jag’s flex",
+            "value": "1.90"
+          },
+          {
+            "label": "Jalon Daniels, Cody’s new superflex",
+            "value": "10.66"
+          }
+        ]
+      },
+      {
+        "matchup": 3,
+        "hook": "THE PRAYERS HAVE STARTED SCORING POINTS 🙏",
+        "body": "Adi graduates from last week’s rock fight to the LEAGUE-HIGH score, beating Kartik 136.36–132.44 😂 Four straight wins, 4–2, third place… still second-last in season scoring. Explain that without mentioning divine intervention. And that Week 4 trade has come back to visit: JSN, the receiver Kartik sent Adi, dropped 19.4 against him 😭 Meanwhile Parkinson’s 14.1 sat on Kartik’s bench while Otton supplied 1.4. Kartik helped build the team, then left the points to beat it on his bench. Brother, this was a matchup, not a donation drive 🤝💀",
+        "receipts": [
+          {
+            "label": "Trevor Lawrence, Adi’s QB",
             "value": "27.34"
           },
           {
-            "label": "Cade Otton, pick 22.06",
+            "label": "Cade Otton, Kartik’s flex",
             "value": "1.40"
           },
           {
-            "label": "Colby Parkinson on the bench",
+            "label": "Colby Parkinson on Kartik’s bench",
             "value": "14.10"
           }
         ]
       },
       {
         "matchup": 5,
-        "hook": "",
-        "body": "",
+        "hook": "PROJECTION CHAMP, BENCH DIVISION 🪑",
+        "body": "Andrew loses 118.62–114.14 to Pranav with Kyle Pitts’s TWENTY-THREE sitting behind Freiermuth’s 3.1 😭 That swap wins by 15.42. Pitts finally gives you the game you’ve been waiting for and you’ve got him watching Pat Freiermuth. Pranav snaps three straight losses despite Skattebo and Ladd combining for 2.2 💀 The man’s 2–0 start has now completed the scenic route to 3–3. Andrew goes from last week’s league-high score to 2–4. That comeback documentary we funded in Week 4? Somebody check whether the cameraman is also on the bench 🎬😂",
         "receipts": [
           {
-            "label": "James Cook, pick 3.02",
+            "label": "James Cook, Pranav’s RB",
             "value": "22.80"
           },
           {
-            "label": "Denzel Boston, pick 12.05",
-            "value": "2.00"
+            "label": "Pat Freiermuth, Andrew’s TE",
+            "value": "3.10"
           },
           {
-            "label": "Kyle Pitts on the bench",
+            "label": "Kyle Pitts on Andrew’s bench",
             "value": "23.00"
-          }
-        ]
-      },
-      {
-        "matchup": 4,
-        "hook": "",
-        "body": "",
-        "receipts": [
-          {
-            "label": "Malik Nabers, pick 3.08",
-            "value": "22.50"
-          },
-          {
-            "label": "MarShawn Lloyd, pick 25.07",
-            "value": "1.00"
-          },
-          {
-            "label": "Alvin Kamara on the bench",
-            "value": "13.90"
           }
         ]
       }
     ],
-    "meme": null
+    "meme": {
+      "rosterId": 3,
+      "caption": "NINTH IN POINTS. FIRST IN PRAYERS.",
+      "src": "/assets/week-6.webp",
+      "alt": "Cream-and-forest-green meme collage of Adi's face on a football player in Tim Tebow's kneeling prayer pose, captioned 'NINTH IN POINTS. FIRST IN PRAYERS.'",
+      "width": 920,
+      "height": 1150
+    },
+    "cover": "meme"
   }
 }
