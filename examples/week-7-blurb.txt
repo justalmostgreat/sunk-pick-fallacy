@@ -8,3 +8,5 @@ COOKED BY A MAN ON VACATION ✈️ Pipsqueak beat tf out of me 165.32–101.30 i
 
 meme: Mateo - BETTER TO BE LUCKY THAN GOOD.
 cover: meme
+meme-image: /assets/week-7.webp
+meme-alt: Cream-and-forest-green meme of Mateo's grinning face pasted over Lamar Jackson's helmet as he dives for a one-handed catch in his No. 8 jersey, captioned 'BETTER TO BE LUCKY THAN GOOD.'

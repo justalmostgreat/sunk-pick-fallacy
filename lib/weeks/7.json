@@ -71,7 +71,7 @@
       "winner": 8,
       "loser": 3,
       "winnerPoints": 156.44,
-      "loserPoints": 133.86
+      "loserPoints": 133.76
     },
     {
       "matchup": 5,
@@ -104,7 +104,7 @@
       "losses": 3,
       "ties": 0,
       "pf": 993.04,
-      "pa": 947.24
+      "pa": 947.14
     },
     {
       "rosterId": 5,
@@ -119,7 +119,7 @@
       "wins": 4,
       "losses": 3,
       "ties": 0,
-      "pf": 893.86,
+      "pf": 893.76,
       "pa": 910.7
     },
     {
@@ -680,7 +680,11 @@
     ],
     "meme": {
       "rosterId": 7,
-      "caption": "BETTER TO BE LUCKY THAN GOOD."
+      "caption": "BETTER TO BE LUCKY THAN GOOD.",
+      "src": "/assets/week-7.webp",
+      "alt": "Cream-and-forest-green meme of Mateo's grinning face pasted over Lamar Jackson's helmet as he dives for a one-handed catch in his No. 8 jersey, captioned 'BETTER TO BE LUCKY THAN GOOD.'",
+      "width": 920,
+      "height": 1150
     },
     "cover": "meme"
   }
