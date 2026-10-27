@@ -6,7 +6,8 @@
 //   ALL-CAPS HOOK 💀 Then the story in normal case…  ← one paragraph per game, matched by the names in it
 //
 // Optional lines anywhere:  "meme: Jag - caption" puts the reaction photo on that game,
-//                           "cover: meme" puts it on this week's cover.
+//                           "cover: meme" puts it on this week's cover,
+//                           "headline: …" is the headline, for one that names coaches without opening "WEEK N RECAP".
 
 export type Parsed = {
   headline: string | null;
@@ -49,7 +50,7 @@ export function parseBlurb(text: string, teams: Team[], finals: Final[]): Parsed
   const problems: string[] = [];
   let meme: Parsed["meme"] = null;
   let cover = false;
-  let src: string | undefined, alt: string | undefined;
+  let src: string | undefined, alt: string | undefined, title: string | undefined;
   const reply = cleanReply(text);
   const lines: string[] = [];
   for (const line of reply.split("\n")) {
@@ -74,6 +75,8 @@ export function parseBlurb(text: string, teams: Team[], finals: Final[]): Parsed
       continue;
     }
     if (/^\s*cover:\s*meme\s*$/i.test(line)) { cover = true; continue; }
+    const heading = line.match(/^\s*headline:\s*(.+)$/i);
+    if (heading) { title = heading[1].trim(); continue; }
     lines.push(line);
   }
   if ((cover || src || alt) && !meme) problems.push("Add a line like 'meme: Jag - caption' to choose the game for the picture.");
@@ -87,12 +90,12 @@ export function parseBlurb(text: string, teams: Team[], finals: Final[]): Parsed
     return hook && body;
   })) paragraphs = nonempty;
 
-  let headline: string | null = null;
+  let headline: string | null = title ?? null;
   const games: Parsed["games"] = [];
   const used = new Set<number>();
   paragraphs.forEach((p, i) => {
     // A "WEEK 6 RECAP 🚨 Cody takes the throne…" opener is the headline even when it names coaches.
-    if (i === 0 && paragraphs.length > 1 && /^\P{L}*WEEK\s+\d+\s+RECAP\b/iu.test(p)) { headline = p; return; }
+    if (i === 0 && !title && paragraphs.length > 1 && /^\P{L}*WEEK\s+\d+\s+RECAP\b/iu.test(p)) { headline = p; return; }
     const best = finals
       .filter(f => !used.has(f.matchup))
       .map(f => ({ f, n: teams.filter(t => t.id === f.winner || t.id === f.loser).reduce((n, t) => n + mentions(p, t.names), 0) }))
@@ -100,7 +103,7 @@ export function parseBlurb(text: string, teams: Team[], finals: Final[]): Parsed
     if (best?.n) {
       used.add(best.f.matchup);
       games.push({ matchup: best.f.matchup, ...splitHook(p) });
-    } else if (i === 0) headline = p;
+    } else if (i === 0 && !title) headline = p;
     else problems.push(`Couldn’t tell which game this is about; name a coach or team in it: “${p.slice(0, 70)}…”`);
   });
   if (!games.length) problems.push("No games found. Give each game its own paragraph, starting with an ALL-CAPS hook.");

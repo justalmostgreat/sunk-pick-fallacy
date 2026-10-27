@@ -48,7 +48,8 @@ omitting `meme:` removes it. The parser strips quoted email history and reports 
 2. It understands the usual format: an optional first line becomes the headline; each game gets its own paragraph
    that opens with an ALL-CAPS hook; paragraphs are matched to games by the coach or team names in them.
    Optional lines: `meme: <name> - <caption>` puts the reaction photo on that game; `cover: meme` puts it on the
-   cover for that week only.
+   cover for that week only; `headline: <text>` sets a headline that names coaches but doesn't open "WEEK N RECAP"
+   (as a plain first line it would be read as a story).
 3. If it can't place a paragraph, add the coach's first name to it and rerun. Rerunning replaces the recap.
 4. Run `npm run check`, commit `lib/weeks/` on a branch, and open a pull request. Main requires a pull request;
    do not disable branch protection or push directly to it. After merge, verify the Publish run.

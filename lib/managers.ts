@@ -10,7 +10,7 @@ export const firstNames: Partial<Record<number, string>> = {
   4: "Jit", // littyjitty
   5: "Jorge", // primalJay / Pipsqueak
   6: "Kartik", // shotgunb365
-  7: "Mateo", // elmateoruix / J Herbo (provisional, not yet confirmed)
+  7: "Mateo", // elmateoruix / The Schedule
   8: "Pranav", // pranavmenon08
   9: "Arjun", // squirmyearth163
   10: "Cody", // CodyJuanKenobi
