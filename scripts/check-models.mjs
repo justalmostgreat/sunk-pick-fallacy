@@ -119,6 +119,10 @@ assert.equal(parseBlurb("WEEK 3 RECAP\nTHE COMMISH WINS. Jag beat Jit.\nADI WINS
 const named = parseBlurb("WEEK 6 RECAP 🚨 Jit takes the throne and Adi’s prayers have hands\n\nTHE COMMISH FALLS. Jit beat Jag.\n\nPRAYERS WORK. Andrew lost to Adi.", blurbTeams, blurbFinals);
 assert.equal(named.headline, "WEEK 6 RECAP 🚨 Jit takes the throne and Adi’s prayers have hands");
 assert.deepEqual([named.games.map(g => g.matchup), named.problems], [[1, 2], []]);
+// So does a "headline:" line without the WEEK N RECAP opener; every paragraph is then a story.
+const titled = parseBlurb("headline: LUCKY 🚨 Jit takes the throne and Adi wakes up\n\nTHE COMMISH FALLS. Jit beat Jag.\n\nPRAYERS WORK. Andrew lost to Adi.", blurbTeams, blurbFinals);
+assert.equal(titled.headline, "LUCKY 🚨 Jit takes the throne and Adi wakes up");
+assert.deepEqual([titled.games.map(g => g.matchup), titled.problems], [[1, 2], []]);
 
 // Coach phone links: every named coach, including Jag. Aditya shares Adi's line.
 const expected = {
