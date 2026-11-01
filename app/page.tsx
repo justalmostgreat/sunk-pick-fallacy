@@ -4,7 +4,7 @@ import { Price } from "@/components/price";
 import { scoutNotes } from "@/lib/insights";
 import { firstNames } from "@/lib/managers";
 import { dynastyRankings } from "@/lib/dynasty";
-import { gameClock, liveStandings } from "@/lib/live";
+import { gameClock, kickoffStandings, liveStandings } from "@/lib/live";
 import { feeds, teamName } from "@/lib/sleeper";
 import { weeks } from "@/lib/weeks";
 
@@ -24,10 +24,14 @@ async function loadLive() {
   const clock = espn?.week?.number === state.week ? gameClock(espn) : new Map<string, number>();
   const top100 = new Set((values ?? []).filter(v => v.overallRank <= 100).flatMap(v => (v.player.sleeperId ? [v.player.sleeperId] : [])));
   const owner = new Map(users.map(u => [u.user_id, u]));
+  const countWeek = league.settings.last_scored_leg < state.week;
+  const input = { rosters, matchups, projections, scoring: league.scoring_settings, clock, countWeek, top100 };
   return {
     week: state.week,
     names: Object.fromEntries(rosters.map(r => [r.roster_id, { name: teamName(owner.get(r.owner_id)) }])),
-    rows: liveStandings({ rosters, matchups, projections, scoring: league.scoring_settings, clock, countWeek: league.settings.last_scored_leg < state.week, top100 }),
+    countWeek,
+    rows: liveStandings(input),
+    kickoff: rankOf(kickoffStandings(input).map(r => r.rosterId)),
     dynasty: values && dynastyRankings({ rosters, values, traded, projections, season: league.season, rounds: league.settings.draft_rounds, played: league.settings.last_scored_leg, weeks: league.settings.playoff_week_start - 1 }),
     gamesLive: espn?.events.filter(e => e.status.type.state === "in").length ?? 0,
   };
@@ -59,9 +63,9 @@ export default async function Home() {
     <main>
       <section aria-labelledby="standings" data-track-section="standings">
         <h2 className="shead" id="standings">Live standings</h2>
-        <p className="sub">{live ? `Record so far, plus Week ${live.week} as if it ended right now · moves are since last week` : `After Week ${last.week}`}</p>
+        <p className="sub">{live ? `${live.countWeek ? `Record if every Week ${live.week} favorite holds on` : `After Week ${live.week}`} · moves are since kickoff` : `After Week ${last.week}`}</p>
         {live
-          ? <LiveStandings rows={live.rows} names={names} before={rankOf(last.standings.map(s => s.rosterId))} href={href} />
+          ? <LiveStandings rows={live.rows} names={names} before={live.kickoff} href={href} />
           : <StandingsTable snap={last} href={href} />}
       </section>
 

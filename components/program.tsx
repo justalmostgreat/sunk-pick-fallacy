@@ -17,6 +17,7 @@ type Href = (rosterId: number) => string | undefined;
 const pts = (n: number) => n.toFixed(2);
 const thousands = (n: number) => `${(n / 1000).toFixed(1)}k`;
 const pct = (p: number) => `${Math.round(p * 100)}%`;
+const record = (r: { wins: number; losses: number; ties: number }) => `${r.wins}–${r.losses}${r.ties ? `–${r.ties}` : ""}`;
 
 type Meme = NonNullable<NonNullable<Snapshot["recap"]>["meme"]>;
 
@@ -48,9 +49,9 @@ export function Name({ id, names, href }: { id: number; names: Names; href?: Hre
   </span>;
 }
 
-function Move({ by }: { by?: number }) {
+function Move({ by, since = "last week" }: { by?: number; since?: string }) {
   if (by === undefined) return <span className="move" />;
-  const label = by > 0 ? `Up ${by} since last week` : by < 0 ? `Down ${-by} since last week` : "Same spot as last week";
+  const label = by > 0 ? `Up ${by} since ${since}` : by < 0 ? `Down ${-by} since ${since}` : `Same spot since ${since}`;
   return <span className="move" data-dir={by > 0 ? "up" : by < 0 ? "down" : "same"} title={label}>
     <span aria-hidden="true">{by > 0 ? `▲ ${by}` : by < 0 ? `▼ ${-by}` : "—"}</span>
     <span className="sr-only">{label}</span>
@@ -70,9 +71,11 @@ export function LiveStandings({ rows, names, before, href }: { rows: LiveRow[]; 
     const opp = w?.opponent ? names[w.opponent]?.name : null;
     return <li key={r.rosterId} className={i + 1 === PLAYOFF_TEAMS ? "cut" : undefined}>
       <span className="n">{i + 1}</span>
-      <Move by={moved(before, r.rosterId, i + 1)} />
+      <Move by={moved(before, r.rosterId, i + 1)} since="kickoff" />
       <Name id={r.rosterId} names={names} href={href} />
-      <p className="rec"><b>{r.wins}–{r.losses}{r.ties ? `–${r.ties}` : ""}</b>{pts(r.pf)} pts</p>
+      <p className="rec"><b>{record(r)}{r.projected && <>
+        <span className="to" aria-hidden="true"> → </span><span className="sr-only">, {w?.state === "final" ? "now" : "projected"} </span>{record(r.projected)}
+      </>}</b>{pts(r.pf)} pts</p>
       {w && <p className="wk" data-state={w.state}>{
         w.state === "final" ? <>{w.winProb > 0.5 ? "Won" : w.winProb < 0.5 ? "Lost" : "Tied"} {pts(w.points)}–{pts(w.oppPoints)} vs {opp}</>
         : w.state === "live" ? <>{pts(w.points)} · proj {w.projected.toFixed(1)} vs {opp} · <b>{pct(w.winProb)}</b></>
