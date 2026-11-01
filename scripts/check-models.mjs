@@ -1,6 +1,6 @@
 // Self-check for the live and dynasty models: node scripts/check-models.mjs
 import assert from "node:assert/strict";
-import { gameClock, liveStandings, score } from "../lib/live.ts";
+import { gameClock, kickoffStandings, liveStandings, score } from "../lib/live.ts";
 import { dynastyRankings } from "../lib/dynasty.ts";
 import { noteCandidates, scoutNotes } from "../lib/insights.ts";
 import { cleanReply, parseBlurb, splitHook } from "../lib/blurb.ts";
@@ -36,8 +36,28 @@ assert.equal(one.week.state, "live");
 assert.equal(one.week.oppPoints, 0);
 assert.ok(one.week.winProb > 0.99 && Math.abs(one.week.winProb + two.week.winProb - 1) < 1e-9);
 assert.deepEqual(one.busts, [{ name: "a3 X", points: 3 }]); // finished top-100 starter under 5; a1 scored 22
-assert.equal(rows[0].rosterId, 1); // if it ended now: 0–1 + leading = 1–0 + trailing, PF breaks the tie
-assert.equal(liveStandings({ ...input, countWeek: false })[0].rosterId, 2); // week already counted: records alone decide
+assert.deepEqual([one.projected, two.projected], [{ wins: 1, losses: 1, ties: 0 }, { wins: 1, losses: 1, ties: 0 }]); // the favorite takes the week
+assert.equal(rows[0].rosterId, 1); // both project 1–1; season points plus projected finish break the tie
+const later = liveStandings({ ...input, countWeek: false });
+assert.equal(later[0].rosterId, 2); // week already counted: records alone decide
+assert.equal(later[0].projected, null);
+
+// Trailing 0–33 but favored (50 projected to 38): the week goes to the favorite, not the current leader.
+const comeback = { ...input, projections: projections.map(p => (p.player_id === "b1" ? player("b1", "BUF", 50) : p)), countWeek: true };
+const [first, second] = liveStandings(comeback);
+assert.equal(first.rosterId, 2);
+assert.ok(first.week.points < first.week.oppPoints && first.week.winProb > 0.5);
+assert.deepEqual([first.projected, second.projected], [{ wins: 2, losses: 0, ties: 0 }, { wins: 0, losses: 2, ties: 0 }]);
+
+// Kickoff baseline: full-game projections, nothing scored, so 30 (a1–a3) to 10 (b1; SEA on bye).
+const pre = kickoffStandings({ ...input, countWeek: true });
+assert.deepEqual(pre.map(r => [r.rosterId, r.week.projected, r.week.state]), [[1, 30, "pre"], [2, 10, "pre"]]);
+assert.deepEqual(kickoffStandings(comeback).map(r => r.rosterId), [2, 1]); // 30 to 50 at kickoff: team 2 starts on top
+// Once Sleeper has counted the week (team 1 won 33–0), the baseline takes that result back out.
+const counted = kickoffStandings({ ...input, rosters: [roster(1, 1, 1, 133), roster(2, 1, 1, 90)], countWeek: false });
+const c1 = counted.find(r => r.rosterId === 1), c2 = counted.find(r => r.rosterId === 2);
+assert.deepEqual([c1.wins, c1.losses, c1.pf, c2.wins, c2.losses, c2.pf], [0, 1, 100, 1, 0, 90]);
+assert.equal(counted[0].rosterId, 1); // both project 1–1 from there; 100 + 30 beats 90 + 10
 
 const values = [
   { player: { name: "Star", sleeperId: "s", position: "QB", maybeAge: 24 }, value: 9000, redraftValue: 0, overallRank: 5 }, // out for the season
