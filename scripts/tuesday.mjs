@@ -16,7 +16,7 @@ const run = script => execFileSync(process.execPath, [fileURLToPath(new URL(scri
 if (asked || !saved) console.log(run("./snapshot.mjs"));
 else console.log(`Week ${week} is already saved. Preparing its report in case notification needs a retry.`);
 const report = [
-  `Week ${week} is final and saved. The scout's ranking of every game, most talked-about first:`,
+  `Week ${week} is final and saved. The scout's report: the league at a glance, then every game, most talked-about first, with the angles and receipts for your blurb.`,
   "",
   run("./scout.mjs"),
   "",
