@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { gameClock, kickoffStandings, liveStandings, score } from "../lib/live.ts";
 import { dynastyRankings } from "../lib/dynasty.ts";
+import { deepNotes } from "../lib/deep-notes.ts";
 import { noteCandidates, scoutNotes } from "../lib/insights.ts";
 import { cleanReply, parseBlurb, splitHook } from "../lib/blurb.ts";
 import phones from "../lib/coaches.json" with { type: "json" };
@@ -123,6 +124,41 @@ for (let s = 0; s < 60; s++) {
   assert.ok(kinds.every(k => kinds.filter(x => x === k).length <= 2)); // variety
 }
 assert.deepEqual(scoutNotes({ weeks, dynasty, first: {}, seed: 0.42 }), scoutNotes({ weeks, dynasty, first: {}, seed: 0.42 })); // same seed, same notes
+// Season-long notes: four teams, two weeks, lineup QB / RB / FLEX.
+const mu = (roster_id, matchup_id, starters, pp, bench = []) => ({ roster_id, matchup_id, starters, players: [...starters, ...bench], players_points: pp, points: starters.reduce((a, p) => a + pp[p], 0) });
+const people = Object.fromEntries([["q", "QB"], ["r", "RB"], ["w", "WR"], ["d", "WR"]].flatMap(([k, position]) => [1, 2, 3, 4, 9].map(i => [`${k}${i}`, { name: `${k.toUpperCase()} ${i}`, position }])));
+const played = Object.fromEntries(Object.keys(people).map(p => [p, { points: 0, played: true }]));
+const season = {
+  week: 2, slots: ["QB", "RB", "FLEX", "BN", "BN"], scoring: { rush_yd: 0.1, pass_yd: 0.04 },
+  teams: { 1: "One", 2: "Two", 3: "Three", 4: "Four" }, first: { 1: "Jag", 2: "Andrew", 4: "Cody" },
+  matchups: [
+    [mu(1, 1, ["q1", "r1", "w1"], { q1: 20, r1: 2, w1: 10, r9: 15, d2: 0 }, ["r9", "d2"]), mu(2, 1, ["q2", "r2", "w2"], { q2: 25, r2: 10, w2: 5, d1: 0 }, ["d1"]),
+      mu(3, 2, ["q3", "r3", "w3"], { q3: 20, r3: 10, w3: 5 }), mu(4, 2, ["q4", "r4", "w4"], { q4: 10, r4: 10, w4: 10 })],
+    [mu(1, 1, ["q1", "r1", "w1"], { q1: 20, r1: 2, w1: 10, r9: 15 }, ["r9"]), mu(3, 1, ["q3", "r3", "w3"], { q3: 20, r3: 10, w3: 5 }),
+      mu(2, 2, ["q2", "r2", "w2"], { q2: 20, r2: 9, w2: 1 }), mu(4, 2, ["q4", "r4", "w4"], { q4: 11, r4: 11, w4: 11, d1: 10 }, ["d1"])],
+  ],
+  projected: [{}, {}],
+  stats: [played, { ...played, d1: { points: 10, played: true }, d2: { points: 1, played: true } }],
+  players: people,
+  moves: [[{ type: "free_agent", status: "complete", adds: null, drops: { d1: 2 }, roster_ids: [2] }, { type: "free_agent", status: "complete", adds: null, drops: { d2: 1 }, roster_ids: [1] }], []],
+  draft: [],
+  rosters: { 1: [], 2: [], 3: [], 4: ["d1"] },
+};
+const deep = deepNotes(season);
+const textOf = (id, kind) => deep[id].filter(c => c.kind === kind).map(c => c.text);
+// R 9 started over R 1 both weeks turns two losses (by 8 and 3) into wins.
+assert.deepEqual(textOf(1, "swap"), ["Starting R 9 over R 1 in the 2 weeks Jag had both would have made Jag 2–0, not 0–2."]);
+// D 1, dropped by Andrew in Week 1, scored 10 in Week 2: in for W 2 (1 point), 39 beats Cody's 33.
+assert.deepEqual(textOf(2, "got away"), ["Andrew dropped D 1 in Week 1. D 1’s 10.00 in Week 2 would have beaten Cody instead of losing by 3.00. D 1 is on Cody’s roster now."]);
+assert.deepEqual(textOf(1, "got away"), []); // D 2's 1 point flips nothing, so no note
+assert.deepEqual(textOf(1, "projected"), []); // no projections, no projection notes
+assert.ok(deep[1].some(c => c.kind === "costly call" && c.text.startsWith("Lost Week 2 to Three by 3.00 with R 9’s 15.00 on the bench.")));
+assert.ok(deep[2].some(c => c.text === "Andrew lost Week 2 by 3.00. 31 more rushing yards, or 76 passing yards, would have flipped it."));
+// The saved notes join the draw, and the picks still respect the two-per-kind cap.
+const withDeep = [...weeks.slice(0, -1), { ...weeks.at(-1), scout: { 1: [{ kind: "swap", score: 5, text: "Saved note." }] } }];
+assert.ok(noteCandidates({ weeks: withDeep, dynasty, first: {} }).get(1).some(c => c.text === "Saved note."));
+assert.ok(Array.from({ length: 40 }, (_, s) => scoutNotes({ weeks: withDeep, dynasty, first: {}, seed: s / 40 }).get(1).text).includes("Saved note."));
+
 // Blurb parser: the real formats from the Week 1 and Week 2 blurbs.
 assert.deepEqual(splitHook("CODY’S BALL KNOWLEDGE ISN’T ENOUGH. 151.04 points, and more"), { hook: "CODY’S BALL KNOWLEDGE ISN’T ENOUGH.", body: "151.04 points, and more" });
 assert.deepEqual(splitHook("YALL REALLY LET THE COMMISH GET KENNETH WALKER 😼😭 I went into MNF"), { hook: "YALL REALLY LET THE COMMISH GET KENNETH WALKER 😼😭", body: "I went into MNF" });

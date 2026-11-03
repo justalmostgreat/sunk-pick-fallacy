@@ -9,15 +9,20 @@ export type Roster = {
   settings: { wins: number; losses: number; ties: number; fpts: number; fpts_decimal?: number; fpts_against?: number; fpts_against_decimal?: number };
 };
 export type Matchup = { roster_id: number; matchup_id: number | null; points: number | null; starters: string[]; players?: string[]; players_points: Record<string, number> | null };
-export type DraftPick = { player_id: string; round: number; draft_slot: number; pick_no: number };
+export type DraftPick = { player_id: string; round: number; draft_slot: number; pick_no: number; roster_id: number; metadata?: { first_name?: string; last_name?: string; position?: string } };
 export type User = { user_id: string; display_name: string; metadata?: { team_name?: string } };
-export type League = { season: string; settings: { playoff_teams: number; playoff_week_start: number; last_scored_leg: number; draft_rounds: number }; scoring_settings: Record<string, number> };
+export type League = { season: string; roster_positions: string[]; settings: { playoff_teams: number; playoff_week_start: number; last_scored_leg: number; draft_rounds: number }; scoring_settings: Record<string, number> };
 export type NflState = { week: number; season: string };
 export type Projection = {
   player_id: string;
   stats: Record<string, number>;
   player: { first_name: string; last_name: string; position: string; team: string | null; injury_status: string | null } | null;
 };
+export type Transaction = {
+  type: string; status: string; roster_ids: number[]; adds: Record<string, number> | null; drops: Record<string, number> | null;
+  draft_picks?: { season: string; round: number; owner_id: number }[];
+};
+export type StatLine = { player_id: string; stats: Record<string, number>; player: Projection["player"] };
 export type TradedPick = { season: string; round: number; roster_id: number; owner_id: number };
 export type FcValue = { player: { name: string; sleeperId?: string; position: string; maybeAge?: number }; value: number; redraftValue: number; overallRank: number };
 export type Espn = {
@@ -44,6 +49,9 @@ export const feeds = {
   matchups: (week: number) => get<Matchup[]>(`${SLEEPER}/league/${LEAGUE_ID}/matchups/${week}`),
   tradedPicks: () => get<TradedPick[]>(`${SLEEPER}/league/${LEAGUE_ID}/traded_picks`),
   startupPicks: () => get<DraftPick[]>(`${SLEEPER}/draft/1392799571096109056/picks`),
+  transactions: (week: number) => get<Transaction[]>(`${SLEEPER}/league/${LEAGUE_ID}/transactions/${week}`),
+  stats: (season: string, week: number) =>
+    get<StatLine[]>(`https://api.sleeper.com/stats/nfl/${season}/${week}?${new URLSearchParams([["season_type", "regular"], ...positions])}`),
   projections: (season: string, week: number) =>
     get<Projection[]>(`https://api.sleeper.com/projections/nfl/${season}/${week}?${new URLSearchParams([["season_type", "regular"], ...positions])}`),
   values: () => get<FcValue[]>("https://api.fantasycalc.com/values/current?isDynasty=true&numQbs=2&numTeams=10&ppr=0.5&includeAdp=false"),

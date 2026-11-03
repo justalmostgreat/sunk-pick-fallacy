@@ -10,6 +10,17 @@ const f2 = (n: number) => n.toFixed(2);
 const k = (n: number) => `${(n / 1000).toFixed(1)}k`;
 const ord = (n: number) => n + (["th", "st", "nd", "rd"][n % 10 > 3 || Math.floor((n % 100) / 10) === 1 ? 0 : n % 10] ?? "th");
 
+// How often each kind of note comes up, relative to the others (1 = full rate): the commissioner's ratings.
+// Unlisted kinds get 0.5. The original notes are demoted because they stay true for weeks, which made the page feel stale.
+const WEIGHT: Record<string, number> = {
+  swap: 1, "got away": 1, multiverse: 1, projected: 1, trade: 1, draft: 1, projection: 1, heartbreak: 1, cursed: 1, lore: 1,
+  "costly call": 0.75, perfect: 0.75, steady: 0.75, rooms: 0.75, "bench team": 0.75, units: 0.75,
+  star: 0.5, ghost: 0.5,
+  rematch: 1, "this week": 0.75, injury: 0.75, streak: 0.75, luck: 0.75,
+  high: 0.5, low: 0.5, trend: 0.5, margin: 0.5, mvp: 0.5, average: 0.5, schedule: 0.5, opponent: 0.5,
+  age: 0.25, picks: 0.25, value: 0.25,
+};
+
 // mulberry32: a tiny seeded PRNG, so one seed always gives the same set of notes.
 function rng(seed: number) {
   let a = Math.floor(seed * 2 ** 32) >>> 0;
@@ -113,12 +124,21 @@ export function noteCandidates(input: Facts): Map<number, (Note & { score: numbe
       add("this week", 1 + Math.abs(now.winProb - 0.5) * 3, `${Math.round(now.winProb * 100)}% to beat ${who(opp)} this week.`);
       if (g.length) add("opponent", 1, `This week’s opponent, ${who(opp)}, averages ${f1(avg(opp))}.`);
     }
+    // The season-long notes saved with the latest snapshot: what could have been.
+    for (const c of latest?.scout?.[id] ?? []) out.push(c);
     return out;
   };
   return new Map(ids.map(id => [id, candidates(id)]));
 }
 
-// One scout's note per team. A new seed reshuffles the picks; no kind of note shows up more than twice on the page.
+function draw<T>(items: T[], weight: (item: T) => number, rand: () => number): T | undefined {
+  const ws = items.map(weight);
+  let r = rand() * ws.reduce((a, b) => a + b, 0);
+  return items.find((_, i) => (r -= ws[i]) < 0) ?? items.at(-1);
+}
+
+// One scout's note per team, drawn at random: likelier the more interesting the note and the higher its kind's weight.
+// A new seed reshuffles the picks; no kind of note shows up more than twice on the page.
 export function scoutNotes(input: Facts & { seed: number }): Map<number, Note> {
   const all = noteCandidates(input);
   const rand = rng(input.seed);
@@ -126,8 +146,14 @@ export function scoutNotes(input: Facts & { seed: number }): Map<number, Note> {
   const notes = new Map<number, Note>();
   const order = [...all.keys()].map(id => ({ id, r: rand() })).sort((a, b) => a.r - b.r);
   for (const { id } of order) {
-    const ranked = all.get(id)!.map(c => ({ ...c, s: c.score + rand() * 2 })).sort((a, b) => b.s - a.s);
-    const pick = ranked.find(c => (used.get(c.kind) ?? 0) < 2) ?? ranked[0];
+    const open = all.get(id)!.filter(c => (used.get(c.kind) ?? 0) < 2);
+    const pool = open.length ? open : all.get(id)!;
+    // First the kind (its weight times its best note), then the note within it, so a kind with many notes
+    // doesn't crowd out the rest.
+    const kinds = [...new Set(pool.map(c => c.kind))];
+    const best = (k: string) => Math.max(...pool.filter(c => c.kind === k).map(c => Math.max(0.1, c.score)));
+    const kind = draw(kinds, k => (WEIGHT[k] ?? 0.5) * best(k), rand);
+    const pick = kind && draw(pool.filter(c => c.kind === kind), c => Math.max(0.1, c.score), rand);
     if (!pick) continue;
     used.set(pick.kind, (used.get(pick.kind) ?? 0) + 1);
     notes.set(id, { kind: pick.kind, text: pick.text });
