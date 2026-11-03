@@ -10,6 +10,8 @@ Standings, rankings and scout's notes pull from Sleeper and FantasyCalc on every
    and opens a "Week N is final" GitHub issue with the scout's report (the league at a glance, then every game ranked
    with its story angles and receipts, from `weekReport` in `lib/deep-notes.ts`) and last week's reader
    numbers from Cloudflare plus aggregate PostHog engagement (`scripts/readers.mjs`; the Readers workflow shows both on demand).
+   To email a fresh report for a week whose issue already exists, run the Tuesday workflow by hand with **resend**
+   checked: it posts the report as a comment on that issue, and GitHub emails the assignee.
 2. The commissioner writes the group-chat blurb, then either replies to that issue with it (`.github/workflows/blurb.yml`
    puts it on the site, commits, and closes the issue) or asks an assistant to add it.
 3. `.github/workflows/publish.yml` checks, builds, and publishes `main` to the public Cloudflare Worker
