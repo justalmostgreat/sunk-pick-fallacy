@@ -6,6 +6,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { feeds } from "../lib/sleeper.ts";
+import { laterNotes } from "./later.mjs";
 
 const asked = process.argv[2];
 const week = Number(asked || (await feeds.league()).settings.last_scored_leg);
@@ -15,7 +16,9 @@ const saved = existsSync(new URL(`../lib/weeks/${week}.json`, import.meta.url));
 const run = script => execFileSync(process.execPath, [fileURLToPath(new URL(script, import.meta.url)), String(week)], { encoding: "utf8" }).trim();
 if (asked || !saved) console.log(run("./snapshot.mjs"));
 else console.log(`Week ${week} is already saved. Preparing its report in case notification needs a retry.`);
+const later = laterNotes(week);
 const report = [
+  ...(later ? [later, ""] : []),
   `Week ${week} is final and saved. The scout's ranking of every game, most talked-about first:`,
   "",
   run("./scout.mjs"),

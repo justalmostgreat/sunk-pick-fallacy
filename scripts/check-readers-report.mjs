@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { cloudflareReaders, readersReport, insertReaderSection, summarize } from "./readers.mjs";
+import { laterNotes } from "./later.mjs";
 
 const instant = new Date("2026-10-20T14:00:00Z");
 const summary = summarize([{ count: 10, dimensions: { date: "2026-10-19", clientDeviceType: "mobile", clientRequestPath: "/" } }], new Date("2026-10-20T00:00:00Z")).join("\n");
@@ -25,4 +26,13 @@ assert.ok(output.indexOf("Scouting notes") < output.indexOf("Cloudflare counts")
 assert.ok(output.indexOf("PostHog aggregates") < output.indexOf("---"));
 assert.match(output, /Reply with your blurb/);
 assert.equal(insertReaderSection("6\nReport", "Stats"), "6\nReport\nStats\n");
+// Reminders the commissioner asked for: only in their weeks, quoted, and never a "---" line that would
+// pull the reader numbers above the scout's ranking.
+assert.equal(laterNotes(10), ""); assert.equal(laterNotes(13), "");
+for (const week of [11, 12]) {
+  const note = laterNotes(week);
+  assert.match(note, /^> \*\*Later:/); assert.match(note, /trade deadline/);
+  assert.ok(note.split("\n").every(l => l.startsWith(">") && l.trim() !== "---"));
+}
+assert.equal(laterNotes(4, [{ weeks: [4], lines: ["a", "b"] }, { weeks: [4], lines: ["c"] }]), "> a\n>\n> b\n\n> c");
 console.log("combined readers report checks passed");
