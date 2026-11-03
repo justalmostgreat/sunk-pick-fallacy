@@ -1,3 +1,4 @@
+import type { Candidate } from "../deep-notes";
 import type { DynastyRow } from "../dynasty";
 import w1 from "./1.json";
 import w2 from "./2.json";
@@ -25,6 +26,7 @@ export type Snapshot = {
   dynasty: DynastyRow[] | null;
   mvp?: Record<string, { name: string; points: number }>; // each team's top-scoring starter that week
   recap: Recap | null;
+  scout?: Record<string, Candidate[]> | null; // the season-long scout's notes, by roster id (the latest week only)
 };
 
 // Oldest first. After `node scripts/snapshot.mjs <week>`, import the new file here.

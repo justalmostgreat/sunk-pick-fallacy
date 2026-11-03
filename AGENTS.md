@@ -66,6 +66,9 @@ omitting `meme:` removes it. The parser strips quoted email history and reports 
 - `lib/managers.ts`: first names and the nicknames blurbs use ("Commish", "Aditya").
 - `lib/dynasty.ts`: `CUTS`, the commissioner's injury discounts. Remove Jaxson Dart's once he's back.
 - `components/price.tsx`: the cover's rotating prices; add new league lore here.
+- `lib/insights.ts` `WEIGHT`: how often each kind of scout's note comes up (the commissioner's ratings; 1 = full rate).
+  The season-long notes (start/sit swaps, dropped players who'd have flipped a loss, schedule swaps, trades, draft regret)
+  come from `lib/deep-notes.ts`; the Tuesday snapshot saves them in the latest week's JSON (`node scripts/deep-notes.mjs <week>` refreshes one).
 
 ## Checks
 

@@ -4,6 +4,7 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { feeds, teamName } from "../lib/sleeper.ts";
 import { dynastyRankings } from "../lib/dynasty.ts";
+import { seasonNotes } from "./deep-notes.mjs";
 
 const week = Number(process.argv[2]);
 if (!week) throw new Error("Usage: node scripts/snapshot.mjs <week>");
@@ -56,12 +57,14 @@ const teams = Object.fromEntries(rosters.map(r => {
   return [r.roster_id, { name: teamName(u), handle: u?.display_name ?? "" }];
 }));
 
+// The season-long scout's notes (what could have been) need the whole season so far, so only the latest week gets them.
 const previous = existsSync(file) ? JSON.parse(readFileSync(file, "utf8")) : {};
-const snapshot = { week, season: league.season, capturedAt: new Date().toISOString(), teams, finals, standings, dynasty, mvp, recap: previous.recap ?? null };
+const scout = latest ? await seasonNotes(week, { league, rosters, users, matchups: weeks }) : previous.scout ?? null;
+const snapshot = { week, season: league.season, capturedAt: new Date().toISOString(), teams, finals, standings, dynasty, mvp, recap: previous.recap ?? null, scout };
 writeFileSync(file, JSON.stringify(snapshot, null, 2) + "\n");
 const index = new URL("../lib/weeks/index.ts", import.meta.url);
 const src = readFileSync(index, "utf8");
 if (!src.includes(`"./${week}.json"`)) writeFileSync(index, src
   .replace(/((?:import w\d+ from "\.\/\d+\.json";\n)+)/, `$1import w${week} from "./${week}.json";\n`)
   .replace(/export const weeks = \[([^\]]*)\]/, `export const weeks = [$1, w${week}]`));
-console.log(`Wrote lib/weeks/${week}.json — ${finals.length} finals, dynasty ${dynasty ? "captured" : "skipped"}, recap ${snapshot.recap ? "kept" : "empty"}.`);
+console.log(`Wrote lib/weeks/${week}.json — ${finals.length} finals, dynasty ${dynasty ? "captured" : "skipped"}, recap ${snapshot.recap ? "kept" : "empty"}, scout's notes ${scout ? "captured" : "skipped"}.`);
