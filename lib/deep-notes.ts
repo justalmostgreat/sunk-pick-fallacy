@@ -1,5 +1,6 @@
-// Season-long scout's notes: what could have been. Computed once a week from Sleeper (lineups with bench points,
-// transactions, projections, the startup draft) and saved with that week's snapshot, so page views stay fast.
+// The scout: season-long notes (what could have been) and the Tuesday report on each finished week. Computed once a
+// week from Sleeper (lineups with bench points, transactions, projections, the startup draft) and saved with that
+// week's snapshot, so page views stay fast.
 import type { Matchup } from "./sleeper";
 
 export type Candidate = { kind: string; score: number; text: string };
@@ -23,31 +24,29 @@ export type Season = {
 
 const ELIGIBLE: Record<string, string[]> = { QB: ["QB"], RB: ["RB"], WR: ["WR"], TE: ["TE"], FLEX: ["RB", "WR", "TE"], WRRB_FLEX: ["RB", "WR"], REC_FLEX: ["WR", "TE"], SUPER_FLEX: ["QB", "RB", "WR", "TE"] };
 const FILL = ["QB", "RB", "WR", "TE", "WRRB_FLEX", "REC_FLEX", "FLEX", "SUPER_FLEX"]; // most restrictive first
-const f1 = (n: number) => n.toFixed(1);
-const f2 = (n: number) => n.toFixed(2);
-const ord = (n: number) => n + (["th", "st", "nd", "rd"][n % 10 > 3 || Math.floor((n % 100) / 10) === 1 ? 0 : n % 10] ?? "th");
+export const f1 = (n: number) => n.toFixed(1);
+export const f2 = (n: number) => n.toFixed(2);
+export const ord = (n: number) => n + (["th", "st", "nd", "rd"][n % 10 > 3 || Math.floor((n % 100) / 10) === 1 ? 0 : n % 10] ?? "th");
 const times = (n: number) => (n === 2 ? "twice" : `${n} times`);
-const list = (xs: string[]) => (xs.length < 3 ? xs.join(" and ") : `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}`);
-const result = (a: number, b: number) => (a > b ? 1 : a < b ? 0 : 0.5);
-const record = (rs: number[]) => {
+export const list = (xs: string[]) => (xs.length < 3 ? xs.join(" and ") : `${xs.slice(0, -1).join(", ")} and ${xs.at(-1)}`);
+export const result = (a: number, b: number) => (a > b ? 1 : a < b ? 0 : 0.5);
+export const record = (rs: number[]) => {
   const w = rs.filter(r => r === 1).length, l = rs.filter(r => r === 0).length, t = rs.length - w - l;
   return `${w}–${l}${t ? `–${t}` : ""}`;
 };
-const wins = (rs: number[]) => rs.reduce((a, b) => a + b, 0);
+export const wins = (rs: number[]) => rs.reduce((a, b) => a + b, 0);
 
-type Game = { week: number; points: number; opp: number; oppPoints: number; starters: string[]; bench: string[]; pp: Record<string, number>; roster: string[] };
+export type Game = { week: number; points: number; opp: number; oppPoints: number; starters: string[]; bench: string[]; pp: Record<string, number>; roster: string[] };
 
-export function deepNotes(s: Season): Record<number, Candidate[]> {
-  const N = s.week;
-  const weeks = Array.from({ length: N }, (_, i) => i + 1);
+// The shared view of a season: every team's games, names, and lineup rules.
+export function seasonKit(s: Season) {
+  const weeks = Array.from({ length: s.week }, (_, i) => i + 1);
   const ids = Object.keys(s.teams).map(Number);
   const who = (id: number) => s.first[id] ?? s.teams[id];
   const name = (p: string) => s.players[p]?.name;
   const pos = (p: string) => s.players[p]?.position;
   const slots = s.slots.filter(x => ELIGIBLE[x]);
   const fits = (slot: string, p: string) => !!pos(p) && ELIGIBLE[slot]?.includes(pos(p)!);
-  const out = new Map<number, Candidate[]>(ids.map(id => [id, []]));
-  const add = (id: number, kind: string, score: number, text: string) => out.get(id)?.push({ kind, score: Math.round(score * 100) / 100, text });
 
   // Every team's games, week by week. A week without an opponent (playoff byes) is left out.
   const games = new Map<number, Game[]>(ids.map(id => [id, []]));
@@ -79,6 +78,14 @@ export function deepNotes(s: Season): Record<number, Candidate[]> {
     }
     return best;
   };
+  return { weeks, ids, who, name, pos, slots, fits, games, real, scoreOf, bestLineup, swapIn };
+}
+
+export function deepNotes(s: Season): Record<number, Candidate[]> {
+  const N = s.week;
+  const { ids, who, name, pos, slots, fits, games, real, scoreOf, bestLineup, swapIn } = seasonKit(s);
+  const out = new Map<number, Candidate[]>(ids.map(id => [id, []]));
+  const add = (id: number, kind: string, score: number, text: string) => out.get(id)?.push({ kind, score: Math.round(score * 100) / 100, text });
 
   for (const id of ids) {
     const g = games.get(id)!;
@@ -328,4 +335,200 @@ export function deepNotes(s: Season): Record<number, Candidate[]> {
   for (const id of winners) add(id, "bench team", 2 + wins(benchRecord(id)), `${who(id)}’s bench, playing as its own team, would be ${record(benchRecord(id))}${winners.length === 1 ? `. No other bench has won a game` : ""}.`);
 
   return Object.fromEntries([...out].map(([id, cs]) => [id, cs.sort((a, b) => b.score - a.score)]));
+}
+
+// The Tuesday scout's report: every game of a finished week, ranked by how much the group chat will care, with the
+// story angles behind each one, for writing the weekly blurb. Same data and rules as the season-long notes.
+export type GameReport = {
+  matchup: number; winner: number; loser: number; winnerPoints: number; loserPoints: number; tied: boolean;
+  interest: number; tags: string[]; angles: string[]; receipts: string[];
+};
+export type WeekReport = { week: number; around: string[]; games: GameReport[] };
+
+type Options = { top100?: Set<string>; commissioner?: number; playoffTeams?: number };
+
+export function weekReport(s: Season, { top100 = new Set(), commissioner, playoffTeams = 6 }: Options = {}): WeekReport {
+  const N = s.week;
+  const { ids, who, name, slots, fits, games, bestLineup, swapIn } = seasonKit(s);
+  const at = (id: number, w = N) => games.get(id)?.find(g => g.week === w);
+  const playing = ids.filter(id => at(id));
+  const proj = (g: Game) => g.starters.reduce((a, p) => a + (s.projected[g.week - 1]?.[p] ?? 0), 0);
+  const projOf = (p: string) => s.projected[N - 1]?.[p] ?? 0;
+  const played = (p: string) => !!s.stats[N - 1]?.[p]?.played;
+  const pickOf = (p: string) => s.draft.find(d => d.player_id === p)?.pick_no;
+  const starters = (g: Game) => g.starters.filter(p => p !== "0" && name(p));
+  const perYard = s.scoring.rush_yd || 0.1, perPass = s.scoring.pass_yd || 0.04;
+
+  // Standings (record, then points) after this week and before it, and each team's run of results.
+  const table = (upTo: number) => ids.map(id => {
+    const g = games.get(id)!.filter(x => x.week <= upTo), rs = g.map(x => result(x.points, x.oppPoints));
+    return { id, wins: rs.reduce((a: number, b) => a + b, 0), rec: record(rs), pf: g.reduce((a, x) => a + x.points, 0) };
+  }).sort((a, b) => b.wins - a.wins || b.pf - a.pf);
+  const after = table(N), before = N > 1 ? table(N - 1) : null;
+  const rank = (t: typeof after, id: number) => t.findIndex(x => x.id === id) + 1;
+  const streak = (id: number, upTo: number) => {
+    const rs = games.get(id)!.filter(x => x.week <= upTo).map(x => result(x.points, x.oppPoints));
+    let n = 0;
+    for (let i = rs.length - 1; i >= 0 && rs[i] === rs.at(-1); i--) n++;
+    return { result: rs.at(-1), n };
+  };
+  const others = (id: number) => playing.filter(o => o !== id).map(o => at(o)!.points);
+  const weekScores = playing.map(id => at(id)!.points);
+  const seasonScores = ids.flatMap(id => games.get(id)!.map(x => x.points));
+  const didntPlay = (ps: string[]) => ps.length === 1 ? `${name(ps[0])}, who didn’t play`
+    : `${list(ps.map(p => name(p)!))}, ${ps.length === 2 ? "neither" : "none"} of whom played`;
+  // Where a player came from, if it was this opponent: a trade or a drop earlier in the season.
+  const from = (p: string, team: number, opp: number) => {
+    for (const [i, ms] of s.moves.entries()) for (const m of ms) {
+      if (m.status !== "complete" || m.drops?.[p] !== opp) continue;
+      if (m.type === "trade" && m.adds?.[p] === team) return `acquired from ${who(opp)} in the Week ${i + 1} trade`;
+      if (m.type !== "trade") return `dropped by ${who(opp)} in Week ${i + 1}`;
+    }
+    return null;
+  };
+
+  const reports: GameReport[] = [];
+  const seen = new Set<number>();
+  for (const id of playing) {
+    const a = at(id)!, b = at(a.opp);
+    if (!b || seen.has(id)) continue;
+    seen.add(id); seen.add(a.opp);
+    const [W, L] = a.points >= b.points ? [id, a.opp] : [a.opp, id];
+    const w = at(W)!, l = at(L)!, margin = w.points - l.points, tied = margin === 0;
+    const angles: { text: string; weight: number; tag?: string }[] = [];
+    const add = (weight: number, text: string, tag?: string) => angles.push({ weight, text, tag });
+
+    // The score against the rest of the league.
+    const beat = others(L).filter(p => p < l.points).length, total = others(L).length;
+    if (!tied && beat >= total - 2) add(3 + beat - (total - 2), beat === total - 1
+      ? `${who(L)} scored ${f2(l.points)}, enough to beat every team but ${who(W)}.`
+      : `${who(L)}’s ${f2(l.points)} would have beaten ${beat} of the other ${total} teams.`, "heartbreak");
+    const lostTo = others(W).filter(p => p > w.points).length;
+    if (!tied && lostTo >= total - 2) add(2, lostTo === total - 1
+      ? `${who(W)} won with ${f2(w.points)}, a score that beat only ${who(L)}.`
+      : `${who(W)} won with ${f2(w.points)}. ${lostTo} of the other ${total} teams scored more.`, "lucky win");
+
+    // Sleeper's projections.
+    const pw = proj(w), pl = proj(l);
+    if (!tied && pw > 0 && pl - pw >= 0.5) add(2 + (pl - pw) / 15 + (pl - pw >= biggestUpset() ? 1 : 0), `Sleeper had ${who(L)} winning by ${f1(pl - pw)}.`, "upset");
+
+    // What could have been: one bench call, the best lineup, or a dropped player.
+    const flips = l.starters.flatMap((st, i) => st === "0" || !name(st) ? [] : l.bench
+      .filter(p => name(p) && fits(slots[i], p) && l.points - (l.pp[st] ?? 0) + (l.pp[p] ?? 0) > w.points)
+      .map(p => ({ p, st, swing: (l.pp[p] ?? 0) - (l.pp[st] ?? 0) })));
+    const flip = flips.sort((x, y) => y.swing - x.swing)[0];
+    const best = bestLineup([...l.starters, ...l.bench].filter(p => p !== "0"), p => l.pp[p] ?? 0);
+    if (!tied && flip) add(3, `${who(L)} lost by ${f2(margin)} with ${name(flip.p)}’s ${f2(l.pp[flip.p] ?? 0)} on the bench. ${name(flip.st)} started and scored ${f2(l.pp[flip.st] ?? 0)}.`, "bench flip");
+    else if (!tied && best > w.points) add(1.5, `No single swap would have saved ${who(L)}, but the best possible lineup (${f2(best)}) would have won.`, "lineup");
+    const dropped = s.moves.slice(0, N - 1).flatMap((ms, i) => ms.flatMap(m => m.status === "complete" && m.type !== "trade"
+      ? Object.entries(m.drops ?? {}).filter(([p, team]) => team === L && name(p) && !l.roster.includes(p)).map(([p]) => ({ p, week: i + 1 })) : []))
+      .map(d => ({ ...d, pts: s.stats[N - 1]?.[d.p]?.points ?? 0 }))
+      .filter(d => (swapIn(l, d.p, d.pts)?.score ?? 0) > w.points).sort((x, y) => y.pts - x.pts)[0];
+    if (!tied && dropped) {
+      const now = ids.find(o => s.rosters[o]?.includes(dropped.p));
+      add(3, `${who(L)} dropped ${name(dropped.p)} in Week ${dropped.week}. ${name(dropped.p)} scored ${f2(dropped.pts)} this week, enough to flip it${now ? ` (now on ${who(now)}’s roster)` : ""}.`, "got away");
+    }
+
+    // Starters who didn't play.
+    const gw = starters(w).filter(p => !played(p)), gl = starters(l).filter(p => !played(p));
+    if (gw.length) add(1, `${who(W)} started ${didntPlay(gw)}, and won anyway.`, "ghost starters");
+    if (gl.length) add(gl.reduce((x, p) => x + projOf(p), 0) > margin ? 2 : 1, `${who(L)} started ${didntPlay(gl)}.`, gw.length ? undefined : "ghost starters");
+
+    // How close, or how far.
+    if (!tied && margin < 10) add(3 + (10 - margin) / 5, `${who(L)} was ${Math.floor(margin / perYard) + 1} rushing yards, or ${Math.floor(margin / perPass) + 1} passing yards, from a win.`, `nail-biter by ${f2(margin)}`);
+    if (margin > 35) add(2 + (margin - 35) / 20, `${who(W)} won by ${f2(margin)}${margin >= Math.max(...reportsMargins()) ? ", the biggest margin of the week" : ""}.`, `blowout by ${f2(margin)}`);
+
+    // Highs and lows.
+    if (w.points === Math.max(...weekScores)) angles.push({ weight: 1.5, text: "", tag: "week high" });
+    if (l.points === Math.min(...weekScores)) angles.push({ weight: 1.5, text: "", tag: "week low" });
+    if (N > 1 && w.points >= Math.max(...seasonScores)) add(2, `${who(W)}’s ${f2(w.points)} is the highest score in the league this season.`, "season high");
+    else if (N > 1 && w.points >= Math.max(...games.get(W)!.map(x => x.points))) add(1.5, `${f2(w.points)} is ${who(W)}’s best score of the season, and it came against ${who(L)}.`, "season high");
+    if (N > 1 && l.points <= Math.min(...seasonScores)) add(1.5, `${who(L)}’s ${f2(l.points)} is the lowest score in the league this season.`, "season low");
+
+    // Revenge: a player who came from this opponent, scoring against them.
+    const revenge = starters(w).map(p => ({ p, how: from(p, W, L), pts: w.pp[p] ?? 0 })).filter(r => r.how && r.pts >= 8).sort((x, y) => y.pts - x.pts)[0];
+    if (revenge) add(2, `${name(revenge.p)}, ${revenge.how}, scored ${f2(revenge.pts)} against ${who(L)}.`, "revenge");
+
+    // Rematch, streaks and the standings.
+    const met = games.get(W)!.filter(x => x.opp === L && x.week < N);
+    if (met.length) {
+      const last = met.at(-1)!, avenged = last.points < last.oppPoints;
+      add(avenged ? 2 : 1, `Rematch of Week ${last.week}, which ${who(avenged ? L : W)} won by ${f2(Math.abs(last.points - last.oppPoints))}.${avenged ? ` Payback for ${who(W)}.` : ""}`, "rematch");
+    }
+    if (!tied) {
+      const sw = streak(W, N), sl = streak(L, N), bw = streak(W, N - 1), bl = streak(L, N - 1);
+      if (sw.n >= 3) add(1, `${who(W)} has won ${sw.n} straight.`, "streak");
+      else if (bw.result === 0 && bw.n >= 3) add(1, `${who(W)} snaps a ${bw.n}-game losing streak.`, "streak");
+      if (sl.n >= 3) add(1, `${who(L)} has lost ${sl.n} straight.`, "streak");
+      else if (bl.result === 1 && bl.n >= 3) add(1, `${who(W)} snaps ${who(L)}’s ${bl.n}-game winning streak.`, "streak");
+    }
+    if (before) {
+      const into = rank(before, W) > playoffTeams && rank(after, W) <= playoffTeams, out = rank(before, L) <= playoffTeams && rank(after, L) > playoffTeams;
+      if (into) add(2, `${who(W)} climbs into a playoff spot.`, "playoff line");
+      if (out) add(2, `${who(L)} drops below the playoff line.`, "playoff line");
+    }
+    const standing = (team: number) => {
+      const r = rank(after, team), m = before ? rank(before, team) - r : 0;
+      return `${who(team)} ${after.find(x => x.id === team)!.rec}, ${ord(r)}${m > 0 ? ` (up ${m})` : m < 0 ? ` (down ${-m})` : ""}`;
+    };
+    add(0, `Now: ${standing(W)} · ${standing(L)}.`);
+    if (commissioner && [W, L].includes(commissioner)) angles.push({ weight: 1, text: "", tag: "the commissioner is in it" });
+
+    // Receipts for the blurb: each side's top scorer, its biggest surprise each way, and top-100 busts.
+    const receipts = [w, l].map(g => {
+      const team = g === w ? W : L, ps = starters(g);
+      const vs = (p: string) => (g.pp[p] ?? 0) - projOf(p);
+      const top = [...ps].sort((x, y) => (g.pp[y] ?? 0) - (g.pp[x] ?? 0))[0];
+      const boom = [...ps].filter(p => p !== top && vs(p) >= 8).sort((x, y) => vs(y) - vs(x))[0];
+      const miss = [...ps].filter(p => vs(p) <= -6 && played(p)).sort((x, y) => vs(x) - vs(y))[0];
+      const busts = ps.filter(p => top100.has(p) && (g.pp[p] ?? 0) < 5 && p !== miss);
+      const late = (p: string) => { const n = pickOf(p); return n && n > 100 ? `, the ${ord(n)} startup pick` : ""; };
+      const items = [
+        top && `${name(top)} ${f2(g.pp[top] ?? 0)} (top scorer${late(top)})`,
+        boom && `${name(boom)} ${f2(g.pp[boom] ?? 0)} (${f1(vs(boom))} over projection${late(boom)})`,
+        miss && `${name(miss)} ${f2(g.pp[miss] ?? 0)} (${f1(-vs(miss))} under projection)`,
+        ...busts.map(p => `${name(p)} ${f2(g.pp[p] ?? 0)} (top-100 bust${played(p) ? "" : ", didn’t play"})`),
+      ].filter(Boolean);
+      return `${who(team)}: ${items.join(", ")}`;
+    });
+
+    const matchup = s.matchups[N - 1].find(m => m.roster_id === W)?.matchup_id ?? 0;
+    reports.push({
+      matchup, winner: W, loser: L, winnerPoints: w.points, loserPoints: l.points, tied,
+      interest: Math.round(angles.reduce((x, y) => x + y.weight, 0) * 10) / 10,
+      tags: angles.filter(x => x.tag).map(x => x.tag!),
+      angles: angles.filter(x => x.text).sort((x, y) => y.weight - x.weight).map(x => x.text),
+      receipts,
+    });
+  }
+  function reportsMargins() {
+    return playing.map(id => Math.abs(at(id)!.points - at(at(id)!.opp)!.points));
+  }
+  function biggestUpset() { // the largest projected deficit any winner overcame this week
+    return Math.max(0, ...playing.filter(id => at(id)!.points > at(id)!.oppPoints).map(id => proj(at(at(id)!.opp)!) - proj(at(id)!)));
+  }
+
+  // Around the league: the table, who moved, and the week's extremes.
+  const around: string[] = [];
+  const hi = playing.reduce((x, y) => (at(y)!.points > at(x)!.points ? y : x)), lo = playing.reduce((x, y) => (at(y)!.points < at(x)!.points ? y : x));
+  around.push(`High: ${who(hi)} ${f2(at(hi)!.points)}. Low: ${who(lo)} ${f2(at(lo)!.points)}.`);
+  const fmt = (t: (typeof after)[number]) => `${who(t.id)} ${t.rec}`;
+  around.push(`In the playoffs today: ${after.slice(0, playoffTeams).map(fmt).join(", ")}. Outside: ${after.slice(playoffTeams).map(fmt).join(", ")}.`);
+  if (before) {
+    const moves = ids.map(id => ({ id, by: rank(before, id) - rank(after, id) })).filter(m => Math.abs(m.by) >= 2).sort((x, y) => y.by - x.by);
+    if (moves.length) around.push(`On the move: ${moves.map(m => `${who(m.id)} ${m.by > 0 ? "up" : "down"} ${Math.abs(m.by)} to ${ord(rank(after, m.id))}`).join(", ")}.`);
+  }
+  const benched = playing.map(id => {
+    const g = at(id)!;
+    const star = g.bench.filter(p => name(p)).sort((x, y) => (g.pp[y] ?? 0) - (g.pp[x] ?? 0))[0];
+    return { id, star, pts: star ? g.pp[star] ?? 0 : 0, left: bestLineup([...g.starters, ...g.bench].filter(p => p !== "0"), p => g.pp[p] ?? 0) - g.points };
+  }).sort((x, y) => y.left - x.left)[0];
+  if (benched && benched.left >= 10) around.push(`Most points left on a bench: ${who(benched.id)}, ${f1(benched.left)}${benched.star ? `, led by ${name(benched.star)}’s ${f2(benched.pts)}` : ""}.`);
+  const upsets = reports.map(r => ({ r, by: proj(at(r.loser)!) - proj(at(r.winner)!) })).filter(u => !u.r.tied && proj(at(u.r.winner)!) > 0 && u.by >= 0.5).sort((x, y) => y.by - x.by);
+  if (upsets.length) around.push(`Biggest upset: ${who(upsets[0].r.winner)} over ${who(upsets[0].r.loser)}, after Sleeper projected ${who(upsets[0].r.winner)} to lose by ${f1(upsets[0].by)}.${upsets.length > 1 ? ` Favorites went ${reports.length - upsets.length}–${upsets.length} this week.` : ""}`);
+  const vsProj = playing.flatMap(id => starters(at(id)!).map(p => ({ id, p, pts: at(id)!.pp[p] ?? 0, d: (at(id)!.pp[p] ?? 0) - projOf(p) })));
+  const boom = [...vsProj].sort((x, y) => y.d - x.d)[0], bust = [...vsProj].filter(x => played(x.p)).sort((x, y) => x.d - y.d)[0];
+  if (boom && bust) around.push(`Furthest over projection: ${name(boom.p)} (${who(boom.id)}) ${f2(boom.pts)}, +${f1(boom.d)}. Furthest under: ${name(bust.p)} (${who(bust.id)}) ${f2(bust.pts)}, ${f1(bust.d)}.`);
+
+  return { week: N, around, games: reports.sort((x, y) => y.interest - x.interest) };
 }

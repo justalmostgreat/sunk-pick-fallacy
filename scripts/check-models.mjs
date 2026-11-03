@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { gameClock, kickoffStandings, liveStandings, score } from "../lib/live.ts";
 import { dynastyRankings } from "../lib/dynasty.ts";
-import { deepNotes } from "../lib/deep-notes.ts";
+import { deepNotes, weekReport } from "../lib/deep-notes.ts";
 import { noteCandidates, scoutNotes } from "../lib/insights.ts";
 import { cleanReply, parseBlurb, splitHook } from "../lib/blurb.ts";
 import phones from "../lib/coaches.json" with { type: "json" };
@@ -154,6 +154,19 @@ assert.deepEqual(textOf(1, "got away"), []); // D 2's 1 point flips nothing, so 
 assert.deepEqual(textOf(1, "projected"), []); // no projections, no projection notes
 assert.ok(deep[1].some(c => c.kind === "costly call" && c.text.startsWith("Lost Week 2 to Three by 3.00 with R 9’s 15.00 on the bench.")));
 assert.ok(deep[2].some(c => c.text === "Andrew lost Week 2 by 3.00. 31 more rushing yards, or 76 passing yards, would have flipped it."));
+// The Tuesday report on the same league's Week 2: One lost to Three by 3, Two lost to Four by 3.
+const report = weekReport(season, { commissioner: 1, playoffTeams: 2 });
+const gameOf = loser => report.games.find(g => g.loser === loser);
+assert.equal(report.games.length, 2);
+assert.ok(gameOf(1).angles.includes("Jag lost by 3.00 with R 9’s 15.00 on the bench. R 1 started and scored 2.00."));
+assert.ok(gameOf(1).angles.includes("Jag was 31 rushing yards, or 76 passing yards, from a win."));
+assert.ok(gameOf(1).tags.includes("the commissioner is in it") && gameOf(1).tags.includes("bench flip"));
+assert.ok(gameOf(2).angles.includes("Andrew dropped D 1 in Week 1. D 1 scored 10.00 this week, enough to flip it (now on Cody’s roster)."));
+assert.ok(gameOf(2).angles.includes("Now: Cody 1–1, 3rd (up 1) · Andrew 1–1, 2nd (down 1).")); // Andrew led after Week 1; Three passes, Cody stays out on points
+assert.ok(!gameOf(2).tags.includes("playoff line"));
+assert.ok(report.around.some(a => a.startsWith("In the playoffs today: ")));
+assert.ok(report.games.every(g => g.angles.every(a => a.trim() !== "---"))); // readers.mjs inserts above the first "---"
+
 // The saved notes join the draw, and the picks still respect the two-per-kind cap.
 const withDeep = [...weeks.slice(0, -1), { ...weeks.at(-1), scout: { 1: [{ kind: "swap", score: 5, text: "Saved note." }] } }];
 assert.ok(noteCandidates({ weeks: withDeep, dynasty, first: {} }).get(1).some(c => c.text === "Saved note."));

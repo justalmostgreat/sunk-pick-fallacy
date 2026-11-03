@@ -7,7 +7,8 @@ Standings, rankings and scout's notes pull from Sleeper and FantasyCalc on every
 ## The weekly routine (automatic except the blurb)
 
 1. Tuesday 9 AM Central, `.github/workflows/tuesday.yml` freezes the finished week into `lib/weeks/<N>.json`
-   and opens a "Week N is final" GitHub issue with the scout's ranking of every game and last week's reader
+   and opens a "Week N is final" GitHub issue with the scout's report (the league at a glance, then every game ranked
+   with its story angles and receipts, from `weekReport` in `lib/deep-notes.ts`) and last week's reader
    numbers from Cloudflare plus aggregate PostHog engagement (`scripts/readers.mjs`; the Readers workflow shows both on demand).
 2. The commissioner writes the group-chat blurb, then either replies to that issue with it (`.github/workflows/blurb.yml`
    puts it on the site, commits, and closes the issue) or asks an assistant to add it.

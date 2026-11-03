@@ -7,7 +7,8 @@ import { score } from "../lib/live.ts";
 import { firstNames } from "../lib/managers.ts";
 import { feeds, teamName } from "../lib/sleeper.ts";
 
-export async function seasonNotes(week, known = {}) {
+// Everything the scout knows about the season through a finished week, from Sleeper.
+export async function loadSeason(week, known = {}) {
   const league = known.league ?? await feeds.league();
   const [rosters, users] = await Promise.all([known.rosters ?? feeds.rosters(), known.users ?? feeds.users()]);
   const weeks = Array.from({ length: week }, (_, i) => i + 1);
@@ -24,7 +25,7 @@ export async function seasonNotes(week, known = {}) {
   for (const lines of [...stats, ...projections]) for (const x of lines) learn(x.player_id, x.player);
   for (const p of draft) learn(p.player_id, p.metadata);
   const owner = new Map(users.map(u => [u.user_id, u]));
-  return deepNotes({
+  return {
     week,
     slots: league.roster_positions,
     scoring,
@@ -37,8 +38,10 @@ export async function seasonNotes(week, known = {}) {
     moves,
     draft,
     rosters: Object.fromEntries(rosters.map(r => [r.roster_id, r.players ?? []])),
-  });
+  };
 }
+
+export const seasonNotes = async (week, known) => deepNotes(await loadSeason(week, known));
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const week = Number(process.argv[2]);
