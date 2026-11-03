@@ -36,8 +36,8 @@ assert.equal(one.week.state, "live");
 assert.equal(one.week.oppPoints, 0);
 assert.ok(one.week.winProb > 0.99 && Math.abs(one.week.winProb + two.week.winProb - 1) < 1e-9);
 assert.deepEqual(one.busts, [{ name: "a3 X", points: 3 }]); // finished top-100 starter under 5; a1 scored 22
-assert.deepEqual([one.projected, two.projected], [{ wins: 1, losses: 1, ties: 0 }, { wins: 1, losses: 1, ties: 0 }]); // the favorite takes the week
-assert.equal(rows[0].rosterId, 1); // both project 1–1; season points plus projected finish break the tie
+assert.deepEqual([one.projected, two.projected], [{ wins: 1, losses: 1, ties: 0 }, { wins: 1, losses: 1, ties: 0 }]); // under way, so the favorite takes it
+assert.equal(rows[0].rosterId, 1); // both project 1–1; season points plus this week's 33–0 break the tie
 const later = liveStandings({ ...input, countWeek: false });
 assert.equal(later[0].rosterId, 2); // week already counted: records alone decide
 assert.equal(later[0].projected, null);
@@ -49,15 +49,29 @@ assert.equal(first.rosterId, 2);
 assert.ok(first.week.points < first.week.oppPoints && first.week.winProb > 0.5);
 assert.deepEqual([first.projected, second.projected], [{ wins: 2, losses: 0, ties: 0 }, { wins: 0, losses: 2, ties: 0 }]);
 
-// Kickoff baseline: full-game projections, nothing scored, so 30 (a1–a3) to 10 (b1; SEA on bye).
-const pre = kickoffStandings({ ...input, countWeek: true });
-assert.deepEqual(pre.map(r => [r.rosterId, r.week.projected, r.week.state]), [[1, 30, "pre"], [2, 10, "pre"]]);
-assert.deepEqual(kickoffStandings(comeback).map(r => r.rosterId), [2, 1]); // 30 to 50 at kickoff: team 2 starts on top
+// Kickoff baseline: the table before this week counted for anything, record then points.
+assert.deepEqual(kickoffStandings({ ...input, countWeek: true }).map(r => [r.rosterId, r.projected]), [[2, null], [1, null]]);
 // Once Sleeper has counted the week (team 1 won 33–0), the baseline takes that result back out.
 const counted = kickoffStandings({ ...input, rosters: [roster(1, 1, 1, 133), roster(2, 1, 1, 90)], countWeek: false });
 const c1 = counted.find(r => r.rosterId === 1), c2 = counted.find(r => r.rosterId === 2);
 assert.deepEqual([c1.wins, c1.losses, c1.pf, c2.wins, c2.losses, c2.pf], [0, 1, 100, 1, 0, 90]);
-assert.equal(counted[0].rosterId, 1); // both project 1–1 from there; 100 + 30 beats 90 + 10
+assert.equal(counted[0].rosterId, 2); // back to 1–0 over 0–1
+
+// A matchup nobody has kicked off in (all BUF, still pregame) moves nothing, however lopsided its projections.
+const idle = { ...input, countWeek: true,
+  rosters: [...rosters, roster(3, 1, 0, 50), roster(4, 0, 1, 200)],
+  matchups: [...matchups, { roster_id: 3, matchup_id: 2, points: 0, starters: ["c1"], players_points: {} }, { roster_id: 4, matchup_id: 2, points: 0, starters: ["c2"], players_points: {} }],
+  projections: [...projections, player("c1", "BUF", 5), player("c2", "BUF", 40)] };
+const now = liveStandings(idle);
+const r3 = now.find(r => r.rosterId === 3), r4 = now.find(r => r.rosterId === 4);
+assert.deepEqual([r3.week.state, r3.projected, r3.standingWins, r4.projected, r4.standingWins], ["pre", null, 1, null, 0]);
+assert.ok(r4.week.winProb > 0.9); // heavily favored, still not counted
+assert.deepEqual(now.map(r => r.rosterId), [1, 2, 3, 4]); // team 1 played its way to 1–1 and past team 3 on points
+assert.deepEqual(kickoffStandings(idle).map(r => r.rosterId), [2, 3, 4, 1]);
+// Nothing kicked off anywhere (Tuesday until Thursday night): the live table is the kickoff table, with no projected records.
+const tuesday = { ...idle, matchups: idle.matchups.map(m => ({ ...m, points: 0, players_points: {} })), clock: new Map() };
+assert.deepEqual(liveStandings(tuesday).map(r => r.rosterId), kickoffStandings(tuesday).map(r => r.rosterId));
+assert.ok(liveStandings(tuesday).every(r => r.projected === null && r.week.state === "pre"));
 
 const values = [
   { player: { name: "Star", sleeperId: "s", position: "QB", maybeAge: 24 }, value: 9000, redraftValue: 0, overallRank: 5 }, // out for the season

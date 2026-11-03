@@ -36,8 +36,8 @@ export type WinLoss = { wins: number; losses: number; ties: number };
 export type LiveRow = WinLoss & {
   rosterId: number; pf: number; pa: number;
   week: Week | null;
-  projected: WinLoss | null; // the record with this week going to whoever is favored (the real result once final); null once Sleeper has counted the week
-  standingWins: number; // the projected record (or the record, once counted) in wins, ties as half
+  projected: WinLoss | null; // the record with this week's game to whoever is favored (the real result once final); null until it kicks off, and once Sleeper has counted the week
+  standingWins: number; // the projected record (or the record, when there's none) in wins, ties as half
   busts: { name: string; points: number }[];
 };
 
@@ -51,9 +51,9 @@ type Input = {
   top100?: Set<string>; // Sleeper ids of FantasyCalc's top 100, for busts
 };
 
-// The table now: record so far, plus this week to whoever is favored to win it.
+// The table now: record so far, plus each of this week's games that has kicked off, to whoever is favored to win it.
 export const liveStandings = (input: Input) => standings(input, false);
-// The same table before kickoff, from full-game projections and nothing scored: the baseline for the up/down arrows.
+// The table before this week counted for anything: the baseline for the up/down arrows.
 export const kickoffStandings = (input: Input) => standings(input, true);
 
 function standings(input: Input, kickoff: boolean): LiveRow[] {
@@ -67,12 +67,11 @@ function standings(input: Input, kickoff: boolean): LiveRow[] {
     for (const id of m.starters) {
       if (id === "0") continue; // empty slot
       const p = proj.get(id);
-      // Before kickoff nothing has been scored and every starter with a game has all of it to play.
-      const actual = kickoff ? 0 : m.players_points?.[id] ?? 0;
+      const actual = m.players_points?.[id] ?? 0;
       const nfl = p?.player?.team;
       // Share of this player's game still to play; null = no game this week (bye, free agent).
       // Without a clock, assume anyone who has scored is finished and anyone who hasn't is yet to play.
-      const left = !clock.size ? (actual ? 0 : 1) : nfl && clock.has(nfl) ? (kickoff ? 1 : clock.get(nfl)!) : null;
+      const left = !clock.size ? (actual ? 0 : 1) : nfl && clock.has(nfl) ? clock.get(nfl)! : null;
       t.projected += actual;
       if (left === null) continue;
       const rest = Math.max(0, p ? score(p.stats, scoring) : 0) * left;
@@ -85,9 +84,6 @@ function standings(input: Input, kickoff: boolean): LiveRow[] {
     teams.set(m.roster_id, t);
   }
 
-  // At kickoff Sleeper hadn't counted this week yet, so if it has since, the baseline takes the real result back out.
-  const uncount = kickoff && !countWeek;
-  const counted = kickoff || countWeek;
   const rows = rosters.map((r): LiveRow => {
     const s = r.settings;
     const me = teams.get(r.roster_id);
@@ -104,18 +100,21 @@ function standings(input: Input, kickoff: boolean): LiveRow[] {
     let { wins, losses, ties } = s;
     let pf = s.fpts + (s.fpts_decimal ?? 0) / 100;
     let pa = (s.fpts_against ?? 0) + (s.fpts_against_decimal ?? 0) / 100;
-    if (uncount && week?.opponent != null) {
+    // At kickoff Sleeper hadn't counted this week, so if it has since, the baseline takes the real result back out.
+    if (kickoff && !countWeek && week?.opponent != null) {
       const d = week.points - week.oppPoints;
       wins -= +(d > 0); losses -= +(d < 0); ties -= +(d === 0);
       pf -= week.points; pa -= week.oppPoints;
     }
-    // The week goes to whoever is favored; once it's final, that's simply the winner.
-    const share = !counted || week?.opponent == null ? null : week.winProb > 0.5 ? 1 : week.winProb < 0.5 ? 0 : 0.5;
+    // A game counts once a starter on either side has kicked off: to whoever is favored, and to the winner once it's final.
+    // Until then it moves nothing, whatever the projections say.
+    const share = kickoff || !countWeek || week?.opponent == null || week.state === "pre" ? null
+      : week.winProb > 0.5 ? 1 : week.winProb < 0.5 ? 0 : 0.5;
     const projected = share === null ? null : { wins: wins + +(share === 1), losses: losses + +(share === 0), ties: ties + +(share === 0.5) };
     const rec = projected ?? { wins, losses, ties };
     return { rosterId: r.roster_id, wins, losses, ties, pf, pa, week, projected, standingWins: rec.wins + rec.ties / 2, busts: me?.busts ?? [] };
   });
-  // Ties go to points: the season so far plus this week's projected finish (its final score once it's over).
-  const points = (r: LiveRow) => r.pf + (r.projected ? r.week!.projected : 0);
+  // Ties go to points: the season so far plus whatever counted games have actually scored this week.
+  const points = (r: LiveRow) => r.pf + (r.projected ? r.week!.points : 0);
   return rows.sort((a, b) => b.standingWins - a.standingWins || points(b) - points(a));
 }
