@@ -63,7 +63,7 @@ export default async function Home() {
     <main>
       <section aria-labelledby="standings" data-track-section="standings">
         <h2 className="shead" id="standings">Live standings</h2>
-        <p className="sub">{live ? `${live.countWeek ? `Record if every Week ${live.week} favorite holds on` : `After Week ${live.week}`} · moves are since kickoff` : `After Week ${last.week}`}</p>
+        <p className="sub">{live ? `${live.countWeek ? `Week ${live.week} games count once they kick off, going to the favorite` : `After Week ${live.week}`} · moves are since kickoff` : `After Week ${last.week}`}</p>
         {live
           ? <LiveStandings rows={live.rows} names={names} before={live.kickoff} href={href} />
           : <StandingsTable snap={last} href={href} />}
