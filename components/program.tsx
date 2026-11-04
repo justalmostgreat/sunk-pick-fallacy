@@ -21,13 +21,19 @@ const record = (r: { wins: number; losses: number; ties: number }) => `${r.wins}
 
 type Meme = NonNullable<NonNullable<Snapshot["recap"]>["meme"]>;
 
+// Covers whose story picture doesn't fit the oval get a copy made for it: the same picture at full size, same two inks,
+// with the caption placed and sized to sit inside the oval. The story keeps the original.
+const OVAL_COPY: Record<string, string> = {
+  "/assets/week-5.webp": "/assets/week-5-cover.webp", // caption scaled down in place
+  "/assets/week-8.webp": "/assets/week-8-cover.webp", // caption stacked four lines high, above the oval's narrow foot
+};
+
 export function Cover({ items, meme, children }: { items: ReactNode[]; meme?: Meme | null; children: ReactNode }) {
   return <header className="cover">
     <p className="topline">{items.map((t, i) => <span key={i}>{i > 0 && <i aria-hidden="true">★</i>}{t}</span>)}</p>
     {meme
       ? <div className="vignette meme" role="img" aria-label={meme.alt ?? "Reaction photo: a man in a blazer doubled over, laughing and wincing"}><span style={meme.src ? {
-        // Week 5's caption runs wider than the oval, so its cover uses a copy with the caption scaled to fit.
-        backgroundImage: `url(${meme.src === "/assets/week-5.webp" ? "/assets/week-5-cover.webp" : meme.src})`,
+        backgroundImage: `url(${OVAL_COPY[meme.src] ?? meme.src})`,
       } : undefined} /></div>
       : <div className="vignette" role="img" aria-label="Engraved bust of a football player in a leather helmet, holding a ball"><span /></div>}
     <h1>Sunk Pick Fallacy</h1>
