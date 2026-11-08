@@ -66,7 +66,7 @@ const idle = { ...input, countWeek: true,
 const now = liveStandings(idle);
 const r3 = now.find(r => r.rosterId === 3), r4 = now.find(r => r.rosterId === 4);
 assert.deepEqual([r3.week.state, r3.projected, r3.standingWins, r4.projected, r4.standingWins], ["pre", null, 1, null, 0]);
-assert.ok(r4.week.winProb > 0.9); // heavily favored, still not counted
+assert.ok(r4.week.winProb > 0.75); // 35 projected points up, still not counted before kickoff
 assert.deepEqual(now.map(r => r.rosterId), [1, 2, 3, 4]); // team 1 played its way to 1–1 and past team 3 on points
 assert.deepEqual(kickoffStandings(idle).map(r => r.rosterId), [2, 3, 4, 1]);
 // Nothing kicked off anywhere (Tuesday until Thursday night): the live table is the kickoff table, with no projected records.
