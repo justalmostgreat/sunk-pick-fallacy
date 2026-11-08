@@ -27,8 +27,10 @@ function phi(z: number) {
   return 0.5 * (1 + Math.sign(z) * erf);
 }
 
-// ponytail: a starter's remaining output ~ Normal(proj, (0.5 × proj)²). Tune SPREAD if the odds feel too sure or too timid.
-const SPREAD = 0.5;
+// A starter's remaining output ~ Normal(proj, (SPREAD × proj)²). At 0.5 the odds were far too sure: over 2026's first
+// eight weeks, favorites called at 70% or better won 2 of 7, and Sleeper's own odds ran well below ours. 1.0 fit
+// those 40 games better; widen it further if the odds still feel too sure, narrow it if they feel too timid.
+const SPREAD = 1.0;
 const BUST = 5; // a top-100 starter who finishes under this many points gets the reaction photo
 
 export type Week = { points: number; projected: number; opponent: number | null; oppPoints: number; winProb: number; state: "pre" | "live" | "final" };
