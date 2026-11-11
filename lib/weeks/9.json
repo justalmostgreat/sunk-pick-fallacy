@@ -618,31 +618,12 @@
     }
   },
   "recap": {
-    "headline": "Week 9 recap",
+    "headline": "STOPPING THE JIT AND KARTIK TANK 🛑 WEEK 9 RECAP",
     "featured": [
       {
-        "matchup": 2,
-        "hook": "",
-        "body": "",
-        "receipts": [
-          {
-            "label": "Joe Burrow, pick 3.05",
-            "value": "29.54"
-          },
-          {
-            "label": "Ladd McConkey, pick 4.09",
-            "value": "0.00"
-          },
-          {
-            "label": "KC Concepcion Jr. on the bench",
-            "value": "16.80"
-          }
-        ]
-      },
-      {
         "matchup": 4,
-        "hook": "",
-        "body": "",
+        "hook": "THE JIT TANK HAS BEEN STOPPED 🛑",
+        "body": "Sleeper had Arjun winning by 13.2. But Jit found a way yet again for a 4th straight win and finds himself in the playoffs hunt. Shedeur Sanders X Just in Time (Jit) collab for a clutch 22.7 points for the tiny win.",
         "receipts": [
           {
             "label": "Shedeur Sanders, pick 18.07",
@@ -659,26 +640,53 @@
         ]
       },
       {
-        "matchup": 3,
-        "hook": "",
-        "body": "",
+        "matchup": 2,
+        "hook": "IS THE KARTIK TANK NEXT? 👀",
+        "body": "The trail of tears ends for STILL the points leader of the league and STILL the last place team of the league after a 4 game losing streak. Even this he barely won by a point. He finds himself two games away from the Playoffs. Will his tank stop too?",
         "receipts": [
           {
-            "label": "Javonte Williams, pick 7.06",
-            "value": "20.40"
+            "label": "Joe Burrow, pick 3.05",
+            "value": "29.54"
           },
           {
-            "label": "Jahmyr Gibbs, pick 1.04",
-            "value": "13.40"
+            "label": "Ladd McConkey, pick 4.09",
+            "value": "0.00"
           },
           {
-            "label": "Pat Bryant on the bench",
-            "value": "13.60"
+            "label": "KC Concepcion Jr. on the bench",
+            "value": "16.80"
+          }
+        ]
+      },
+      {
+        "matchup": 1,
+        "hook": "NO. 1 VS NO. 2 AND IT WASN'T CLOSE 📅",
+        "body": "Mateo won by 49.58, the biggest margin of the week. THE SCHEDULE returns and shows up big time in a No. 1 vs No. 2 matchup against Samurai Pipsqueak. Will the luck ever run out??",
+        "receipts": [
+          {
+            "label": "Kenneth Walker III, pick 4.04",
+            "value": "34.30"
+          },
+          {
+            "label": "Jared Goff, pick 8.01",
+            "value": "5.30"
+          },
+          {
+            "label": "Tank Dell on the bench",
+            "value": "18.50"
           }
         ]
       }
     ],
-    "meme": null
+    "meme": {
+      "rosterId": 4,
+      "caption": "STOPPING THE JIT AND KARTIK TANK.",
+      "src": "/assets/week-9.webp",
+      "alt": "Cream-and-forest-green meme of Jit's smiling face pasted over the lead tank in the Tank Man photo, with the second tank tagged \"KARTIK\" and a lone man standing in the column's way, captioned 'STOPPING THE JIT AND KARTIK TANK.'",
+      "width": 920,
+      "height": 1150
+    },
+    "cover": "meme"
   },
   "scout": {
     "1": [
