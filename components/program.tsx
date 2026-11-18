@@ -27,6 +27,7 @@ const OVAL_COPY: Record<string, string> = {
   "/assets/week-5.webp": "/assets/week-5-cover.webp", // caption scaled down in place
   "/assets/week-8.webp": "/assets/week-8-cover.webp", // caption stacked four lines high, above the oval's narrow foot
   "/assets/week-9.webp": "/assets/week-9-cover.webp", // caption stacked three lines high, above the oval’s narrow foot
+  "/assets/week-10.webp": "/assets/week-10-cover.webp", // square photo: caption restacked three lines high on a faded foot
 };
 
 export function Cover({ items, meme, children }: { items: ReactNode[]; meme?: Meme | null; children: ReactNode }) {
