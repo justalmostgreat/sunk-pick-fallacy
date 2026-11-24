@@ -1,0 +1,1410 @@
+{
+  "week": 11,
+  "season": "2026",
+  "capturedAt": "2026-11-24T23:21:21.559Z",
+  "teams": {
+    "1": {
+      "name": "Love at first Dart",
+      "handle": "justalmostgreat"
+    },
+    "2": {
+      "name": "Projection Champ",
+      "handle": "ATaylor999"
+    },
+    "3": {
+      "name": "AdiYoga",
+      "handle": "AdiYoga"
+    },
+    "4": {
+      "name": "littyjitty",
+      "handle": "littyjitty"
+    },
+    "5": {
+      "name": "Pipsqueak",
+      "handle": "primalJay"
+    },
+    "6": {
+      "name": "shotgunb365",
+      "handle": "shotgunb365"
+    },
+    "7": {
+      "name": "The Schedule",
+      "handle": "elmateoruix"
+    },
+    "8": {
+      "name": "pranavmenon08",
+      "handle": "pranavmenon08"
+    },
+    "9": {
+      "name": "squirmyearth163",
+      "handle": "squirmyearth163"
+    },
+    "10": {
+      "name": "CodyJuanKenobi",
+      "handle": "CodyJuanKenobi"
+    }
+  },
+  "finals": [
+    {
+      "matchup": 1,
+      "winner": 5,
+      "loser": 2,
+      "winnerPoints": 137.06,
+      "loserPoints": 121.76
+    },
+    {
+      "matchup": 2,
+      "winner": 8,
+      "loser": 9,
+      "winnerPoints": 116.78,
+      "loserPoints": 113.92
+    },
+    {
+      "matchup": 3,
+      "winner": 3,
+      "loser": 7,
+      "winnerPoints": 132.34,
+      "loserPoints": 100.7
+    },
+    {
+      "matchup": 4,
+      "winner": 10,
+      "loser": 6,
+      "winnerPoints": 133.38,
+      "loserPoints": 121.88
+    },
+    {
+      "matchup": 5,
+      "winner": 4,
+      "loser": 1,
+      "winnerPoints": 140.38,
+      "loserPoints": 129.6
+    }
+  ],
+  "standings": [
+    {
+      "rosterId": 5,
+      "wins": 7,
+      "losses": 4,
+      "ties": 0,
+      "pf": 1521.48,
+      "pa": 1440.68
+    },
+    {
+      "rosterId": 4,
+      "wins": 7,
+      "losses": 4,
+      "ties": 0,
+      "pf": 1471.96,
+      "pa": 1442.78
+    },
+    {
+      "rosterId": 10,
+      "wins": 6,
+      "losses": 5,
+      "ties": 0,
+      "pf": 1493.1,
+      "pa": 1448
+    },
+    {
+      "rosterId": 7,
+      "wins": 6,
+      "losses": 5,
+      "ties": 0,
+      "pf": 1479.04,
+      "pa": 1383.04
+    },
+    {
+      "rosterId": 2,
+      "wins": 6,
+      "losses": 5,
+      "ties": 0,
+      "pf": 1477.58,
+      "pa": 1428.52
+    },
+    {
+      "rosterId": 1,
+      "wins": 5,
+      "losses": 6,
+      "ties": 0,
+      "pf": 1557.74,
+      "pa": 1561.9
+    },
+    {
+      "rosterId": 8,
+      "wins": 5,
+      "losses": 6,
+      "ties": 0,
+      "pf": 1502.24,
+      "pa": 1519.42
+    },
+    {
+      "rosterId": 3,
+      "wins": 5,
+      "losses": 6,
+      "ties": 0,
+      "pf": 1400.5,
+      "pa": 1468.48
+    },
+    {
+      "rosterId": 6,
+      "wins": 4,
+      "losses": 7,
+      "ties": 0,
+      "pf": 1582.64,
+      "pa": 1649.84
+    },
+    {
+      "rosterId": 9,
+      "wins": 4,
+      "losses": 7,
+      "ties": 0,
+      "pf": 1375.6,
+      "pa": 1519.22
+    }
+  ],
+  "dynasty": [
+    {
+      "rosterId": 5,
+      "total": 73251,
+      "players": 58455,
+      "picks": 14796,
+      "age": 27.141058934222915,
+      "top": [
+        {
+          "name": "Ja'Marr Chase",
+          "value": 9054
+        },
+        {
+          "name": "CeeDee Lamb",
+          "value": 6918
+        },
+        {
+          "name": "Jared Goff",
+          "value": 3710
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Jonathon Brooks",
+          "status": "IR",
+          "rank": 150
+        },
+        {
+          "name": "Seth McGowan",
+          "status": "Out",
+          "rank": 173
+        },
+        {
+          "name": "Jake Ferguson",
+          "status": "Out",
+          "rank": 181
+        }
+      ],
+      "record": "7–4",
+      "projectedWins": 8.800687736903425,
+      "score": 92.6477951536464
+    },
+    {
+      "rosterId": 10,
+      "total": 77402,
+      "players": 60337,
+      "picks": 17065,
+      "age": 27.167964930308106,
+      "top": [
+        {
+          "name": "Bijan Robinson",
+          "value": 9104
+        },
+        {
+          "name": "Brock Purdy",
+          "value": 6287
+        },
+        {
+          "name": "Matthew Golden",
+          "value": 4818
+        }
+      ],
+      "hurt": [
+        {
+          "name": "De'Von Achane",
+          "status": "IR",
+          "rank": 45
+        },
+        {
+          "name": "Jalen Hurts",
+          "status": "IR",
+          "rank": 60
+        },
+        {
+          "name": "James Conner",
+          "status": "IR",
+          "rank": 293
+        }
+      ],
+      "record": "6–5",
+      "projectedWins": 7.837056626461777,
+      "score": 89.58981868755241
+    },
+    {
+      "rosterId": 7,
+      "total": 75532,
+      "players": 59728,
+      "picks": 15804,
+      "age": 26.482535829091887,
+      "top": [
+        {
+          "name": "Amon-Ra St. Brown",
+          "value": 7302
+        },
+        {
+          "name": "Brock Bowers",
+          "value": 7139
+        },
+        {
+          "name": "Kenneth Walker III",
+          "value": 6326
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Brock Bowers",
+          "status": "Out",
+          "rank": 9
+        },
+        {
+          "name": "Kenneth Walker III",
+          "status": "Out",
+          "rank": 11
+        },
+        {
+          "name": "Sam Darnold",
+          "status": "Out",
+          "rank": 92
+        }
+      ],
+      "record": "6–5",
+      "projectedWins": 7.840967587866578,
+      "score": 88.52329718687936
+    },
+    {
+      "rosterId": 2,
+      "total": 80074,
+      "players": 64108,
+      "picks": 15966,
+      "age": 26.03372278030823,
+      "top": [
+        {
+          "name": "Drake Maye",
+          "value": 6007
+        },
+        {
+          "name": "Jordan Love",
+          "value": 5318
+        },
+        {
+          "name": "C.J. Stroud",
+          "value": 4988
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Drake Maye",
+          "status": "Out",
+          "rank": 17
+        },
+        {
+          "name": "Omar Cooper Jr.",
+          "status": "Out",
+          "rank": 93
+        },
+        {
+          "name": "Malik Willis",
+          "status": "IR",
+          "rank": 125
+        }
+      ],
+      "record": "6–5",
+      "projectedWins": 7.312840721146463,
+      "score": 88.16722915649521
+    },
+    {
+      "rosterId": 4,
+      "total": 72849,
+      "players": 55784,
+      "picks": 17065,
+      "age": 27.262788613222433,
+      "top": [
+        {
+          "name": "Trey McBride",
+          "value": 6111
+        },
+        {
+          "name": "Lamar Jackson",
+          "value": 5057
+        },
+        {
+          "name": "Dak Prescott",
+          "value": 4326
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Lamar Jackson",
+          "status": "IR",
+          "rank": 24
+        },
+        {
+          "name": "Josh Jacobs",
+          "status": "Out",
+          "rank": 89
+        },
+        {
+          "name": "Dalton Kincaid",
+          "status": "Out",
+          "rank": 108
+        }
+      ],
+      "record": "7–4",
+      "projectedWins": 7.955340746277489,
+      "score": 87.61101236166941
+    },
+    {
+      "rosterId": 1,
+      "total": 85879,
+      "players": 65918,
+      "picks": 19961,
+      "age": 25.516589045210583,
+      "top": [
+        {
+          "name": "Jahmyr Gibbs",
+          "value": 10546
+        },
+        {
+          "name": "Patrick Mahomes",
+          "value": 5790
+        },
+        {
+          "name": "Jeremiyah Love",
+          "value": 4812
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Jeremiyah Love",
+          "status": "IR",
+          "rank": 28
+        },
+        {
+          "name": "Jaxson Dart",
+          "status": "IR",
+          "rank": 43
+        },
+        {
+          "name": "Michael Wilson",
+          "status": "IR",
+          "rank": 91
+        }
+      ],
+      "record": "5–6",
+      "projectedWins": 6.050454640127358,
+      "score": 84.37489671833445
+    },
+    {
+      "rosterId": 3,
+      "total": 79219,
+      "players": 61043,
+      "picks": 18176,
+      "age": 25.192562619792607,
+      "top": [
+        {
+          "name": "Jaxon Smith-Njigba",
+          "value": 10478
+        },
+        {
+          "name": "Justin Jefferson",
+          "value": 6130
+        },
+        {
+          "name": "Trevor Lawrence",
+          "value": 5945
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Ty Simpson",
+          "status": "Out",
+          "rank": 102
+        },
+        {
+          "name": "De'Zhaun Stribling",
+          "status": "IR",
+          "rank": 116
+        },
+        {
+          "name": "Marvin Harrison Jr.",
+          "status": "Out",
+          "rank": 120
+        }
+      ],
+      "record": "5–6",
+      "projectedWins": 6.581425435078632,
+      "score": 83.5139918345763
+    },
+    {
+      "rosterId": 8,
+      "total": 71982,
+      "players": 54917,
+      "picks": 17065,
+      "age": 26.57415190196114,
+      "top": [
+        {
+          "name": "Caleb Williams",
+          "value": 7144
+        },
+        {
+          "name": "Puka Nacua",
+          "value": 6098
+        },
+        {
+          "name": "James Cook III",
+          "value": 5363
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Puka Nacua",
+          "status": "IR",
+          "rank": 16
+        },
+        {
+          "name": "Alec Pierce",
+          "status": "IR",
+          "rank": 126
+        },
+        {
+          "name": "Romeo Doubs",
+          "status": "IR",
+          "rank": 206
+        }
+      ],
+      "record": "5–6",
+      "projectedWins": 6.137340246292627,
+      "score": 76.77749129612027
+    },
+    {
+      "rosterId": 9,
+      "total": 75536,
+      "players": 58471,
+      "picks": 17065,
+      "age": 26.242845171110467,
+      "top": [
+        {
+          "name": "Josh Allen",
+          "value": 9953
+        },
+        {
+          "name": "Malik Nabers",
+          "value": 6238
+        },
+        {
+          "name": "Jayden Daniels",
+          "value": 5581
+        }
+      ],
+      "hurt": [
+        {
+          "name": "RJ Harvey",
+          "status": "IR",
+          "rank": 128
+        },
+        {
+          "name": "Terrance Ferguson",
+          "status": "IR",
+          "rank": 129
+        },
+        {
+          "name": "Brandon Aiyuk",
+          "status": "DNR",
+          "rank": 184
+        }
+      ],
+      "record": "4–7",
+      "projectedWins": 5.4248271304430755,
+      "score": 74.79862805536877
+    },
+    {
+      "rosterId": 6,
+      "total": 68450,
+      "players": 50763,
+      "picks": 17687,
+      "age": 27.66904241278096,
+      "top": [
+        {
+          "name": "Joe Burrow",
+          "value": 8156
+        },
+        {
+          "name": "Christian McCaffrey",
+          "value": 5072
+        },
+        {
+          "name": "Drake London",
+          "value": 4896
+        }
+      ],
+      "hurt": [
+        {
+          "name": "Davante Adams",
+          "status": "IR",
+          "rank": 99
+        },
+        {
+          "name": "Jayden Reed",
+          "status": "IR",
+          "rank": 178
+        },
+        {
+          "name": "Michael Pittman Jr.",
+          "status": "IR",
+          "rank": 187
+        }
+      ],
+      "record": "4–7",
+      "projectedWins": 6.06269588438302,
+      "score": 74.29702709306159
+    }
+  ],
+  "mvp": {
+    "1": {
+      "name": "Jahmyr Gibbs",
+      "points": 25.8
+    },
+    "2": {
+      "name": "Javonte Williams",
+      "points": 22.6
+    },
+    "3": {
+      "name": "Jonah Coleman",
+      "points": 32.9
+    },
+    "4": {
+      "name": "Dak Prescott",
+      "points": 35.9
+    },
+    "5": {
+      "name": "CeeDee Lamb",
+      "points": 24.7
+    },
+    "6": {
+      "name": "Fernando Mendoza",
+      "points": 22.88
+    },
+    "7": {
+      "name": "Chuba Hubbard",
+      "points": 26
+    },
+    "8": {
+      "name": "Travis Kelce",
+      "points": 25.4
+    },
+    "9": {
+      "name": "Bucky Irving",
+      "points": 17.5
+    },
+    "10": {
+      "name": "Brock Purdy",
+      "points": 22.2
+    }
+  },
+  "recap": {
+    "headline": "Week 11 recap",
+    "featured": [
+      {
+        "matchup": 2,
+        "hook": "",
+        "body": "",
+        "receipts": [
+          {
+            "label": "Travis Kelce, pick 10.09",
+            "value": "25.40"
+          },
+          {
+            "label": "Josh Allen, pick 1.03",
+            "value": "12.16"
+          },
+          {
+            "label": "Evan Engram on the bench",
+            "value": "13.40"
+          }
+        ]
+      },
+      {
+        "matchup": 5,
+        "hook": "",
+        "body": "",
+        "receipts": [
+          {
+            "label": "Dak Prescott, pick 4.07",
+            "value": "35.90"
+          },
+          {
+            "label": "Isaiah Likely, pick 12.04",
+            "value": "4.50"
+          },
+          {
+            "label": "Keenan Allen on the bench",
+            "value": "5.30"
+          }
+        ]
+      },
+      {
+        "matchup": 3,
+        "hook": "",
+        "body": "",
+        "receipts": [
+          {
+            "label": "Jonah Coleman, pick 12.10",
+            "value": "32.90"
+          },
+          {
+            "label": "Jordyn Tyson, pick 8.08",
+            "value": "1.50"
+          },
+          {
+            "label": "Rashod Bateman on the bench",
+            "value": "13.70"
+          }
+        ]
+      }
+    ],
+    "meme": null
+  },
+  "scout": {
+    "1": [
+      {
+        "kind": "draft",
+        "score": 6.09,
+        "text": "Jag took Jeremiyah Love 17th in the startup draft: 47.9 points this season. 8 picks later, Kartik took Joe Burrow: 252.2."
+      },
+      {
+        "kind": "projected",
+        "score": 5.14,
+        "text": "Sleeper had Jag beating Jit by 17.2 in Week 11. Jag lost by 10.78."
+      },
+      {
+        "kind": "got away",
+        "score": 5,
+        "text": "Keeping Jaylin Noel, dropped in Week 1, would have flipped 2 of Jag’s losses: Jag would be 7–4. Jaylin Noel is on Jorge’s roster now."
+      },
+      {
+        "kind": "swap",
+        "score": 4,
+        "text": "Starting Pat Bryant over Tyler Allgeier in the 2 weeks Jag had both would have made Jag 6–5, not 5–6."
+      },
+      {
+        "kind": "star",
+        "score": 4,
+        "text": "Take away Jahmyr Gibbs and Jag is 3–8, not 5–6. Jahmyr Gibbs has scored 17% of the team’s points."
+      },
+      {
+        "kind": "lore",
+        "score": 4,
+        "text": "Jag is 5–6. With The Schedule’s schedule, Jag would be 8–3. It’s in the name."
+      },
+      {
+        "kind": "got away",
+        "score": 4,
+        "text": "Keeping Roschon Johnson, dropped in Week 1, would have flipped Jag’s Week 6 loss to Cody: Roschon Johnson scored 13.50. Roschon Johnson is still a free agent."
+      },
+      {
+        "kind": "projection",
+        "score": 3.66,
+        "text": "Isaiah Likely has scored 161.0 for Jag, 35% more than Sleeper projected."
+      },
+      {
+        "kind": "perfect",
+        "score": 3.5,
+        "text": "With the best possible lineup every week, Jag would be 8–3, not 5–6. 261.8 points have sat on the bench."
+      },
+      {
+        "kind": "projection",
+        "score": 3.41,
+        "text": "Sleeper has projected Chris Godwin Jr. for 81.5 points on Jag’s roster. Chris Godwin Jr. has delivered 46.2."
+      },
+      {
+        "kind": "trade",
+        "score": 3.28,
+        "text": "Since the Week 4 trade, Patrick Mahomes and Jordan Mason (plus a 2027 1st) have scored 131.8 in Jag’s lineup. Daniel Jones, Kenneth Walker III and MarShawn Lloyd have scored 100.6 in Mateo’s."
+      },
+      {
+        "kind": "units",
+        "score": 3,
+        "text": "Jag lost Week 9 by 2.40. 25 more rushing yards, or 61 passing yards, would have flipped it."
+      },
+      {
+        "kind": "costly call",
+        "score": 2.5,
+        "text": "Lost Week 9 to Andrew by 2.40 with Pat Bryant’s 13.60 on the bench. Greg Dulcich started and scored 3.40."
+      }
+    ],
+    "2": [
+      {
+        "kind": "draft",
+        "score": 5.25,
+        "text": "Andrew took Omarion Hampton 16th in the startup draft: 89.5 points this season. 9 picks later, Kartik took Joe Burrow: 252.2."
+      },
+      {
+        "kind": "swap",
+        "score": 5,
+        "text": "Starting C.J. Stroud over Drake Maye in the 8 weeks Andrew had both would have made Andrew 8–3, not 6–5, even though C.J. Stroud scored 12.1 fewer points."
+      },
+      {
+        "kind": "costly call",
+        "score": 5,
+        "text": "Lost Week 11 to Jorge by 15.30 with Ted Hurst III’s 20.10 on the bench. Dalton Schultz started and scored 2.10."
+      },
+      {
+        "kind": "bench team",
+        "score": 5,
+        "text": "Andrew’s bench, playing as its own team, would be 3–8."
+      },
+      {
+        "kind": "draft",
+        "score": 4.8,
+        "text": "Andrew took C.J. Stroud with the 135th pick. C.J. Stroud has outscored 7 of the 10 first-rounders."
+      },
+      {
+        "kind": "perfect",
+        "score": 4.5,
+        "text": "With the best possible lineup every week, Andrew would be 11–0, not 6–5. 427.0 points have sat on the bench."
+      },
+      {
+        "kind": "multiverse",
+        "score": 4,
+        "text": "With Kartik’s schedule, Andrew would be 3–8, not 6–5."
+      },
+      {
+        "kind": "projection",
+        "score": 3.56,
+        "text": "C.J. Stroud has scored 204.9 for Andrew, 24% more than Sleeper projected."
+      },
+      {
+        "kind": "lore",
+        "score": 3.5,
+        "text": "Projection Champ, as advertised: 8–3 if every game had gone to Sleeper’s projections, 6–5 in real life."
+      },
+      {
+        "kind": "heartbreak",
+        "score": 3.5,
+        "text": "Andrew won Week 8 with 103.58, a score that beat only the team Andrew played."
+      },
+      {
+        "kind": "projection",
+        "score": 3.19,
+        "text": "Sleeper has projected Chase Brown for 142.1 points on Andrew’s roster. Chase Brown has delivered 112.3."
+      },
+      {
+        "kind": "units",
+        "score": 3,
+        "text": "Andrew beat Jag by 2.40 in Week 9: 25 rushing yards from a loss."
+      }
+    ],
+    "3": [
+      {
+        "kind": "draft",
+        "score": 4.77,
+        "text": "Adi took Drake London 21st in the startup draft: 113.5 points this season. 4 picks later, Kartik took Joe Burrow: 252.2."
+      },
+      {
+        "kind": "trade",
+        "score": 4.66,
+        "text": "Since the Week 1 trade, De'Zhaun Stribling (plus a 2027 2nd and a 2028 2nd) has scored 0.0 in Adi’s lineup. DJ Moore and Jonathon Brooks (plus a 2028 4th) have scored 86.5 in Jorge’s."
+      },
+      {
+        "kind": "multiverse",
+        "score": 4.5,
+        "text": "With Jag’s schedule, Adi would be 1–10, not 5–6."
+      },
+      {
+        "kind": "perfect",
+        "score": 3.5,
+        "text": "With the best possible lineup every week, Adi would be 8–3, not 5–6. 187.4 points have sat on the bench."
+      },
+      {
+        "kind": "multiverse",
+        "score": 3.5,
+        "text": "Adi is 5–6. With Cody’s schedule, Adi would be 7–4."
+      },
+      {
+        "kind": "heartbreak",
+        "score": 3.5,
+        "text": "Adi won Week 5 with 112.96, a score that beat only the team Adi played."
+      },
+      {
+        "kind": "projection",
+        "score": 3.46,
+        "text": "Jonah Coleman has scored 89.3 for Adi, 69% more than Sleeper projected."
+      },
+      {
+        "kind": "projection",
+        "score": 3.07,
+        "text": "Sleeper has projected Justin Jefferson for 74.3 points on Adi’s roster. Justin Jefferson has delivered 47.6."
+      },
+      {
+        "kind": "star",
+        "score": 3,
+        "text": "Take away Trevor Lawrence and Adi is 4–7, not 5–6. Trevor Lawrence has scored 13% of the team’s points."
+      },
+      {
+        "kind": "trade",
+        "score": 2.7,
+        "text": "Since the Week 4 trade, Jaxon Smith-Njigba and Marvin Harrison Jr. (plus a 2027 2nd) have scored 152.8 in Adi’s lineup. Mike Evans, Drake London and Rashee Rice (plus a 2028 1st) have scored 160.9 in Kartik’s."
+      },
+      {
+        "kind": "trade",
+        "score": 2.55,
+        "text": "Since the Week 6 trade, Justin Jefferson and Breece Hall have scored 88.1 in Adi’s lineup. Travis Etienne Jr. and Amon-Ra St. Brown (plus a 2027 2nd) have scored 89.9 in Mateo’s."
+      },
+      {
+        "kind": "costly call",
+        "score": 2.5,
+        "text": "Lost Week 1 to Jag by 10.38 with Dontayvion Wicks’s 14.30 on the bench. De'Zhaun Stribling started and scored 0.00."
+      },
+      {
+        "kind": "units",
+        "score": 2,
+        "text": "Adi beat Kartik by 3.92 in Week 6: 40 rushing yards from a loss."
+      },
+      {
+        "kind": "steady",
+        "score": 2,
+        "text": "Adi has scored between 100.1 and 151.4 every week, the steadiest team in the league."
+      },
+      {
+        "kind": "rooms",
+        "score": 2,
+        "text": "Adi’s TEs have 84.3 points all season. Jit’s have 314.9."
+      }
+    ],
+    "4": [
+      {
+        "kind": "draft",
+        "score": 6.68,
+        "text": "Jit took A.J. Brown 24th in the startup draft: 18.3 points this season. 1 pick later, Kartik took Joe Burrow: 252.2."
+      },
+      {
+        "kind": "projected",
+        "score": 6,
+        "text": "If every game had gone to Sleeper’s projections, Jit would be 0–11. Jit is 7–4."
+      },
+      {
+        "kind": "projected",
+        "score": 5.14,
+        "text": "Sleeper had Jit losing Week 11 by 17.2. Jit won by 10.78."
+      },
+      {
+        "kind": "swap",
+        "score": 4,
+        "text": "Starting Blake Corum over Kalif Raymond in the 2 weeks Jit had both would have made Jit 8–3, not 7–4."
+      },
+      {
+        "kind": "star",
+        "score": 4,
+        "text": "Take away Dak Prescott and Jit is 5–6, not 7–4. Dak Prescott has scored 16% of the team’s points."
+      },
+      {
+        "kind": "multiverse",
+        "score": 4,
+        "text": "With Mateo’s schedule, Jit would be 4–7, not 7–4."
+      },
+      {
+        "kind": "heartbreak",
+        "score": 3.5,
+        "text": "Jit won Week 6 with 111.48, a score that beat only the team Jit played."
+      },
+      {
+        "kind": "projection",
+        "score": 3.28,
+        "text": "Sleeper has projected A.J. Brown for 50.4 points on Jit’s roster. A.J. Brown has delivered 18.3."
+      },
+      {
+        "kind": "projection",
+        "score": 3.26,
+        "text": "Dak Prescott has scored 237.8 for Jit, 15% more than Sleeper projected."
+      },
+      {
+        "kind": "perfect",
+        "score": 3,
+        "text": "With the best possible lineup every week, Jit would be 9–2, not 7–4. 275.7 points have sat on the bench."
+      },
+      {
+        "kind": "units",
+        "score": 3,
+        "text": "Jit beat Arjun by 2.08 in Week 9: 21 rushing yards from a loss."
+      },
+      {
+        "kind": "costly call",
+        "score": 2.5,
+        "text": "Lost Week 5 to Adi by 9.22 with Blake Corum’s 14.70 on the bench. Kalif Raymond started and scored 1.90."
+      },
+      {
+        "kind": "ghost",
+        "score": 2,
+        "text": "Jit started A.J. Brown in Week 8, and A.J. Brown didn’t play."
+      },
+      {
+        "kind": "rooms",
+        "score": 2,
+        "text": "Jit’s TEs lead the league with 314.9 points, 3.7 times the worst TE room."
+      }
+    ],
+    "5": [
+      {
+        "kind": "draft",
+        "score": 5.45,
+        "text": "Jorge took Emeka Egbuka 30th in the startup draft: 65.3 points this season. 7 picks later, Jit took Dak Prescott: 237.8."
+      },
+      {
+        "kind": "trade",
+        "score": 4.66,
+        "text": "Since the Week 1 trade, DJ Moore and Jonathon Brooks (plus a 2028 4th) have scored 86.5 in Jorge’s lineup. De'Zhaun Stribling (plus a 2027 2nd and a 2028 2nd) has scored 0.0 in Adi’s."
+      },
+      {
+        "kind": "multiverse",
+        "score": 4.5,
+        "text": "With Kartik’s schedule, Jorge would be 3–8, not 7–4."
+      },
+      {
+        "kind": "draft",
+        "score": 4.2,
+        "text": "Jorge took Jared Goff with the 71st pick. Jared Goff has outscored 7 of the 10 first-rounders."
+      },
+      {
+        "kind": "swap",
+        "score": 4,
+        "text": "Starting Rhamondre Stevenson over DJ Moore in the 2 weeks Jorge had both would have made Jorge 8–3, not 7–4."
+      },
+      {
+        "kind": "star",
+        "score": 4,
+        "text": "Take away CeeDee Lamb and Jorge is 5–6, not 7–4. CeeDee Lamb has scored 14% of the team’s points."
+      },
+      {
+        "kind": "projection",
+        "score": 3.69,
+        "text": "Emmett Johnson has scored 108.2 for Jorge, 64% more than Sleeper projected."
+      },
+      {
+        "kind": "multiverse",
+        "score": 3.5,
+        "text": "Jorge is 7–4. With Andrew’s schedule, Jorge would be 9–2."
+      },
+      {
+        "kind": "projection",
+        "score": 3.04,
+        "text": "Sleeper has projected Jake Ferguson for 80.7 points on Jorge’s roster. Jake Ferguson has delivered 54.6."
+      },
+      {
+        "kind": "costly call",
+        "score": 2.5,
+        "text": "Lost Week 4 to Adi by 12.38 with Rhamondre Stevenson’s 16.90 on the bench. Saquon Barkley started and scored 1.50."
+      },
+      {
+        "kind": "units",
+        "score": 2,
+        "text": "Jorge beat Andrew by 5.14 in Week 2: 52 rushing yards from a loss."
+      }
+    ],
+    "6": [
+      {
+        "kind": "projected",
+        "score": 5.04,
+        "text": "Sleeper had Kartik beating Cody by 15.6 in Week 11. Kartik lost by 11.50."
+      },
+      {
+        "kind": "lore",
+        "score": 5,
+        "text": "Kartik is 4–7. With The Schedule’s schedule, Kartik would be 9–2. It’s in the name."
+      },
+      {
+        "kind": "draft",
+        "score": 4.7,
+        "text": "Kartik took Bryce Young with the 165th pick. Bryce Young has outscored 5 of the 10 first-rounders."
+      },
+      {
+        "kind": "cursed",
+        "score": 4.5,
+        "text": "4 of Kartik’s 7 losses came on the opponent’s best day of the season."
+      },
+      {
+        "kind": "projection",
+        "score": 4.07,
+        "text": "Joe Burrow has scored 252.2 for Kartik, 26% more than Sleeper projected."
+      },
+      {
+        "kind": "swap",
+        "score": 4,
+        "text": "Starting Chig Okonkwo over Cade Otton in the 3 weeks Kartik had both would have made Kartik 5–6, not 4–7."
+      },
+      {
+        "kind": "star",
+        "score": 4,
+        "text": "Take away Joe Burrow and Kartik is 2–9, not 4–7. Joe Burrow has scored 16% of the team’s points."
+      },
+      {
+        "kind": "projected",
+        "score": 4,
+        "text": "Kartik would be 7–4 if every game had gone to Sleeper’s projections. Kartik is 4–7, with 5 losses as the favorite."
+      },
+      {
+        "kind": "got away",
+        "score": 4,
+        "text": "Keeping Kimani Vidal, dropped in Week 1, would have flipped Kartik’s Week 6 loss to Adi: Kimani Vidal scored 5.50. Kimani Vidal is on Mateo’s roster now."
+      },
+      {
+        "kind": "perfect",
+        "score": 3.5,
+        "text": "With the best possible lineup every week, Kartik would be 7–4, not 4–7. 202.2 points have sat on the bench."
+      },
+      {
+        "kind": "projection",
+        "score": 3.33,
+        "text": "Sleeper has projected Jonathan Taylor for 189.7 points on Kartik’s roster. Jonathan Taylor has delivered 156.6."
+      },
+      {
+        "kind": "draft",
+        "score": 3.03,
+        "text": "Kartik took Jonathan Taylor 15th in the startup draft: 156.6 points this season. 5 picks later, Jorge took CeeDee Lamb: 208.2."
+      },
+      {
+        "kind": "heartbreak",
+        "score": 3,
+        "text": "Kartik scored 132.44 in Week 6, more than 7 of the other 9 teams, and lost to Adi."
+      },
+      {
+        "kind": "ghost",
+        "score": 3,
+        "text": "Kartik has started someone who didn’t play 3 times: Chig Okonkwo (Weeks 2 and 3) and Michael Pittman Jr. (Week 2)."
+      },
+      {
+        "kind": "units",
+        "score": 3,
+        "text": "Kartik beat Pranav by 1.08 in Week 9: 11 rushing yards from a loss."
+      },
+      {
+        "kind": "trade",
+        "score": 2.7,
+        "text": "Since the Week 4 trade, Mike Evans, Drake London and Rashee Rice (plus a 2028 1st) have scored 160.9 in Kartik’s lineup. Jaxon Smith-Njigba and Marvin Harrison Jr. (plus a 2027 2nd) have scored 152.8 in Adi’s."
+      },
+      {
+        "kind": "costly call",
+        "score": 2.5,
+        "text": "Lost Week 6 to Adi by 3.92 with Tyrone Tracy Jr.’s 17.50 on the bench. Cade Otton started and scored 1.40."
+      },
+      {
+        "kind": "rooms",
+        "score": 2,
+        "text": "Kartik’s RBs lead the league with 625.0 points, 2.5 times the worst RB room."
+      }
+    ],
+    "7": [
+      {
+        "kind": "swap",
+        "score": 5,
+        "text": "Starting Alvin Kamara over Mark Andrews in the 4 weeks Mateo had both would have made Mateo 8–3, not 6–5."
+      },
+      {
+        "kind": "draft",
+        "score": 4.66,
+        "text": "Mateo took Justin Herbert 23rd in the startup draft: 119.3 points this season. 2 picks later, Kartik took Joe Burrow: 252.2."
+      },
+      {
+        "kind": "lore",
+        "score": 4.5,
+        "text": "Even The Schedule can’t beat every schedule: with Kartik’s, it would be 2–9, not 6–5."
+      },
+      {
+        "kind": "draft",
+        "score": 4.5,
+        "text": "Mateo took Chuba Hubbard with the 103rd pick. Chuba Hubbard has outscored 7 of the 10 first-rounders."
+      },
+      {
+        "kind": "got away",
+        "score": 4,
+        "text": "Keeping Ollie Gordon II, dropped in Week 3, would have flipped Mateo’s Week 4 loss to Kartik: Ollie Gordon II scored 17.00. Ollie Gordon II is on Jag’s roster now."
+      },
+      {
+        "kind": "projection",
+        "score": 3.94,
+        "text": "Chuba Hubbard has scored 191.3 for Mateo, 34% more than Sleeper projected."
+      },
+      {
+        "kind": "perfect",
+        "score": 3.5,
+        "text": "With the best possible lineup every week, Mateo would be 9–2, not 6–5. 226.4 points have sat on the bench."
+      },
+      {
+        "kind": "trade",
+        "score": 3.28,
+        "text": "Since the Week 4 trade, Daniel Jones, Kenneth Walker III and MarShawn Lloyd have scored 100.6 in Mateo’s lineup. Patrick Mahomes and Jordan Mason (plus a 2027 1st) have scored 131.8 in Jag’s."
+      },
+      {
+        "kind": "projection",
+        "score": 3.18,
+        "text": "Sleeper has projected J.K. Dobbins for 87.6 points on Mateo’s roster. J.K. Dobbins has delivered 58.0."
+      },
+      {
+        "kind": "heartbreak",
+        "score": 3,
+        "text": "Mateo won Week 7 with 116.20. 7 of the other 9 teams scored more."
+      },
+      {
+        "kind": "trade",
+        "score": 2.55,
+        "text": "Since the Week 6 trade, Travis Etienne Jr. and Amon-Ra St. Brown (plus a 2027 2nd) have scored 89.9 in Mateo’s lineup. Justin Jefferson and Breece Hall have scored 88.1 in Adi’s."
+      },
+      {
+        "kind": "costly call",
+        "score": 2.5,
+        "text": "Lost Week 10 to Andrew by 9.46 with Mark Andrews’s 16.20 on the bench. Brock Bowers started and scored 3.80."
+      },
+      {
+        "kind": "units",
+        "score": 2,
+        "text": "Mateo lost Week 4 by 6.36. 64 more rushing yards, or 160 passing yards, would have flipped it."
+      }
+    ],
+    "8": [
+      {
+        "kind": "draft",
+        "score": 5.9,
+        "text": "Pranav took Kirk Cousins with the 242nd pick. Kirk Cousins has outscored 7 of the 10 first-rounders."
+      },
+      {
+        "kind": "heartbreak",
+        "score": 5.5,
+        "text": "Pranav won Week 11 with 116.78. 7 of the other 9 teams scored more."
+      },
+      {
+        "kind": "ghost",
+        "score": 5.5,
+        "text": "Pranav has started someone who didn’t play 5 times: Puka Nacua (Week 2), Ladd McConkey (Weeks 9 and 10), Cam Skattebo (Week 9) and Trey Benson (Week 11)."
+      },
+      {
+        "kind": "units",
+        "score": 5.5,
+        "text": "Pranav beat Arjun by 2.86 in Week 11: 29 rushing yards from a loss."
+      },
+      {
+        "kind": "projected",
+        "score": 5.11,
+        "text": "Sleeper had Pranav losing Week 11 by 16.7. Pranav won by 2.86."
+      },
+      {
+        "kind": "star",
+        "score": 5,
+        "text": "Take away James Cook III and Pranav is 2–9, not 5–6. James Cook III has scored 12% of the team’s points."
+      },
+      {
+        "kind": "swap",
+        "score": 4,
+        "text": "Starting Tyler Shough over Caleb Williams in the 3 weeks Pranav had both would have made Pranav 6–5, not 5–6."
+      },
+      {
+        "kind": "got away",
+        "score": 4,
+        "text": "Keeping Greg Dulcich, dropped in Week 3, would have flipped Pranav’s Week 9 loss to Kartik: Greg Dulcich scored 3.40. Greg Dulcich is still a free agent."
+      },
+      {
+        "kind": "draft",
+        "score": 3.67,
+        "text": "Pranav took Caleb Williams 12th in the startup draft: 124.7 points this season. 8 picks later, Jorge took CeeDee Lamb: 208.2."
+      },
+      {
+        "kind": "perfect",
+        "score": 3.5,
+        "text": "With the best possible lineup every week, Pranav would be 8–3, not 5–6. 281.1 points have sat on the bench."
+      },
+      {
+        "kind": "multiverse",
+        "score": 3.5,
+        "text": "Pranav is 5–6. With Andrew’s schedule, Pranav would be 7–4."
+      },
+      {
+        "kind": "heartbreak",
+        "score": 3.5,
+        "text": "Pranav scored 154.56 in Week 8, enough to beat every team except the one Pranav played."
+      },
+      {
+        "kind": "projection",
+        "score": 3.17,
+        "text": "Kirk Cousins has scored 195.1 for Pranav, 18% more than Sleeper projected."
+      },
+      {
+        "kind": "projection",
+        "score": 3.06,
+        "text": "Sleeper has projected David Montgomery for 82.5 points on Pranav’s roster. David Montgomery has delivered 55.9."
+      },
+      {
+        "kind": "costly call",
+        "score": 2.5,
+        "text": "Lost Week 9 to Kartik by 1.08 with KC Concepcion Jr.’s 16.80 on the bench. Ladd McConkey started and scored 0.00."
+      }
+    ],
+    "9": [
+      {
+        "kind": "got away",
+        "score": 6.5,
+        "text": "Arjun dropped Ty Johnson in Week 5. Ty Johnson’s 9.20 in Week 11 would have beaten Pranav instead of losing by 2.86. Ty Johnson is still a free agent."
+      },
+      {
+        "kind": "got away",
+        "score": 6.5,
+        "text": "Arjun dropped Devontez Walker in Week 8. Devontez Walker’s 9.90 in Week 11 would have beaten Pranav instead of losing by 2.86. Devontez Walker is still a free agent."
+      },
+      {
+        "kind": "swap",
+        "score": 6,
+        "text": "Starting Devaughn Vele over Quentin Johnston in the 5 weeks Arjun had both would have made Arjun 6–5, not 4–7."
+      },
+      {
+        "kind": "units",
+        "score": 5.5,
+        "text": "Arjun lost Week 11 by 2.86. 29 more rushing yards, or 72 passing yards, would have flipped it."
+      },
+      {
+        "kind": "projected",
+        "score": 5.11,
+        "text": "Sleeper had Arjun beating Pranav by 16.7 in Week 11. Arjun lost by 2.86."
+      },
+      {
+        "kind": "costly call",
+        "score": 5,
+        "text": "Lost Week 11 to Pranav by 2.86 with Evan Engram’s 13.40 on the bench. Courtland Sutton started and scored 0.00."
+      },
+      {
+        "kind": "draft",
+        "score": 4.29,
+        "text": "Arjun took Malik Nabers 28th in the startup draft: 123.2 points this season. 9 picks later, Jit took Dak Prescott: 237.8."
+      },
+      {
+        "kind": "perfect",
+        "score": 4,
+        "text": "With the best possible lineup every week, Arjun would be 8–3, not 4–7. 331.7 points have sat on the bench."
+      },
+      {
+        "kind": "star",
+        "score": 4,
+        "text": "Take away Josh Allen and Arjun is 2–9, not 4–7. Josh Allen has scored 17% of the team’s points."
+      },
+      {
+        "kind": "multiverse",
+        "score": 4,
+        "text": "With Kartik’s schedule, Arjun would be 1–10, not 4–7."
+      },
+      {
+        "kind": "projected",
+        "score": 3.5,
+        "text": "If every game had gone to Sleeper’s projections, Arjun would be 2–9. Arjun is 4–7."
+      },
+      {
+        "kind": "projection",
+        "score": 2.96,
+        "text": "Sleeper has projected Tyjae Spears for 46.9 points on Arjun’s roster. Tyjae Spears has delivered 22.9."
+      },
+      {
+        "kind": "projection",
+        "score": 2.95,
+        "text": "Bucky Irving has scored 165.6 for Arjun, 17% more than Sleeper projected."
+      },
+      {
+        "kind": "ghost",
+        "score": 2.5,
+        "text": "Arjun has started someone who didn’t play twice: Quentin Johnston (Week 5) and RJ Harvey (Week 8)."
+      },
+      {
+        "kind": "rooms",
+        "score": 2,
+        "text": "Arjun’s WRs have 292.9 points all season. Cody’s have 588.1."
+      }
+    ],
+    "10": [
+      {
+        "kind": "draft",
+        "score": 6.62,
+        "text": "Cody took De'Von Achane 19th in the startup draft: 21.1 points this season. 6 picks later, Kartik took Joe Burrow: 252.2."
+      },
+      {
+        "kind": "projected",
+        "score": 5.04,
+        "text": "Sleeper had Cody losing Week 11 by 15.6. Cody won by 11.50."
+      },
+      {
+        "kind": "star",
+        "score": 4,
+        "text": "Take away Brock Purdy and Cody is 4–7, not 6–5. Brock Purdy has scored 15% of the team’s points."
+      },
+      {
+        "kind": "projection",
+        "score": 3.51,
+        "text": "Sleeper has projected Baker Mayfield for 107.8 points on Cody’s roster. Baker Mayfield has delivered 70.0."
+      },
+      {
+        "kind": "multiverse",
+        "score": 3.5,
+        "text": "Cody is 6–5. With Adi’s schedule, Cody would be 8–3."
+      },
+      {
+        "kind": "projected",
+        "score": 3.5,
+        "text": "Cody would be 8–3 if every game had gone to Sleeper’s projections. Cody is 6–5, with 3 losses as the favorite."
+      },
+      {
+        "kind": "cursed",
+        "score": 3.5,
+        "text": "2 of Cody’s 5 losses came on the opponent’s best day of the season."
+      },
+      {
+        "kind": "projection",
+        "score": 3.46,
+        "text": "Matthew Golden has scored 146.9 for Cody, 33% more than Sleeper projected."
+      },
+      {
+        "kind": "perfect",
+        "score": 3,
+        "text": "With the best possible lineup every week, Cody would be 8–3, not 6–5. 287.6 points have sat on the bench."
+      },
+      {
+        "kind": "heartbreak",
+        "score": 3,
+        "text": "Cody scored 151.04 in Week 2, more than 7 of the other 9 teams, and lost to Kartik."
+      },
+      {
+        "kind": "bench team",
+        "score": 3,
+        "text": "Cody’s bench, playing as its own team, would be 1–10."
+      },
+      {
+        "kind": "ghost",
+        "score": 2.5,
+        "text": "Cody has started someone who didn’t play twice: Terry McLaurin (Week 4) and Jalon Daniels (Week 8)."
+      },
+      {
+        "kind": "steady",
+        "score": 2,
+        "text": "Cody has ranged from 77.4 to 178.7, the league’s biggest swings."
+      },
+      {
+        "kind": "rooms",
+        "score": 2,
+        "text": "Cody’s RBs have 254.8 points all season. Kartik’s have 625.0."
+      },
+      {
+        "kind": "rooms",
+        "score": 2,
+        "text": "Cody’s WRs lead the league with 588.1 points, 2.0 times the worst WR room."
+      }
+    ]
+  }
+}
