@@ -10,6 +10,7 @@ import w7 from "./7.json";
 import w8 from "./8.json";
 import w9 from "./9.json";
 import w10 from "./10.json";
+import w11 from "./11.json";
 
 export type Recap = {
   headline: string;
@@ -32,4 +33,4 @@ export type Snapshot = {
 };
 
 // Oldest first. After `node scripts/snapshot.mjs <week>`, import the new file here.
-export const weeks = [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10] as Snapshot[];
+export const weeks = [w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11] as Snapshot[];
