@@ -618,12 +618,12 @@
     }
   },
   "recap": {
-    "headline": "Week 11 recap",
+    "headline": "WEEK 11 RECAP 🚨 Two teams at 7–4, three at 6–5, three at 5–6, two at 4–7. Three weeks left, and the last playoff spot is a three-way tie at 5–6, broken on points. Every point counts now 🧮",
     "featured": [
       {
         "matchup": 2,
-        "hook": "",
-        "body": "",
+        "hook": "TWO GHOSTS, TWO WINS 👻",
+        "body": "Pranav beat Arjun 116.78–113.92 with Trey Benson in his starting lineup. Trey Benson did not play. In Week 2, Pranav beat Arjun by 2.44 with Puka Nacua in his starting lineup. Puka Nacua did not play either. Two wins by a combined 5.30, with a ghost in the lineup both times 👻 Sleeper had Arjun by 16.7. Travis Kelce, a 10th-round pick, scored 25.40 with two touchdowns after putting up 25.10 in the first meeting. Arjun started Courtland Sutton (zero catches, 0.00) with Evan Engram's 13.40 on the bench, Josh Allen threw two picks, and Arjun lost by 2.86. Pranav left Cam Ward's 22.22 on HIS bench and still won with the eighth-best score of the week 🤷 That's five ghost starters on the season for Pranav. Arjun has lost three straight. Pranav is 5–6, in the three-way tie for sixth.",
         "receipts": [
           {
             "label": "Travis Kelce, pick 10.09",
@@ -641,8 +641,8 @@
       },
       {
         "matchup": 5,
-        "hook": "",
-        "body": "",
+        "hook": "THE PHOENIX RISES 🔥",
+        "body": "Jit started the season 1–4, and the 1 was me. Six straight wins later, he's 7–4, in second place, and he beat me again: 140.38–129.60, the week's highest score. Sleeper had me by 17.2. Sleeper has now made Jit the underdog in all 11 of his games 🤡 Dak accounted for five touchdowns for the second straight week (four passing, one rushing, 35.90). Antonio Williams, the 144th pick in our startup, caught 9 for 122. Jit won this with Kyle McCord scoring 2.98 at superflex, and he's still eighth in the league in points. Mahomes threw three touchdowns, Gibbs scored two, Geno threw three, and my 129.60 would've beaten five other teams this week. I drew the one that scored the most 😭 Still in the last playoff spot at 5–6, on points. The plot armor is dented, not broken 🛡️",
         "receipts": [
           {
             "label": "Dak Prescott, pick 4.07",
@@ -660,8 +660,8 @@
       },
       {
         "matchup": 3,
-        "hook": "",
-        "body": "",
+        "hook": "GOD REMEMBERED 🙏",
+        "body": "Last week Adi's prayers were left on read. This week he beat Mateo 132.34–100.70, the week's lowest score, and snapped a four-game skid. Breece Hall, who Mateo traded to Adi in Week 6, scored 17.50 against him, touchdown included 🗡️ Jonah Coleman, the 120th pick in our startup, ran for 111 yards and THREE touchdowns: 32.90, beating his projection by 16.7, the most of anyone this week. Ashton Jeanty added 25.40. Payback for Week 2, when Mateo beat Adi by 17.08. And last week I said The Schedule had alternated W, L, W, L for eight straight weeks, so by that math Mateo would win this week. He lost: his first back-to-back losses of the season 📅 Mateo falls from second to fourth. Adi is 5–6, in the three-way tie for sixth.",
         "receipts": [
           {
             "label": "Jonah Coleman, pick 12.10",
@@ -678,7 +678,15 @@
         ]
       }
     ],
-    "meme": null
+    "meme": {
+      "rosterId": 4,
+      "caption": "Reaction photo.",
+      "src": "/assets/week-11.webp",
+      "alt": "Cream-and-forest-green meme for Jit: a phoenix with a smiling man's face and curly hair, wings spread wide, clutching a jeweled dagger in one talon as it rises out of flames.",
+      "width": 920,
+      "height": 1150
+    },
+    "cover": "meme"
   },
   "scout": {
     "1": [
